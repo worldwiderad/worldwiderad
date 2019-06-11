@@ -11,6 +11,24 @@
   </head>
   
   <body>
+    
+    <button onclick="myFunction()">Try it</button>
+
+<p id="demo"></p>
+
+<script>
+function myFunction() {
+  var person = prompt("Please enter your name", "Harry Potter");
+  if (person != null) {
+    document.getElementById("demo").innerHTML =
+    "Hello " + person + "! How are you today?";
+  }
+}
+</script>
+    
+    
+    
+    
     <h1 id="rad">radek filip green</h1>
     <p>My name is radek/radoslaw</p>
 
@@ -42,12 +60,12 @@
     <h2>great to met you</h2>
     <p>Are you one of my friends? Enter the password and you can access my class:</p>
 
-    <button onclick="myFunction()">Enter Password</button>
+    <button onclick="enterPassword()">Enter Password</button>
 
     <p id="link_to_class"></p>
 
     <script>
-      function myFunction() {
+      function enterPassword() {
         var password = prompt("Please enter the password", "");
         if (password == "hi") {
           document.getElementById("link_to_class").innerHTML =
