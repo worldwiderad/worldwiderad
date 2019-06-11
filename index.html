@@ -12,35 +12,21 @@
   
   <body>
     
-    <p>Are you one of my friends? Enter the password and you can access my class:</p>
+    <p>Are you one of my friends? Enter the password and you can access the <strong>High Security Zone</strong>:</p>
 
-    <button onclick="enterPassword()">Enter Password</button>
+    <button onclick="enterPassword()">Enter Secret Password</button>
 
     <p id="link_to_class"></p>
 
     <script>
       function enterPassword() {
         var password = prompt("Please enter the password", "password");
-        if (password == "hi") {
+        if (password == "jean123") {
           document.getElementById("link_to_class").innerHTML =
-          "<h2>go see my class,click <a href='https://worldwiderad.com/my_class.html'>HERE</a></h2>";
+          "<h2>Woohoo!</h2><p>Now you can click <a href='https://worldwiderad.com/my_class.html'>HERE</a></p>";
         }
       }
     </script>
-    
-    <button onclick="myFunction()">Try it</button>
-
-<p id="demo"></p>
-
-<script>
-function myFunction() {
-  var person = prompt("Please enter your name", "Harry Potter");
-  if (person != null) {
-    document.getElementById("demo").innerHTML =
-    "Hello " + person + "! How are you today?";
-  }
-}
-</script>
     
     
     
