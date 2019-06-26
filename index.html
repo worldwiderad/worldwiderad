@@ -9,7 +9,7 @@
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-  
+
     <style>
       body {background-color:rgb(147, 231, 152)}
       #rad {color:red;}
@@ -18,7 +18,7 @@
       #greendad {background-color:green;}
     </style>
   </head>
-  
+
   <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
   <a class="navbar-brand" href="#">worldwiderad</a>
@@ -36,57 +36,54 @@
       </li>
       <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          Dropdown
+          tech products
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-          <a class="dropdown-item" href="#">Action</a>
-          <a class="dropdown-item" href="#">Another action</a>
+          <a class="dropdown-item" href="#">sphero bolt</a>
+          <a class="dropdown-item" href="https://littlebits.com/">littelbits</a>
           <div class="dropdown-divider"></div>
           <a class="dropdown-item" href="#">Something else here</a>
         </div>
       </li>
-      <li class="nav-item">
-        <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
+      <li id="link_to_class" class="nav-item">
       </li>
     </ul>
-    <form class="form-inline my-2 my-lg-0" onsubmit="enterPassword()">
-      <button class="btn btn-outline-success my-2 my-sm-0">Sign in</button>
-    </form>
+    <div class="form-inline my-2 my-lg-0" >
+      <button class="btn btn-outline-success my-2 my-sm-0" onclick="enterPassword()">Sign in</button>
+    </div>
   </div>
 </nav>
 
-    <p>Are you one of my friends? Enter the password and you can access the <strong>High Security Zone</strong>:</p>
 
-    <button onclick="enterPassword()">Enter Secret Password</button>
 
-    <p id="link_to_class"></p>
+    <p id="link_to_class2"></p>
 
     <script>
       function enterPassword() {
-        var password = prompt("Please enter the password", "password");
+        var password = prompt("password to class", "password123");
         if (password == "jean123") {
           document.getElementById("link_to_class").innerHTML =
-          "<h2>Woohoo!</h2><p>Now you can click <a href='https://worldwiderad.com/my_class.html'>HERE</a></p>";
+          "<a class='nav-link' href='/my_class.html'>Class List</a>";
         }
       }
     </script>
-    
-    
-    
-    
+
+
+
+
     <h1 id="rad">radek filip green</h1>
     <p>My name is radek/radoslaw</p>
 
     <center><h1>piper</h1></center>
-    
+
     <img src="green.jpg" width="400px" />
 
     <p>I really enjoyed building my old piper conputer if you want to see it click <a href="https://www.playpiper.com/">HERE</a>.</p>
-    
+
     <h3>look at my game!!!</h3>
-    
+
     <iframe src="https://scratch.mit.edu/projects/229454694/embed" allowtransparency="true" width="485" height="402" frameborder="0" scrolling="no" allowfullscreen></iframe>
-    
+
     <h4>if you want to see more of my awesome games click <a href="https://scratch.mit.edu/search/projects?q=radek-green/">HERE</a>.</h4>
     <h4>you like music,look at my favourite songs!</h4>
     <iframe src="https://open.spotify.com/embed/user/22b7wuuu6nywzdnxmqqgykrha/playlist/6p4VFnFhNvyVDBisT463YH" width="300" height="380" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>
@@ -103,7 +100,7 @@
     <img src="family.jpg" width="300px" />
     <h4>this is my family</h4>
     <h2>great to met you</h2>
-     
+
     <h2>so go to my youtube chanole</h2>
     <p>my persanol video <a href="https://www.youtube.com/channel/UCQGzzrPs4ljE8Wkl1NSodag">here</a></p>
     <p>my class video <a href="https://www.youtube.com/watch?v=WxF8Zt_xNYo&feature=youtu.be">here</a>.</p>
