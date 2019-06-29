@@ -29,7 +29,7 @@
           </a>
           <div class="dropdown-menu" aria-labelledby="navbarDropdown">
             <a class="dropdown-item" href="sphero_bolt.html">sphero bolt</a>
-            <a class="dropdown-item" href="littlebits.html">littelbits</a>
+            <a class="dropdown-item" href="https://littlebits.com/">littelbits</a>
             <div class="dropdown-divider"></div>
             <a class="dropdown-item" href="#">Something else here</a>
           </div>
@@ -42,13 +42,17 @@
       </div>
     </div>
   </nav>
-      <img src="fh.jpg" width="400px" />
-      <h1>littlebits</h1>
+      <img src="sphero_bolt.jpg" width="400px" />
+      <h1>sphero bolt</h1>
       <h4>rad review</h4>
-      <ul>
-       <li>rad score &#9733; &#9733; &#9733; &#9733; &#9734;</li>
-     </ul>
-     <p>
-       if you want programing in the real world than get this!
-     </p>
+       <h4>rad score &#9733;  &#9733; &#9733; &#9733; &#9734;</h4>
+      <iframe width="560" height="315" src="https://www.youtube.com/embed/ZluyTRFn3OY" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe
+
+      <h4>review</h4>
+      <p>
+      i think that anybody who loves block-by-block coding
+      will love this product,
+      and from my point of view it is the most poweful compacte ball in the world.
+      </p>
+      <p>&copy; 2019 radekg</p>
     </body>
