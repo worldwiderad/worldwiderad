@@ -1,0 +1,886 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Response Evaluation Study</title>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #FAFAF8;
+    --surface: #FFFFFF;
+    --border: #E2E0DC;
+    --text: #1A1A18;
+    --text-secondary: #6B6960;
+    --accent: #2D5A3D;
+    --accent-light: #E8F0EB;
+    --accent-hover: #1E3D2A;
+    --warning: #8B4513;
+    --warning-bg: #FFF8F0;
+    --progress-bg: #EEEDEA;
+    --response-a-bg: #FAFCFB;
+    --response-b-bg: #FAFAF8;
+    --radio-border: #C8C5BE;
+    --shadow: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+    --shadow-lg: 0 4px 12px rgba(0,0,0,0.08), 0 2px 4px rgba(0,0,0,0.04);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+
+  /* SCREENS */
+  .screen { display: none; }
+  .screen.active { display: block; }
+
+  /* WELCOME SCREEN */
+  #welcome-screen {
+    max-width: 580px;
+    margin: 0 auto;
+    padding: 80px 24px;
+  }
+
+  .study-badge {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--accent);
+    background: var(--accent-light);
+    padding: 6px 14px;
+    border-radius: 4px;
+    margin-bottom: 24px;
+  }
+
+  .welcome-title {
+    font-family: 'Source Serif 4', serif;
+    font-size: 32px;
+    font-weight: 700;
+    line-height: 1.25;
+    margin-bottom: 16px;
+    color: var(--text);
+  }
+
+  .welcome-desc {
+    font-size: 15px;
+    color: var(--text-secondary);
+    margin-bottom: 32px;
+    line-height: 1.7;
+  }
+
+  .instructions {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 24px;
+    margin-bottom: 32px;
+  }
+
+  .instructions h3 {
+    font-family: 'Source Serif 4', serif;
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 12px;
+  }
+
+  .instructions ul {
+    list-style: none;
+    padding: 0;
+  }
+
+  .instructions li {
+    font-size: 14px;
+    color: var(--text-secondary);
+    padding: 6px 0;
+    padding-left: 20px;
+    position: relative;
+  }
+
+  .instructions li::before {
+    content: '—';
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+  }
+
+  .name-input-group {
+    margin-bottom: 24px;
+  }
+
+  .name-input-group label {
+    display: block;
+    font-size: 13px;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: var(--text);
+  }
+
+  .name-input {
+    width: 100%;
+    padding: 12px 16px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    background: var(--surface);
+    color: var(--text);
+    outline: none;
+    transition: border-color 0.2s;
+  }
+
+  .name-input:focus {
+    border-color: var(--accent);
+  }
+
+  .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    padding: 14px 24px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    color: #fff;
+    background: var(--accent);
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+
+  .btn-primary:hover { background: var(--accent-hover); }
+  .btn-primary:disabled {
+    background: var(--radio-border);
+    cursor: not-allowed;
+  }
+
+  .error-msg {
+    color: var(--warning);
+    background: var(--warning-bg);
+    border: 1px solid #E8D5C0;
+    padding: 12px 16px;
+    border-radius: 6px;
+    font-size: 14px;
+    margin-bottom: 16px;
+    display: none;
+  }
+
+  .already-done {
+    text-align: center;
+    padding: 48px 24px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    margin-top: 24px;
+  }
+
+  .already-done p {
+    font-size: 15px;
+    color: var(--text-secondary);
+  }
+
+  /* EVAL SCREEN */
+  #eval-screen {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 24px;
+  }
+
+  .eval-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 24px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .progress-info {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-secondary);
+  }
+
+  .progress-bar-container {
+    flex: 1;
+    max-width: 300px;
+    height: 6px;
+    background: var(--progress-bg);
+    border-radius: 3px;
+    margin: 0 20px;
+    overflow: hidden;
+  }
+
+  .progress-bar-fill {
+    height: 100%;
+    background: var(--accent);
+    border-radius: 3px;
+    transition: width 0.4s ease;
+  }
+
+  .grader-tag {
+    font-size: 12px;
+    color: var(--text-secondary);
+    background: var(--progress-bg);
+    padding: 4px 10px;
+    border-radius: 4px;
+  }
+
+  .task-header {
+    margin-bottom: 20px;
+  }
+
+  .task-scenario {
+    font-family: 'Source Serif 4', serif;
+    font-size: 22px;
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+
+  .task-context {
+    font-size: 14px;
+    color: var(--text-secondary);
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 14px 18px;
+    line-height: 1.6;
+  }
+
+  .task-context strong {
+    color: var(--text);
+    font-weight: 600;
+  }
+
+  .responses-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-bottom: 28px;
+  }
+
+  @media (max-width: 768px) {
+    .responses-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .response-panel {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+  }
+
+  .response-label {
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    padding: 12px 20px;
+    border-bottom: 1px solid var(--border);
+    background: var(--progress-bg);
+    color: var(--text-secondary);
+  }
+
+  .response-text {
+    padding: 20px;
+    font-size: 14px;
+    line-height: 1.75;
+    color: var(--text);
+    max-height: 500px;
+    overflow-y: auto;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+  }
+
+  .response-text::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  .response-text::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .response-text::-webkit-scrollbar-thumb {
+    background: var(--border);
+    border-radius: 3px;
+  }
+
+  /* RATING SECTION */
+  .rating-section {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 28px;
+    margin-bottom: 20px;
+  }
+
+  .rating-title {
+    font-family: 'Source Serif 4', serif;
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 20px;
+  }
+
+  .rating-group {
+    margin-bottom: 20px;
+  }
+
+  .rating-group:last-of-type {
+    margin-bottom: 0;
+  }
+
+  .rating-question {
+    font-size: 14px;
+    font-weight: 500;
+    margin-bottom: 10px;
+    color: var(--text);
+  }
+
+  .rating-options {
+    display: flex;
+    gap: 10px;
+  }
+
+  .rating-option {
+    flex: 1;
+  }
+
+  .rating-option input[type="radio"] {
+    display: none;
+  }
+
+  .rating-option label {
+    display: block;
+    text-align: center;
+    padding: 10px 16px;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text-secondary);
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+
+  .rating-option label:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+
+  .rating-option input[type="radio"]:checked + label {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #fff;
+  }
+
+  .nav-row {
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  .btn-next {
+    padding: 12px 32px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    color: #fff;
+    background: var(--accent);
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+
+  .btn-next:hover { background: var(--accent-hover); }
+  .btn-next:disabled {
+    background: var(--radio-border);
+    cursor: not-allowed;
+  }
+
+  /* COMPLETION SCREEN */
+  #complete-screen {
+    max-width: 520px;
+    margin: 0 auto;
+    padding: 100px 24px;
+    text-align: center;
+  }
+
+  .complete-check {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    background: var(--accent-light);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 24px;
+  }
+
+  .complete-check svg {
+    width: 28px;
+    height: 28px;
+    stroke: var(--accent);
+  }
+
+  .complete-title {
+    font-family: 'Source Serif 4', serif;
+    font-size: 26px;
+    font-weight: 700;
+    margin-bottom: 12px;
+  }
+
+  .complete-desc {
+    font-size: 15px;
+    color: var(--text-secondary);
+    line-height: 1.7;
+  }
+
+  /* LOADING */
+  .loading-screen {
+    text-align: center;
+    padding: 100px 24px;
+  }
+
+  .spinner {
+    width: 32px;
+    height: 32px;
+    border: 3px solid var(--border);
+    border-top-color: var(--accent);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+    margin: 0 auto 16px;
+  }
+
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .loading-text {
+    font-size: 14px;
+    color: var(--text-secondary);
+  }
+</style>
+</head>
+<body>
+
+<!-- WELCOME SCREEN -->
+<div id="welcome-screen" class="screen active">
+  <div class="study-badge">Research Study</div>
+  <h1 class="welcome-title">AI Response Evaluation</h1>
+  <p class="welcome-desc">
+    You will be shown 25 tasks. For each task, you will read two AI-generated responses 
+    (labelled Response A and Response B) and evaluate which one you prefer across three criteria. 
+    The study takes approximately 30–45 minutes.
+  </p>
+
+  <div class="instructions">
+    <h3>Before you begin</h3>
+    <ul>
+      <li>You will see a brief task description explaining what was asked of the AI</li>
+      <li>Read both responses carefully before rating</li>
+      <li>For each task, rate your preference on three dimensions: Functional Utility, Approachability, and Overall Preference</li>
+      <li>There are no right or wrong answers — we want your honest judgment</li>
+      <li>Your responses are recorded anonymously by your grader ID</li>
+    </ul>
+  </div>
+
+  <div id="already-completed" class="already-done" style="display:none;">
+    <p>You have already completed this evaluation. Thank you for your participation.</p>
+  </div>
+
+  <div id="welcome-form">
+    <div id="error-box" class="error-msg"></div>
+    <div class="name-input-group">
+      <label for="grader-name">Your Grader ID (name or identifier)</label>
+      <input type="text" id="grader-name" class="name-input" placeholder="e.g. Alex K." autocomplete="off">
+    </div>
+    <button class="btn-primary" id="start-btn" onclick="startEval()">Begin Evaluation</button>
+  </div>
+</div>
+
+<!-- EVAL SCREEN -->
+<div id="eval-screen" class="screen">
+  <div class="eval-header">
+    <span class="progress-info" id="progress-text">Task 1 of 25</span>
+    <div class="progress-bar-container">
+      <div class="progress-bar-fill" id="progress-bar" style="width: 0%"></div>
+    </div>
+    <span class="grader-tag" id="grader-tag"></span>
+  </div>
+
+  <div class="task-header">
+    <h2 class="task-scenario" id="task-scenario"></h2>
+    <div class="task-context">
+      <strong>Task:</strong> <span id="task-context-text"></span>
+    </div>
+  </div>
+
+  <div class="responses-grid">
+    <div class="response-panel">
+      <div class="response-label">Response A</div>
+      <div class="response-text" id="response-a"></div>
+    </div>
+    <div class="response-panel">
+      <div class="response-label">Response B</div>
+      <div class="response-text" id="response-b"></div>
+    </div>
+  </div>
+
+  <div class="rating-section">
+    <h3 class="rating-title">Your Evaluation</h3>
+
+    <div class="rating-group">
+      <div class="rating-question">1. Which response is more functionally useful for the task?</div>
+      <div class="rating-options">
+        <div class="rating-option">
+          <input type="radio" name="utility" id="util-a" value="A">
+          <label for="util-a">Response A</label>
+        </div>
+        <div class="rating-option">
+          <input type="radio" name="utility" id="util-tie" value="Tie">
+          <label for="util-tie">Tie</label>
+        </div>
+        <div class="rating-option">
+          <input type="radio" name="utility" id="util-b" value="B">
+          <label for="util-b">Response B</label>
+        </div>
+      </div>
+    </div>
+
+    <div class="rating-group">
+      <div class="rating-question">2. Which response feels more approachable and easy to engage with?</div>
+      <div class="rating-options">
+        <div class="rating-option">
+          <input type="radio" name="approachability" id="appr-a" value="A">
+          <label for="appr-a">Response A</label>
+        </div>
+        <div class="rating-option">
+          <input type="radio" name="approachability" id="appr-tie" value="Tie">
+          <label for="appr-tie">Tie</label>
+        </div>
+        <div class="rating-option">
+          <input type="radio" name="approachability" id="appr-b" value="B">
+          <label for="appr-b">Response B</label>
+        </div>
+      </div>
+    </div>
+
+    <div class="rating-group">
+      <div class="rating-question">3. Overall, which response do you prefer?</div>
+      <div class="rating-options">
+        <div class="rating-option">
+          <input type="radio" name="overall" id="over-a" value="A">
+          <label for="over-a">Response A</label>
+        </div>
+        <div class="rating-option">
+          <input type="radio" name="overall" id="over-tie" value="Tie">
+          <label for="over-tie">Tie</label>
+        </div>
+        <div class="rating-option">
+          <input type="radio" name="overall" id="over-b" value="B">
+          <label for="over-b">Response B</label>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="nav-row">
+    <button class="btn-next" id="next-btn" disabled onclick="nextTask()">Next Task →</button>
+  </div>
+</div>
+
+<!-- COMPLETION SCREEN -->
+<div id="complete-screen" class="screen">
+  <div class="complete-check">
+    <svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+      <polyline points="20 6 9 17 4 12"></polyline>
+    </svg>
+  </div>
+  <h1 class="complete-title">Evaluation Complete</h1>
+  <p class="complete-desc">
+    Thank you for participating in this study. Your responses have been recorded. 
+    You may now close this page.
+  </p>
+</div>
+
+<script>
+// ============================================================
+// CONFIG
+// ============================================================
+const SHEET_URL = 'https://script.google.com/macros/s/AKfycbx7kXU1NC7_T5ajA4JZhpffSyj69o3NpjT-jzIBcjg9ufv7oUcSHNPJfBoYswNLtnSoPw/exec';
+const TOTAL_TASKS = 25;
+
+// ============================================================
+// STATE
+// ============================================================
+let tasks = [];
+let currentTask = 0;
+let graderID = '';
+let abMapping = []; // For each task: true = A is Imperative, false = A is Conversational
+
+// ============================================================
+// CSV PARSER
+// ============================================================
+function parseCSV(text) {
+  const rows = [];
+  let current = '';
+  let inQuotes = false;
+  let row = [];
+
+  for (let i = 0; i < text.length; i++) {
+    const ch = text[i];
+    const next = text[i + 1];
+
+    if (inQuotes) {
+      if (ch === '"' && next === '"') {
+        current += '"';
+        i++;
+      } else if (ch === '"') {
+        inQuotes = false;
+      } else {
+        current += ch;
+      }
+    } else {
+      if (ch === '"') {
+        inQuotes = true;
+      } else if (ch === ',') {
+        row.push(current.trim());
+        current = '';
+      } else if (ch === '\n' || (ch === '\r' && next === '\n')) {
+        row.push(current.trim());
+        current = '';
+        if (row.length > 1) rows.push(row);
+        row = [];
+        if (ch === '\r') i++;
+      } else {
+        current += ch;
+      }
+    }
+  }
+  // Last field/row
+  row.push(current.trim());
+  if (row.length > 1) rows.push(row);
+
+  return rows;
+}
+
+async function loadCSV() {
+  try {
+    const resp = await fetch('data.csv');
+    if (!resp.ok) throw new Error('CSV not found');
+    const text = await resp.text();
+    const rows = parseCSV(text);
+
+    // Find column indices from header
+    const header = rows[0].map(h => h.toLowerCase().replace(/[^a-z_]/g, ''));
+    const idxID = header.findIndex(h => h.includes('task') && h.includes('id'));
+    const idxScenario = header.findIndex(h => h.includes('scenario'));
+    const idxContext = header.findIndex(h => h.includes('grader') || h.includes('context'));
+    const idxImp = header.findIndex(h => h.includes('imperative') && h.includes('resp'));
+    const idxConv = header.findIndex(h => h.includes('conversational') && h.includes('resp'));
+
+    if (idxImp === -1 || idxConv === -1) {
+      throw new Error('Could not find Imperative_Response and Conversational_Response columns');
+    }
+
+    for (let i = 1; i < rows.length; i++) {
+      const r = rows[i];
+      if (!r[idxImp] && !r[idxConv]) continue; // Skip empty rows
+      tasks.push({
+        id: r[idxID] || String(i),
+        scenario: r[idxScenario] || 'Task ' + i,
+        context: r[idxContext] || '',
+        imperative: r[idxImp] || '',
+        conversational: r[idxConv] || ''
+      });
+    }
+
+    if (tasks.length === 0) throw new Error('No tasks found in CSV');
+    return true;
+  } catch (err) {
+    console.error('CSV load error:', err);
+    showError('Failed to load task data: ' + err.message + '. Make sure data.csv is in the same folder as this file.');
+    return false;
+  }
+}
+
+// ============================================================
+// SEEDED RANDOM (for consistent A/B per grader)
+// ============================================================
+function seedHash(str) {
+  let hash = 0;
+  for (let i = 0; i < str.length; i++) {
+    const ch = str.charCodeAt(i);
+    hash = ((hash << 5) - hash) + ch;
+    hash |= 0;
+  }
+  return Math.abs(hash);
+}
+
+function generateABMapping(graderName) {
+  const seed = seedHash(graderName);
+  abMapping = [];
+  for (let i = 0; i < tasks.length; i++) {
+    // Use seed + task index to determine if A = Imperative or A = Conversational
+    const val = seedHash(graderName + '_task_' + i);
+    abMapping.push(val % 2 === 0); // true = A is Imperative
+  }
+}
+
+// ============================================================
+// UI FUNCTIONS
+// ============================================================
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+
+function showError(msg) {
+  const box = document.getElementById('error-box');
+  box.textContent = msg;
+  box.style.display = 'block';
+}
+
+function hideError() {
+  document.getElementById('error-box').style.display = 'none';
+}
+
+async function startEval() {
+  hideError();
+  graderID = document.getElementById('grader-name').value.trim();
+
+  if (!graderID) {
+    showError('Please enter your grader ID to continue.');
+    return;
+  }
+
+  // Check if already completed
+  if (localStorage.getItem('ab_eval_done_' + graderID)) {
+    document.getElementById('welcome-form').style.display = 'none';
+    document.getElementById('already-completed').style.display = 'block';
+    return;
+  }
+
+  // Load CSV
+  document.getElementById('start-btn').disabled = true;
+  document.getElementById('start-btn').textContent = 'Loading tasks...';
+
+  const ok = await loadCSV();
+  if (!ok) {
+    document.getElementById('start-btn').disabled = false;
+    document.getElementById('start-btn').textContent = 'Begin Evaluation';
+    return;
+  }
+
+  // Generate A/B mapping
+  generateABMapping(graderID);
+
+  // Show eval screen
+  document.getElementById('grader-tag').textContent = graderID;
+  currentTask = 0;
+  renderTask();
+  showScreen('eval-screen');
+}
+
+function renderTask() {
+  const task = tasks[currentTask];
+  const aIsImperative = abMapping[currentTask];
+
+  // Progress
+  document.getElementById('progress-text').textContent = 'Task ' + (currentTask + 1) + ' of ' + tasks.length;
+  document.getElementById('progress-bar').style.width = ((currentTask / tasks.length) * 100) + '%';
+
+  // Task info
+  document.getElementById('task-scenario').textContent = task.scenario;
+  document.getElementById('task-context-text').textContent = task.context;
+
+  // Responses (randomized)
+  const respA = aIsImperative ? task.imperative : task.conversational;
+  const respB = aIsImperative ? task.conversational : task.imperative;
+  document.getElementById('response-a').textContent = respA;
+  document.getElementById('response-b').textContent = respB;
+
+  // Scroll responses to top
+  document.getElementById('response-a').scrollTop = 0;
+  document.getElementById('response-b').scrollTop = 0;
+
+  // Clear ratings
+  document.querySelectorAll('input[type="radio"]').forEach(r => r.checked = false);
+  document.getElementById('next-btn').disabled = true;
+
+  // Update button text for last task
+  document.getElementById('next-btn').textContent = (currentTask === tasks.length - 1) ? 'Submit & Finish' : 'Next Task →';
+
+  // Scroll page to top
+  window.scrollTo(0, 0);
+}
+
+function checkAllRated() {
+  const utility = document.querySelector('input[name="utility"]:checked');
+  const approachability = document.querySelector('input[name="approachability"]:checked');
+  const overall = document.querySelector('input[name="overall"]:checked');
+  document.getElementById('next-btn').disabled = !(utility && approachability && overall);
+}
+
+// Listen for radio changes
+document.querySelectorAll('input[type="radio"]').forEach(r => {
+  r.addEventListener('change', checkAllRated);
+});
+
+async function nextTask() {
+  // Collect ratings
+  const utility = document.querySelector('input[name="utility"]:checked').value;
+  const approachability = document.querySelector('input[name="approachability"]:checked').value;
+  const overall = document.querySelector('input[name="overall"]:checked').value;
+
+  const task = tasks[currentTask];
+  const aWas = abMapping[currentTask] ? 'Imperative' : 'Conversational';
+
+  // Send to Google Sheets
+  const payload = {
+    rows: [{
+      grader_id: graderID,
+      task_id: task.id,
+      scenario: task.scenario,
+      a_was: aWas,
+      utility: utility,
+      approachability: approachability,
+      overall: overall
+    }]
+  };
+
+  // Fire and forget (don't block UI)
+  fetch(SHEET_URL, {
+    method: 'POST',
+    mode: 'no-cors',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload)
+  }).catch(err => console.warn('Sheet post error:', err));
+
+  // Next task or finish
+  currentTask++;
+  if (currentTask >= tasks.length) {
+    // Mark as complete
+    localStorage.setItem('ab_eval_done_' + graderID, 'true');
+    document.getElementById('progress-bar').style.width = '100%';
+    showScreen('complete-screen');
+  } else {
+    renderTask();
+  }
+}
+
+// Allow Enter key on name input
+document.getElementById('grader-name').addEventListener('keydown', function(e) {
+  if (e.key === 'Enter') startEval();
+});
+</script>
+</body>
+</html>
