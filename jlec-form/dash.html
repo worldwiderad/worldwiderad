@@ -3,722 +3,965 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>A/B Evaluation Dashboard</title>
-<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif&family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<title>Survey Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg: #0C0E11;
-    --surface: #14171C;
-    --surface-2: #1A1E24;
-    --border: #262B33;
-    --text: #E8E6E1;
-    --text-dim: #8A8780;
-    --text-muted: #555350;
-    --conv: #4ADE80;
-    --conv-dim: #1A3D2A;
-    --imp: #F97066;
-    --imp-dim: #3D1A1A;
-    --tie: #FBBF24;
-    --tie-dim: #3D351A;
-    --accent: #60A5FA;
-    --accent-dim: #1A2A3D;
+    --bg: #FAFAF8;
+    --surface: #FFFFFF;
+    --surface-alt: #F5F4F0;
+    --border: #E2E0DC;
+    --border-strong: #C8C5BE;
+    --text: #1A1A18;
+    --text-muted: #6B6960;
+    --text-faint: #8E8C84;
+    --accent: #2D5A3D;
+    --accent-soft: #E8F0EB;
+    --imp: #B68A50;
+    --imp-soft: #F5EBDC;
+    --conv: #2D5A3D;
+    --conv-soft: #E8F0EB;
+    --tie: #888780;
+    --tie-soft: #EEEDEA;
+    --warning: #8B4513;
+    --warning-bg: #FBF3E8;
+    --shadow-sm: 0 1px 2px rgba(0,0,0,0.04);
   }
-
   * { margin: 0; padding: 0; box-sizing: border-box; }
-
+  html { font-size: 16px; -webkit-text-size-adjust: 100%; }
   body {
-    font-family: 'Outfit', sans-serif;
+    font-family: 'DM Sans', -apple-system, sans-serif;
     background: var(--bg);
     color: var(--text);
+    line-height: 1.55;
     min-height: 100vh;
   }
+  .container {
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 24px 20px 40px;
+  }
 
-  /* HEADER */
-  .dash-header {
-    padding: 32px 40px 24px;
-    border-bottom: 1px solid var(--border);
+  header {
     display: flex;
-    align-items: flex-end;
     justify-content: space-between;
+    align-items: flex-end;
     flex-wrap: wrap;
     gap: 16px;
+    margin-bottom: 28px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--border);
   }
-
-  .dash-header-left h1 {
-    font-family: 'Instrument Serif', serif;
-    font-size: 28px;
-    font-weight: 400;
-    letter-spacing: -0.5px;
+  .h-title {
+    font-family: 'Source Serif 4', Georgia, serif;
+    font-size: 26px;
+    font-weight: 700;
+    letter-spacing: -0.01em;
     margin-bottom: 4px;
   }
-
-  .dash-header-left p {
-    font-size: 13px;
-    color: var(--text-dim);
-  }
-
-  .header-actions {
-    display: flex;
-    gap: 10px;
-    align-items: center;
-  }
-
-  .refresh-info {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 11px;
+  .h-sub {
+    font-size: 14px;
     color: var(--text-muted);
-    margin-right: 8px;
   }
-
+  .h-meta {
+    display: flex;
+    gap: 14px;
+    align-items: center;
+    font-size: 13px;
+    color: var(--text-faint);
+  }
   .live-dot {
-    display: inline-block;
-    width: 6px;
-    height: 6px;
+    width: 8px;
+    height: 8px;
+    background: #4CAF50;
     border-radius: 50%;
-    background: var(--conv);
-    margin-right: 6px;
     animation: pulse 2s infinite;
+    display: inline-block;
+    margin-right: 6px;
+    vertical-align: middle;
   }
-
   @keyframes pulse {
     0%, 100% { opacity: 1; }
-    50% { opacity: 0.3; }
+    50% { opacity: 0.5; }
   }
-
-  .btn {
-    font-family: 'Outfit', sans-serif;
-    font-size: 13px;
-    font-weight: 500;
-    padding: 8px 16px;
-    border-radius: 6px;
-    border: 1px solid var(--border);
+  .refresh-btn {
+    padding: 6px 12px;
     background: var(--surface);
-    color: var(--text);
+    border: 1px solid var(--border);
+    border-radius: 6px;
     cursor: pointer;
-    transition: all 0.15s;
-    text-decoration: none;
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
+    font-size: 13px;
+    color: var(--text-muted);
+    font-family: inherit;
+  }
+  .refresh-btn:hover { background: var(--surface-alt); border-color: var(--border-strong); }
+
+  /* Section headers */
+  .section {
+    margin-bottom: 32px;
+  }
+  .section-head {
+    margin-bottom: 14px;
+  }
+  .section-title {
+    font-family: 'Source Serif 4', Georgia, serif;
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 4px;
+  }
+  .section-desc {
+    font-size: 13px;
+    color: var(--text-muted);
   }
 
-  .btn:hover { background: var(--surface-2); border-color: var(--text-muted); }
-  .btn-accent { border-color: var(--accent); color: var(--accent); }
-  .btn-accent:hover { background: var(--accent-dim); }
-
-  /* LAYOUT */
-  .dash-body { padding: 28px 40px 60px; }
-
-  @media (max-width: 768px) {
-    .dash-header, .dash-body { padding-left: 16px; padding-right: 16px; }
-  }
-
-  /* STAT CARDS */
-  .stat-row {
+  /* Stat cards */
+  .stat-grid {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 16px;
-    margin-bottom: 28px;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 12px;
   }
-
-  @media (max-width: 900px) { .stat-row { grid-template-columns: repeat(2, 1fr); } }
-  @media (max-width: 500px) { .stat-row { grid-template-columns: 1fr; } }
-
   .stat-card {
     background: var(--surface);
     border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 20px;
+    border-radius: 8px;
+    padding: 18px 18px;
+    box-shadow: var(--shadow-sm);
   }
-
-  .stat-label {
-    font-size: 11px;
-    font-weight: 600;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    color: var(--text-muted);
-    margin-bottom: 8px;
-  }
-
-  .stat-value {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 32px;
-    font-weight: 600;
+  .stat-num {
+    font-family: 'Source Serif 4', Georgia, serif;
+    font-size: 30px;
+    font-weight: 700;
     line-height: 1;
+    color: var(--text);
+    margin-bottom: 6px;
   }
-
-  .stat-sub {
+  .stat-num.accent { color: var(--accent); }
+  .stat-label {
     font-size: 12px;
-    color: var(--text-dim);
-    margin-top: 6px;
-  }
-
-  /* SECTION */
-  .section {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 24px;
-    margin-bottom: 20px;
-  }
-
-  .section-title {
-    font-family: 'Instrument Serif', serif;
-    font-size: 18px;
-    font-weight: 400;
-    margin-bottom: 20px;
-    padding-bottom: 12px;
-    border-bottom: 1px solid var(--border);
-  }
-
-  /* WINNER BARS */
-  .winner-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 20px;
-  }
-
-  @media (max-width: 768px) { .winner-grid { grid-template-columns: 1fr; } }
-
-  .winner-card { text-align: center; }
-
-  .winner-metric {
-    font-size: 13px;
-    font-weight: 600;
-    color: var(--text-dim);
-    margin-bottom: 14px;
+    color: var(--text-muted);
+    font-weight: 500;
     text-transform: uppercase;
     letter-spacing: 0.5px;
   }
-
-  .bar-container {
-    display: flex;
-    height: 36px;
-    border-radius: 6px;
-    overflow: hidden;
-    margin-bottom: 10px;
-    background: var(--surface-2);
+  .stat-sub {
+    font-size: 12px;
+    color: var(--text-faint);
+    margin-top: 4px;
   }
 
-  .bar-seg {
+  /* Targets / progress to goal */
+  .target-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 18px;
+    box-shadow: var(--shadow-sm);
+  }
+  .target-row {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+  @media (min-width: 700px) {
+    .target-row { grid-template-columns: 1fr 1fr; gap: 18px; }
+  }
+  .target {
+    padding: 14px;
+    background: var(--surface-alt);
+    border-radius: 6px;
+  }
+  .target-label {
+    font-size: 12px;
+    color: var(--text-muted);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 4px;
+  }
+  .target-row-num {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    margin-bottom: 8px;
+  }
+  .target-current {
+    font-family: 'Source Serif 4', Georgia, serif;
+    font-size: 22px;
+    font-weight: 700;
+  }
+  .target-goal {
+    font-size: 14px;
+    color: var(--text-muted);
+  }
+  .target-bar-bg {
+    height: 6px;
+    background: var(--border);
+    border-radius: 3px;
+    overflow: hidden;
+    margin-bottom: 6px;
+  }
+  .target-bar-fill {
+    height: 100%;
+    background: var(--accent);
+    transition: width 0.4s;
+  }
+  .target-bar-fill.done {
+    background: #4CAF50;
+  }
+  .target-status {
+    font-size: 12px;
+    color: var(--text-muted);
+  }
+  .target-status.done {
+    color: #2E7D32;
+    font-weight: 500;
+  }
+
+  /* Preference bars (the headline result) */
+  .pref-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+  @media (min-width: 700px) {
+    .pref-grid { grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+  }
+  .pref-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 18px;
+    box-shadow: var(--shadow-sm);
+  }
+  .pref-title {
+    font-family: 'Source Serif 4', Georgia, serif;
+    font-size: 15px;
+    font-weight: 600;
+    margin-bottom: 4px;
+  }
+  .pref-sub {
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-bottom: 14px;
+  }
+  .pref-bar {
+    display: flex;
+    height: 32px;
+    border-radius: 4px;
+    overflow: hidden;
+    background: var(--border);
+    margin-bottom: 12px;
+  }
+  .pref-segment {
+    height: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-family: 'JetBrains Mono', monospace;
+    color: white;
     font-size: 12px;
     font-weight: 600;
-    color: #fff;
-    transition: width 0.6s ease;
-    min-width: 0;
-    overflow: hidden;
+    transition: width 0.4s;
   }
+  .pref-conv { background: var(--conv); }
+  .pref-tie { background: var(--tie); }
+  .pref-imp { background: var(--imp); }
 
-  .bar-conv { background: var(--conv); color: #0C0E11; }
-  .bar-imp { background: var(--imp); }
-  .bar-tie { background: var(--tie); color: #0C0E11; }
-
-  .bar-legend {
+  .pref-legend {
     display: flex;
-    justify-content: center;
-    gap: 16px;
+    gap: 14px;
     font-size: 12px;
-    color: var(--text-dim);
-  }
-
-  .legend-dot {
-    display: inline-block;
-    width: 8px;
-    height: 8px;
-    border-radius: 2px;
-    margin-right: 5px;
-    vertical-align: middle;
-  }
-
-  /* TABLE */
-  .data-table {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 13px;
-  }
-
-  .data-table thead th {
-    text-align: left;
-    font-size: 11px;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.8px;
     color: var(--text-muted);
-    padding: 10px 12px;
-    border-bottom: 1px solid var(--border);
-    position: sticky;
-    top: 0;
+    flex-wrap: wrap;
+  }
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+  .legend-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 2px;
+  }
+  .pref-headline {
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px solid var(--border);
+    font-size: 13px;
+    color: var(--text);
+  }
+  .pref-headline strong { color: var(--accent); }
+
+  /* Bootstrap CI display */
+  .ci-card {
+    background: var(--accent-soft);
+    border: 1px solid #C8DDD0;
+    border-radius: 8px;
+    padding: 18px;
+  }
+  .ci-line {
+    font-size: 14px;
+    color: var(--text);
+    margin-bottom: 6px;
+  }
+  .ci-line:last-child { margin-bottom: 0; }
+  .ci-line strong { color: var(--accent); font-weight: 600; }
+  .ci-explain {
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-top: 8px;
+    font-style: italic;
+  }
+
+  /* Per-task table */
+  .task-table-wrap {
     background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow-x: auto;
+    box-shadow: var(--shadow-sm);
   }
-
-  .data-table tbody td {
+  .task-table {
+    width: 100%;
+    font-size: 13px;
+    border-collapse: collapse;
+    min-width: 600px;
+  }
+  .task-table th {
+    background: var(--surface-alt);
+    padding: 10px 12px;
+    text-align: left;
+    font-weight: 600;
+    color: var(--text-muted);
+    border-bottom: 1px solid var(--border);
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+  }
+  .task-table td {
     padding: 10px 12px;
     border-bottom: 1px solid var(--border);
-    color: var(--text-dim);
+    color: var(--text);
   }
-
-  .data-table tbody tr:hover td { background: var(--surface-2); color: var(--text); }
-
-  .data-table tbody tr:last-child td { border-bottom: none; }
-
+  .task-table tr:last-child td { border-bottom: none; }
+  .task-table .task-id {
+    font-weight: 600;
+    color: var(--accent);
+    width: 60px;
+  }
+  .task-table .task-scenario {
+    color: var(--text-muted);
+    font-size: 12px;
+  }
+  .mini-bar {
+    display: inline-flex;
+    height: 16px;
+    width: 100px;
+    background: var(--border);
+    border-radius: 2px;
+    overflow: hidden;
+    vertical-align: middle;
+    margin-right: 6px;
+  }
+  .mini-seg { height: 100%; }
   .pill {
     display: inline-block;
     padding: 2px 8px;
-    border-radius: 4px;
-    font-family: 'JetBrains Mono', monospace;
+    border-radius: 10px;
     font-size: 11px;
-    font-weight: 600;
+    font-weight: 500;
   }
+  .pill.under { background: var(--warning-bg); color: var(--warning); }
+  .pill.ok { background: var(--accent-soft); color: var(--accent); }
 
-  .pill-conv { background: var(--conv-dim); color: var(--conv); }
-  .pill-imp { background: var(--imp-dim); color: var(--imp); }
-  .pill-tie { background: var(--tie-dim); color: var(--tie); }
-
-  .mini-bar {
-    display: flex;
-    height: 6px;
-    border-radius: 3px;
-    overflow: hidden;
-    background: var(--surface-2);
-    min-width: 80px;
-  }
-
-  .mini-bar-seg { transition: width 0.4s ease; }
-
-  /* GRADER TABLE */
-  .table-scroll {
-    max-height: 400px;
-    overflow-y: auto;
-  }
-
-  .table-scroll::-webkit-scrollbar { width: 5px; }
-  .table-scroll::-webkit-scrollbar-track { background: transparent; }
-  .table-scroll::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
-
-  /* COVERAGE GRID */
-  .coverage-grid {
-    display: grid;
-    grid-template-columns: repeat(25, 1fr);
-    gap: 4px;
-    margin-top: 8px;
-  }
-
-  @media (max-width: 768px) { .coverage-grid { grid-template-columns: repeat(13, 1fr); } }
-
-  .coverage-cell {
-    aspect-ratio: 1;
-    border-radius: 4px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 10px;
-    font-weight: 600;
-    color: var(--text-muted);
-    transition: all 0.3s;
-    position: relative;
-  }
-
-  .coverage-cell:hover {
-    transform: scale(1.2);
-    z-index: 2;
-  }
-
-  .coverage-cell[title]:hover::after {
-    content: attr(title);
-    position: absolute;
-    bottom: 110%;
-    left: 50%;
-    transform: translateX(-50%);
-    background: var(--surface-2);
+  /* Per-grader table */
+  .grader-table-wrap {
+    background: var(--surface);
     border: 1px solid var(--border);
-    padding: 4px 8px;
-    border-radius: 4px;
-    font-size: 10px;
-    white-space: nowrap;
-    color: var(--text);
-    z-index: 10;
+    border-radius: 8px;
+    overflow-x: auto;
+    box-shadow: var(--shadow-sm);
   }
-
-  /* EMPTY STATE */
-  .empty-state {
-    text-align: center;
-    padding: 60px 20px;
+  .grader-table {
+    width: 100%;
+    font-size: 13px;
+    border-collapse: collapse;
+    min-width: 600px;
+  }
+  .grader-table th {
+    background: var(--surface-alt);
+    padding: 10px 12px;
+    text-align: left;
+    font-weight: 600;
     color: var(--text-muted);
-    font-size: 14px;
+    border-bottom: 1px solid var(--border);
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
   }
+  .grader-table td {
+    padding: 10px 12px;
+    border-bottom: 1px solid var(--border);
+  }
+  .grader-table tr:last-child td { border-bottom: none; }
 
-  .empty-state .emoji { font-size: 32px; margin-bottom: 12px; }
-
-  /* LOADING */
-  .loading-overlay {
-    position: fixed;
-    inset: 0;
-    background: var(--bg);
+  /* Timing histogram */
+  .hist-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 18px;
+    box-shadow: var(--shadow-sm);
+  }
+  .hist-bars {
+    display: flex;
+    align-items: flex-end;
+    gap: 8px;
+    height: 140px;
+    margin-bottom: 10px;
+  }
+  .hist-col {
+    flex: 1;
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
-    z-index: 100;
-    transition: opacity 0.3s;
+    gap: 4px;
+  }
+  .hist-bar {
+    width: 100%;
+    background: var(--accent);
+    border-radius: 3px 3px 0 0;
+    min-height: 2px;
+    transition: height 0.4s;
+  }
+  .hist-bar.warn { background: var(--warning); }
+  .hist-label {
+    font-size: 11px;
+    color: var(--text-muted);
+    text-align: center;
+  }
+  .hist-count {
+    font-size: 11px;
+    color: var(--text);
+    font-weight: 600;
   }
 
-  .loading-overlay.hidden { opacity: 0; pointer-events: none; }
+  /* Sensitivity analysis card */
+  .sensi-card {
+    background: var(--warning-bg);
+    border: 1px solid #E5C49A;
+    border-radius: 8px;
+    padding: 14px 18px;
+    margin-top: 12px;
+    font-size: 13px;
+    color: var(--warning);
+  }
+  .sensi-card strong { font-weight: 600; }
 
-  .loader {
-    width: 28px; height: 28px;
-    border: 2px solid var(--border);
+  /* Loading & error */
+  .empty {
+    background: var(--surface);
+    border: 1px dashed var(--border);
+    border-radius: 8px;
+    padding: 40px 20px;
+    text-align: center;
+    color: var(--text-muted);
+  }
+  .spinner {
+    width: 24px;
+    height: 24px;
+    border: 2.5px solid var(--border);
     border-top-color: var(--accent);
     border-radius: 50%;
-    animation: spin 0.7s linear infinite;
-    margin-bottom: 14px;
+    animation: spin 0.8s linear infinite;
+    margin: 0 auto 12px;
   }
-
   @keyframes spin { to { transform: rotate(360deg); } }
-
-  .loader-text { font-size: 13px; color: var(--text-dim); }
-
-  /* TWO COL */
-  .two-col {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 20px;
-  }
-
-  @media (max-width: 900px) { .two-col { grid-template-columns: 1fr; } }
 </style>
 </head>
 <body>
+<div class="container">
 
-<div class="loading-overlay" id="loader">
-  <div class="loader"></div>
-  <div class="loader-text">Fetching results...</div>
+<header>
+  <div>
+    <h1 class="h-title">Politeness Study Dashboard</h1>
+    <p class="h-sub">Imperative vs. conversational prompts on DeepSeek-R1, blinded evaluation</p>
+  </div>
+  <div class="h-meta">
+    <span><span class="live-dot"></span><span id="live-time">Loading…</span></span>
+    <button id="refresh-btn" class="refresh-btn">Refresh</button>
+  </div>
+</header>
+
+<div id="content">
+  <div class="empty"><div class="spinner"></div>Loading data…</div>
 </div>
 
-<div class="dash-header">
-  <div class="dash-header-left">
-    <h1>A/B Evaluation Dashboard</h1>
-    <p><span class="live-dot"></span>Auto-refreshes every 60s · Conversational Framing vs Imperative Commands</p>
-  </div>
-  <div class="header-actions">
-    <span class="refresh-info" id="last-update">—</span>
-    <button class="btn btn-accent" onclick="fetchData()">↻ Refresh</button>
-    <a class="btn" href="https://docs.google.com/spreadsheets/d/1a7A2MhHJzBZQgbN39CzjJtdI9Qv93YnNdx2Sp2-fVkw/edit?usp=sharing" target="_blank">📊 Open Sheet</a>
-  </div>
-</div>
-
-<div class="dash-body">
-  <!-- STAT CARDS -->
-  <div class="stat-row">
-    <div class="stat-card">
-      <div class="stat-label">Total Ratings</div>
-      <div class="stat-value" id="s-total">—</div>
-      <div class="stat-sub" id="s-total-sub"></div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-label">Unique Graders</div>
-      <div class="stat-value" id="s-graders">—</div>
-      <div class="stat-sub" id="s-graders-sub"></div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-label">Avg Tasks / Grader</div>
-      <div class="stat-value" id="s-avg">—</div>
-      <div class="stat-sub" id="s-avg-sub"></div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-label">Conversational Win Rate</div>
-      <div class="stat-value" id="s-winrate" style="color:var(--conv)">—</div>
-      <div class="stat-sub" id="s-winrate-sub"></div>
-    </div>
-  </div>
-
-  <!-- OVERALL WINNER BARS -->
-  <div class="section">
-    <div class="section-title">Aggregate Preference by Metric</div>
-    <div class="winner-grid" id="winner-grid">
-      <div class="empty-state"><div class="emoji">📊</div>Waiting for data...</div>
-    </div>
-  </div>
-
-  <!-- COVERAGE HEATMAP -->
-  <div class="section">
-    <div class="section-title">Task Coverage (responses per task)</div>
-    <div id="coverage-container">
-      <div class="empty-state"><div class="emoji">🗺️</div>Waiting for data...</div>
-    </div>
-  </div>
-
-  <div class="two-col">
-    <!-- PER-TASK TABLE -->
-    <div class="section">
-      <div class="section-title">Per-Task Breakdown (Overall Preference)</div>
-      <div class="table-scroll" id="task-table-container">
-        <div class="empty-state"><div class="emoji">📋</div>Waiting for data...</div>
-      </div>
-    </div>
-
-    <!-- PER-GRADER TABLE -->
-    <div class="section">
-      <div class="section-title">Grader Participation</div>
-      <div class="table-scroll" id="grader-table-container">
-        <div class="empty-state"><div class="emoji">👥</div>Waiting for data...</div>
-      </div>
-    </div>
-  </div>
-
-  <!-- RAW LOG -->
-  <div class="section">
-    <div class="section-title">Response Log (most recent first)</div>
-    <div class="table-scroll" id="log-container" style="max-height:300px">
-      <div class="empty-state"><div class="emoji">📝</div>Waiting for data...</div>
-    </div>
-  </div>
 </div>
 
 <script>
-const SHEET_URL = 'https://script.google.com/macros/s/AKfycbw5ERCNqfOSyWkwN1J8660wIuZzB6i-nTgGNCw4OLfzZtNLmjjnnkeQAIo94OhabWa3/exec';
-const DATA_URL = SHEET_URL + '?mode=all';
+const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbw1VgSwKXkOJ08XrESrLC_Y7bXiWozEXBaUlj_Jbm-3mRRm28BqR54Bw-ayE68CC4O1/exec';
+const REFRESH_MS = 60000;
+const SUSPECT_TIME_THRESHOLD = 10; // seconds
+const COMFORTABLE = { graders: 30, ratings: 200 };
+const STRETCH = { graders: 50, ratings: 400 };
 
-let allRows = [];
-let refreshTimer = null;
+let lastData = null;
 
 // ============================================================
-// DATA FETCH
+// FETCH
 // ============================================================
-async function fetchData() {
+async function fetchAll() {
   try {
-    const resp = await fetch(DATA_URL);
-    if (!resp.ok) throw new Error('Fetch failed');
-    allRows = await resp.json();
-
-    document.getElementById('last-update').textContent = 'Updated ' + new Date().toLocaleTimeString();
-    render();
-  } catch (err) {
-    console.error('Fetch error:', err);
-    document.getElementById('last-update').textContent = 'Fetch failed — retrying...';
+    const resp = await fetch(APPS_SCRIPT_URL + '?mode=all');
+    if (!resp.ok) throw new Error('HTTP ' + resp.status);
+    const data = await resp.json();
+    return Array.isArray(data) ? data : [];
+  } catch (e) {
+    console.error('Fetch failed:', e);
+    return null;
   }
-
-  document.getElementById('loader').classList.add('hidden');
 }
 
 // ============================================================
-// DECODE PREFERENCE
+// STATS
 // ============================================================
-function decode(row, metric) {
-  const aWas = row.A_Was || row['A_Was'];
-  const choice = row[metric];
-  if (choice === 'Tie') return 'Tie';
-  if (choice === 'A') return aWas;
-  if (choice === 'B') return aWas === 'Conversational' ? 'Imperative' : 'Conversational';
-  return 'Unknown';
+function computePreferenceCounts(rows, metric) {
+  // Each row has a_was = 'Imperative' or 'Conversational'
+  // and a metric value of 'A', 'B', or 'Tie'
+  // We need to translate the A/B vote into Imperative/Conversational
+  let conv = 0, imp = 0, tie = 0;
+  for (const row of rows) {
+    const vote = row[metric];
+    const aWas = row.A_Was;
+    if (!vote) continue;
+    if (vote === 'Tie') {
+      tie++;
+    } else if (vote === 'A') {
+      if (aWas === 'Conversational') conv++;
+      else imp++;
+    } else if (vote === 'B') {
+      if (aWas === 'Conversational') imp++;
+      else conv++;
+    }
+  }
+  return { conv, imp, tie, total: conv + imp + tie };
 }
+
+// Bootstrap CI for the proportion preferring conversational (excluding ties)
+function bootstrapCI(rows, metric, iterations = 2000) {
+  // Translate each row to 1 (conv preferred), 0 (imp preferred), null (tie)
+  const samples = [];
+  for (const row of rows) {
+    const vote = row[metric];
+    const aWas = row.A_Was;
+    if (!vote || vote === 'Tie') continue;
+    let convPreferred;
+    if (vote === 'A') convPreferred = aWas === 'Conversational' ? 1 : 0;
+    else convPreferred = aWas === 'Conversational' ? 0 : 1;
+    samples.push(convPreferred);
+  }
+  if (samples.length < 5) return null;
+  const means = [];
+  for (let i = 0; i < iterations; i++) {
+    let sum = 0;
+    for (let j = 0; j < samples.length; j++) {
+      sum += samples[Math.floor(Math.random() * samples.length)];
+    }
+    means.push(sum / samples.length);
+  }
+  means.sort((a, b) => a - b);
+  return {
+    mean: samples.reduce((a, b) => a + b, 0) / samples.length,
+    ci_low: means[Math.floor(iterations * 0.025)],
+    ci_high: means[Math.floor(iterations * 0.975)],
+    n: samples.length
+  };
+}
+
+function formatPct(n) { return (n * 100).toFixed(1) + '%'; }
 
 // ============================================================
 // RENDER
 // ============================================================
-function render() {
-  if (allRows.length === 0) return;
+function render(data) {
+  if (!data) {
+    document.getElementById('content').innerHTML =
+      '<div class="empty">Could not fetch data. Check the Apps Script URL and try refreshing.</div>';
+    return;
+  }
+  if (data.length === 0) {
+    document.getElementById('content').innerHTML =
+      '<div class="empty">No ratings yet. Once people start submitting, results will appear here.</div>';
+    return;
+  }
 
-  const metrics = ['Utility', 'Approachability', 'Overall'];
-  const graders = new Set();
+  // Normalize rows
+  const rows = data.map(r => ({
+    timestamp: r.Timestamp,
+    grader_id: r.Grader_ID,
+    session_id: r.Session_ID,
+    task_id: r.Task_ID,
+    scenario: r.Scenario,
+    A_Was: r.A_Was,
+    Utility: r.Utility,
+    Approachability: r.Approachability,
+    Overall: r.Overall,
+    time_seconds: parseInt(r.Time_Seconds) || 0
+  }));
+
+  const totalRatings = rows.length;
+  const uniqueGraders = new Set(rows.map(r => r.grader_id)).size;
+  const uniqueSessions = new Set(rows.map(r => r.session_id)).size;
+  const totalTime = rows.reduce((s, r) => s + r.time_seconds, 0);
+  const avgTime = totalRatings > 0 ? Math.round(totalTime / totalRatings) : 0;
+  const suspectRatings = rows.filter(r => r.time_seconds < SUSPECT_TIME_THRESHOLD && r.time_seconds > 0).length;
+
+  // Preference counts
+  const utilityPref = computePreferenceCounts(rows, 'Utility');
+  const approachPref = computePreferenceCounts(rows, 'Approachability');
+  const overallPref = computePreferenceCounts(rows, 'Overall');
+
+  // Sensitivity analysis (excluding sub-10s ratings)
+  const cleanRows = rows.filter(r => r.time_seconds >= SUSPECT_TIME_THRESHOLD);
+  const overallPrefClean = computePreferenceCounts(cleanRows, 'Overall');
+
+  // Bootstrap CI on Overall metric
+  const ci = bootstrapCI(rows, 'Overall');
+
+  // Per-task breakdown
   const taskMap = {};
+  for (const r of rows) {
+    if (!taskMap[r.task_id]) {
+      taskMap[r.task_id] = { task_id: r.task_id, scenario: r.scenario, rows: [] };
+    }
+    taskMap[r.task_id].rows.push(r);
+  }
+  const taskList = Object.values(taskMap).sort((a, b) => parseInt(a.task_id) - parseInt(b.task_id));
 
-  allRows.forEach(r => {
-    const gid = r.Grader_ID || r['Grader_ID'];
-    const tid = r.Task_ID || r['Task_ID'];
-    graders.add(gid);
-    if (!taskMap[tid]) taskMap[tid] = { scenario: r.Scenario || r['Scenario'], count: 0, results: [] };
-    taskMap[tid].count++;
-    taskMap[tid].results.push(r);
-  });
-
-  // STAT CARDS
-  const totalRatings = allRows.length;
-  const totalGraders = graders.size;
-  const avgTasks = totalGraders > 0 ? (totalRatings / totalGraders).toFixed(1) : 0;
-
-  // Overall win rate
-  let convWins = 0, total = 0;
-  allRows.forEach(r => {
-    const pref = decode(r, 'Overall');
-    if (pref === 'Conversational') convWins++;
-    if (pref !== 'Unknown') total++;
-  });
-  const winRate = total > 0 ? Math.round((convWins / total) * 100) : 0;
-
-  document.getElementById('s-total').textContent = totalRatings;
-  document.getElementById('s-total-sub').textContent = `across ${Object.keys(taskMap).length} tasks`;
-  document.getElementById('s-graders').textContent = totalGraders;
-  document.getElementById('s-graders-sub').textContent = `target: 50`;
-  document.getElementById('s-avg').textContent = avgTasks;
-  document.getElementById('s-avg-sub').textContent = `max possible: 25`;
-  document.getElementById('s-winrate').textContent = winRate + '%';
-  document.getElementById('s-winrate-sub').textContent = `overall preference`;
-
-  // WINNER BARS
-  let winnerHTML = '';
-  metrics.forEach(metric => {
-    let conv = 0, imp = 0, tie = 0;
-    allRows.forEach(r => {
-      const pref = decode(r, metric);
-      if (pref === 'Conversational') conv++;
-      else if (pref === 'Imperative') imp++;
-      else if (pref === 'Tie') tie++;
-    });
-    const t = conv + imp + tie || 1;
-    const cP = ((conv / t) * 100).toFixed(1);
-    const iP = ((imp / t) * 100).toFixed(1);
-    const tP = ((tie / t) * 100).toFixed(1);
-
-    winnerHTML += `
-      <div class="winner-card">
-        <div class="winner-metric">${metric}</div>
-        <div class="bar-container">
-          <div class="bar-seg bar-conv" style="width:${cP}%">${conv > 0 ? conv : ''}</div>
-          <div class="bar-seg bar-tie" style="width:${tP}%">${tie > 0 ? tie : ''}</div>
-          <div class="bar-seg bar-imp" style="width:${iP}%">${imp > 0 ? imp : ''}</div>
-        </div>
-        <div class="bar-legend">
-          <span><span class="legend-dot" style="background:var(--conv)"></span>Conv ${cP}%</span>
-          <span><span class="legend-dot" style="background:var(--tie)"></span>Tie ${tP}%</span>
-          <span><span class="legend-dot" style="background:var(--imp)"></span>Imp ${iP}%</span>
-        </div>
-      </div>`;
-  });
-  document.getElementById('winner-grid').innerHTML = winnerHTML;
-
-  // COVERAGE HEATMAP
-  const taskIds = Object.keys(taskMap).sort((a, b) => Number(a) - Number(b));
-  const maxCount = Math.max(...taskIds.map(id => taskMap[id].count), 1);
-
-  let covHTML = '<div class="coverage-grid">';
-  taskIds.forEach(id => {
-    const c = taskMap[id].count;
-    const intensity = Math.max(0.15, c / maxCount);
-    const bg = `rgba(74, 222, 128, ${intensity})`;
-    covHTML += `<div class="coverage-cell" style="background:${bg}" title="Task ${id}: ${taskMap[id].scenario} (${c} responses)">${c}</div>`;
-  });
-  covHTML += '</div>';
-  document.getElementById('coverage-container').innerHTML = covHTML;
-
-  // PER-TASK TABLE
-  let taskHTML = `<table class="data-table"><thead><tr>
-    <th>#</th><th>Scenario</th><th>Conv</th><th>Imp</th><th>Tie</th><th>N</th><th>Winner</th><th></th>
-  </tr></thead><tbody>`;
-
-  taskIds.forEach(id => {
-    let conv = 0, imp = 0, tie = 0;
-    taskMap[id].results.forEach(r => {
-      const pref = decode(r, 'Overall');
-      if (pref === 'Conversational') conv++;
-      else if (pref === 'Imperative') imp++;
-      else if (pref === 'Tie') tie++;
-    });
-    const n = conv + imp + tie;
-    let winner, pillClass;
-    if (conv > imp && conv > tie) { winner = 'Conv'; pillClass = 'pill-conv'; }
-    else if (imp > conv && imp > tie) { winner = 'Imp'; pillClass = 'pill-imp'; }
-    else if (tie > conv && tie > imp) { winner = 'Tie'; pillClass = 'pill-tie'; }
-    else { winner = '—'; pillClass = ''; }
-
-    const t = n || 1;
-    const cW = (conv / t * 100).toFixed(0);
-    const tW = (tie / t * 100).toFixed(0);
-    const iW = (imp / t * 100).toFixed(0);
-
-    taskHTML += `<tr>
-      <td style="color:var(--text-muted)">${id}</td>
-      <td style="color:var(--text)">${taskMap[id].scenario}</td>
-      <td style="color:var(--conv)">${conv}</td>
-      <td style="color:var(--imp)">${imp}</td>
-      <td style="color:var(--tie)">${tie}</td>
-      <td>${n}</td>
-      <td>${pillClass ? `<span class="pill ${pillClass}">${winner}</span>` : '—'}</td>
-      <td><div class="mini-bar">
-        <div class="mini-bar-seg" style="width:${cW}%;background:var(--conv)"></div>
-        <div class="mini-bar-seg" style="width:${tW}%;background:var(--tie)"></div>
-        <div class="mini-bar-seg" style="width:${iW}%;background:var(--imp)"></div>
-      </div></td>
-    </tr>`;
-  });
-  taskHTML += '</tbody></table>';
-  document.getElementById('task-table-container').innerHTML = taskHTML;
-
-  // PER-GRADER TABLE
+  // Per-grader breakdown
   const graderMap = {};
-  allRows.forEach(r => {
-    const gid = r.Grader_ID || r['Grader_ID'];
-    if (!graderMap[gid]) graderMap[gid] = { count: 0, convPref: 0 };
-    graderMap[gid].count++;
-    if (decode(r, 'Overall') === 'Conversational') graderMap[gid].convPref++;
-  });
+  for (const r of rows) {
+    if (!graderMap[r.grader_id]) {
+      graderMap[r.grader_id] = { grader_id: r.grader_id, rows: [], sessions: new Set() };
+    }
+    graderMap[r.grader_id].rows.push(r);
+    graderMap[r.grader_id].sessions.add(r.session_id);
+  }
+  const graderList = Object.values(graderMap).sort((a, b) => b.rows.length - a.rows.length);
 
-  const graderList = Object.entries(graderMap).sort((a, b) => b[1].count - a[1].count);
+  // Time histogram buckets
+  const buckets = [
+    { label: '<10s', min: 0, max: 10, warn: true, count: 0 },
+    { label: '10-30s', min: 10, max: 30, count: 0 },
+    { label: '30-60s', min: 30, max: 60, count: 0 },
+    { label: '60-120s', min: 60, max: 120, count: 0 },
+    { label: '120s+', min: 120, max: Infinity, count: 0 }
+  ];
+  for (const r of rows) {
+    if (r.time_seconds <= 0) continue;
+    for (const b of buckets) {
+      if (r.time_seconds >= b.min && r.time_seconds < b.max) {
+        b.count++;
+        break;
+      }
+    }
+  }
+  const maxBucket = Math.max(1, ...buckets.map(b => b.count));
 
-  let graderHTML = `<table class="data-table"><thead><tr>
-    <th>Grader ID</th><th>Tasks Done</th><th>Conv Pref %</th><th></th>
-  </tr></thead><tbody>`;
+  // BUILD HTML
+  let html = '';
 
-  graderList.forEach(([gid, data]) => {
-    const pct = data.count > 0 ? Math.round((data.convPref / data.count) * 100) : 0;
-    graderHTML += `<tr>
-      <td style="color:var(--text)">${gid}</td>
-      <td>${data.count} / 25</td>
-      <td style="color:${pct >= 50 ? 'var(--conv)' : 'var(--imp)'}">${pct}%</td>
-      <td><div class="mini-bar" style="min-width:60px">
-        <div class="mini-bar-seg" style="width:${pct}%;background:var(--conv)"></div>
-        <div class="mini-bar-seg" style="width:${100 - pct}%;background:var(--imp)"></div>
-      </div></td>
-    </tr>`;
-  });
-  graderHTML += '</tbody></table>';
-  document.getElementById('grader-table-container').innerHTML = graderHTML;
+  // ---- Section 1: Progress to goal ----
+  html += `
+    <div class="section">
+      <div class="section-head">
+        <div class="section-title">Progress to data goals</div>
+        <div class="section-desc">Targets that determine how confidently the essay can report results.</div>
+      </div>
+      <div class="target-card">
+        <div class="target-row">
+          ${renderTargetBar('Comfortable', uniqueGraders, totalRatings, COMFORTABLE)}
+          ${renderTargetBar('Stretch', uniqueGraders, totalRatings, STRETCH)}
+        </div>
+      </div>
+    </div>
+  `;
 
-  // RAW LOG
-  const recent = [...allRows].reverse().slice(0, 50);
-  let logHTML = `<table class="data-table"><thead><tr>
-    <th>Time</th><th>Grader</th><th>Task</th><th>Utility</th><th>Appr.</th><th>Overall</th>
-  </tr></thead><tbody>`;
+  // ---- Section 2: Top-line counts ----
+  html += `
+    <div class="section">
+      <div class="section-head">
+        <div class="section-title">Top-line counts</div>
+        <div class="section-desc">Raw numbers — what goes directly into the essay.</div>
+      </div>
+      <div class="stat-grid">
+        <div class="stat-card">
+          <div class="stat-num accent">${uniqueGraders}</div>
+          <div class="stat-label">Unique graders</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num accent">${totalRatings}</div>
+          <div class="stat-label">Total ratings</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num">${uniqueSessions}</div>
+          <div class="stat-label">Unique sessions</div>
+          <div class="stat-sub">browser identifiers</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num">${avgTime}s</div>
+          <div class="stat-label">Avg time per rating</div>
+          ${suspectRatings > 0 ? `<div class="stat-sub">${suspectRatings} under ${SUSPECT_TIME_THRESHOLD}s</div>` : ''}
+        </div>
+      </div>
+    </div>
+  `;
 
-  recent.forEach(r => {
-    const ts = r.Timestamp || r['Timestamp'] || '';
-    const shortTs = ts.split(' ').pop() || ts;
-    const gid = r.Grader_ID || r['Grader_ID'];
-    const tid = r.Task_ID || r['Task_ID'];
+  // ---- Section 3: Preference results ----
+  html += `
+    <div class="section">
+      <div class="section-head">
+        <div class="section-title">Headline result</div>
+        <div class="section-desc">How evaluators voted across the three metrics. Shown as raw counts.</div>
+      </div>
+      <div class="pref-grid">
+        ${renderPrefCard('Utility', 'Which response is more useful', utilityPref)}
+        ${renderPrefCard('Approachability', 'Which is more approachable', approachPref)}
+        ${renderPrefCard('Overall', 'Which response do you prefer overall', overallPref)}
+      </div>
+  `;
 
-    const uPref = decode(r, 'Utility');
-    const aPref = decode(r, 'Approachability');
-    const oPref = decode(r, 'Overall');
+  // Bootstrap CI card
+  if (ci) {
+    html += `
+      <div class="ci-card" style="margin-top: 16px;">
+        <div class="ci-line">
+          <strong>Conversational preference (Overall, excluding ties):</strong>
+          ${formatPct(ci.mean)} (95% bootstrap CI: ${formatPct(ci.ci_low)}–${formatPct(ci.ci_high)}, n=${ci.n})
+        </div>
+        <div class="ci-explain">CI computed by bootstrap resampling, 2000 iterations. Excludes "Both equal" votes. This is the format the essay will use.</div>
+      </div>
+    `;
+  }
 
-    const pillFor = (p) => {
-      if (p === 'Conversational') return '<span class="pill pill-conv">C</span>';
-      if (p === 'Imperative') return '<span class="pill pill-imp">I</span>';
-      if (p === 'Tie') return '<span class="pill pill-tie">T</span>';
-      return '—';
-    };
+  // Sensitivity analysis
+  if (suspectRatings > 0) {
+    html += `
+      <div class="sensi-card">
+        <strong>Sensitivity check:</strong> excluding ${suspectRatings} ratings completed in under ${SUSPECT_TIME_THRESHOLD}s,
+        Overall conversational preference is <strong>${overallPrefClean.conv}</strong> of ${overallPrefClean.total - overallPrefClean.tie} non-tie votes
+        (${formatPct((overallPrefClean.conv) / Math.max(1, overallPrefClean.total - overallPrefClean.tie))}).
+      </div>
+    `;
+  }
 
-    logHTML += `<tr>
-      <td style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text-muted)">${shortTs}</td>
-      <td>${gid}</td>
-      <td>${tid}</td>
-      <td>${pillFor(uPref)}</td>
-      <td>${pillFor(aPref)}</td>
-      <td>${pillFor(oPref)}</td>
-    </tr>`;
-  });
-  logHTML += '</tbody></table>';
-  document.getElementById('log-container').innerHTML = logHTML;
+  html += '</div>';
+
+  // ---- Section 4: Per-task breakdown ----
+  html += `
+    <div class="section">
+      <div class="section-head">
+        <div class="section-title">Per-task breakdown (Overall preference)</div>
+        <div class="section-desc">Where the effect is strongest and where it's weakest. Tasks with fewer than 3 ratings are flagged for needing more coverage.</div>
+      </div>
+      <div class="task-table-wrap">
+        <table class="task-table">
+          <thead>
+            <tr>
+              <th>Task</th>
+              <th>Scenario</th>
+              <th>N</th>
+              <th>Distribution</th>
+              <th>Conv lead</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${taskList.map(t => {
+              const pref = computePreferenceCounts(t.rows, 'Overall');
+              const total = pref.total;
+              const lead = pref.conv - pref.imp;
+              const widthConv = total > 0 ? (pref.conv / total * 100) : 0;
+              const widthTie = total > 0 ? (pref.tie / total * 100) : 0;
+              const widthImp = total > 0 ? (pref.imp / total * 100) : 0;
+              return `
+                <tr>
+                  <td class="task-id">#${t.task_id}</td>
+                  <td>
+                    <div>${escapeHtml(t.scenario || '—').slice(0, 60)}${t.scenario && t.scenario.length > 60 ? '…' : ''}</div>
+                  </td>
+                  <td>${total} ${total < 3 ? '<span class="pill under">low</span>' : ''}</td>
+                  <td>
+                    <div class="mini-bar">
+                      <div class="mini-seg" style="width: ${widthConv}%; background: var(--conv);" title="Conv: ${pref.conv}"></div>
+                      <div class="mini-seg" style="width: ${widthTie}%; background: var(--tie);" title="Tie: ${pref.tie}"></div>
+                      <div class="mini-seg" style="width: ${widthImp}%; background: var(--imp);" title="Imp: ${pref.imp}"></div>
+                    </div>
+                    <span style="font-size: 11px; color: var(--text-faint);">${pref.conv}/${pref.tie}/${pref.imp}</span>
+                  </td>
+                  <td><strong style="color: ${lead > 0 ? 'var(--conv)' : (lead < 0 ? 'var(--imp)' : 'var(--text-muted)')};">${lead > 0 ? '+' : ''}${lead}</strong></td>
+                </tr>
+              `;
+            }).join('')}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  `;
+
+  // ---- Section 5: Per-grader breakdown ----
+  html += `
+    <div class="section">
+      <div class="section-head">
+        <div class="section-title">Per-grader summary</div>
+        <div class="section-desc">Each row is one display name. Multiple sessions on the same name suggest browser switching (or family sharing a device).</div>
+      </div>
+      <div class="grader-table-wrap">
+        <table class="grader-table">
+          <thead>
+            <tr>
+              <th>Grader</th>
+              <th>Ratings</th>
+              <th>Sessions</th>
+              <th>Avg time</th>
+              <th>Overall: Conv / Tie / Imp</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${graderList.map(g => {
+              const pref = computePreferenceCounts(g.rows, 'Overall');
+              const avgT = g.rows.length > 0 ? Math.round(g.rows.reduce((s, r) => s + r.time_seconds, 0) / g.rows.length) : 0;
+              const sessions = g.sessions.size;
+              return `
+                <tr>
+                  <td><strong>${escapeHtml(g.grader_id)}</strong></td>
+                  <td>${g.rows.length}</td>
+                  <td>${sessions} ${sessions > 1 ? '<span class="pill under">multi</span>' : ''}</td>
+                  <td>${avgT}s ${avgT < SUSPECT_TIME_THRESHOLD ? '<span class="pill under">fast</span>' : ''}</td>
+                  <td><span style="color: var(--conv); font-weight: 600;">${pref.conv}</span> / <span style="color: var(--tie);">${pref.tie}</span> / <span style="color: var(--imp); font-weight: 600;">${pref.imp}</span></td>
+                </tr>
+              `;
+            }).join('')}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  `;
+
+  // ---- Section 6: Timing histogram ----
+  html += `
+    <div class="section">
+      <div class="section-head">
+        <div class="section-title">Time per rating</div>
+        <div class="section-desc">Distribution of how long each rating took. Sub-10s ratings are flagged for sensitivity analysis.</div>
+      </div>
+      <div class="hist-card">
+        <div class="hist-bars">
+          ${buckets.map(b => `
+            <div class="hist-col">
+              <div class="hist-count">${b.count}</div>
+              <div class="hist-bar ${b.warn ? 'warn' : ''}" style="height: ${(b.count / maxBucket * 100).toFixed(0)}%"></div>
+              <div class="hist-label">${b.label}</div>
+            </div>
+          `).join('')}
+        </div>
+      </div>
+    </div>
+  `;
+
+  document.getElementById('content').innerHTML = html;
+}
+
+function renderTargetBar(label, currGraders, currRatings, target) {
+  const gPct = Math.min(100, (currGraders / target.graders) * 100);
+  const rPct = Math.min(100, (currRatings / target.ratings) * 100);
+  const gDone = currGraders >= target.graders;
+  const rDone = currRatings >= target.ratings;
+  return `
+    <div class="target">
+      <div class="target-label">${label} target</div>
+      <div style="margin-bottom: 12px;">
+        <div class="target-row-num">
+          <span class="target-current">${currGraders}</span>
+          <span class="target-goal">/ ${target.graders} graders</span>
+        </div>
+        <div class="target-bar-bg"><div class="target-bar-fill ${gDone ? 'done' : ''}" style="width: ${gPct.toFixed(0)}%"></div></div>
+        <div class="target-status ${gDone ? 'done' : ''}">${gDone ? '✓ Goal reached' : `${target.graders - currGraders} more needed`}</div>
+      </div>
+      <div>
+        <div class="target-row-num">
+          <span class="target-current">${currRatings}</span>
+          <span class="target-goal">/ ${target.ratings} ratings</span>
+        </div>
+        <div class="target-bar-bg"><div class="target-bar-fill ${rDone ? 'done' : ''}" style="width: ${rPct.toFixed(0)}%"></div></div>
+        <div class="target-status ${rDone ? 'done' : ''}">${rDone ? '✓ Goal reached' : `${target.ratings - currRatings} more needed`}</div>
+      </div>
+    </div>
+  `;
+}
+
+function renderPrefCard(title, sub, pref) {
+  const total = pref.total;
+  if (total === 0) {
+    return `
+      <div class="pref-card">
+        <div class="pref-title">${title}</div>
+        <div class="pref-sub">${sub}</div>
+        <div class="empty" style="padding: 20px; font-size: 12px;">No ratings yet</div>
+      </div>
+    `;
+  }
+  const wConv = (pref.conv / total) * 100;
+  const wTie = (pref.tie / total) * 100;
+  const wImp = (pref.imp / total) * 100;
+  const lead = pref.conv > pref.imp ? 'Conversational' : (pref.imp > pref.conv ? 'Imperative' : 'Tied');
+  const leadCount = Math.abs(pref.conv - pref.imp);
+
+  return `
+    <div class="pref-card">
+      <div class="pref-title">${title}</div>
+      <div class="pref-sub">${sub}</div>
+      <div class="pref-bar">
+        ${pref.conv > 0 ? `<div class="pref-segment pref-conv" style="width: ${wConv}%;">${wConv.toFixed(0)}%</div>` : ''}
+        ${pref.tie > 0 ? `<div class="pref-segment pref-tie" style="width: ${wTie}%;">${wTie.toFixed(0)}%</div>` : ''}
+        ${pref.imp > 0 ? `<div class="pref-segment pref-imp" style="width: ${wImp}%;">${wImp.toFixed(0)}%</div>` : ''}
+      </div>
+      <div class="pref-legend">
+        <span class="legend-item"><span class="legend-dot" style="background: var(--conv);"></span>Conv ${pref.conv}</span>
+        <span class="legend-item"><span class="legend-dot" style="background: var(--tie);"></span>Tie ${pref.tie}</span>
+        <span class="legend-item"><span class="legend-dot" style="background: var(--imp);"></span>Imp ${pref.imp}</span>
+      </div>
+      <div class="pref-headline">
+        ${lead === 'Tied' ? '<span>No clear preference.</span>' :
+          `<strong>${lead}</strong> preferred (${pref.conv} vs ${pref.imp}, lead of ${leadCount})`}
+      </div>
+    </div>
+  `;
+}
+
+function escapeHtml(s) {
+  if (!s) return '';
+  return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[c]);
 }
 
 // ============================================================
-// INIT
+// LIFECYCLE
 // ============================================================
-fetchData();
-refreshTimer = setInterval(fetchData, 60000);
+async function refresh() {
+  const data = await fetchAll();
+  lastData = data;
+  render(data);
+  document.getElementById('live-time').textContent =
+    'Updated ' + new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+}
+
+document.getElementById('refresh-btn').addEventListener('click', refresh);
+
+refresh();
+setInterval(refresh, REFRESH_MS);
 </script>
+
 </body>
 </html>
