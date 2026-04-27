@@ -626,8 +626,8 @@
     <div class="form-section">
       <div class="row-2">
         <div>
-          <label class="label" for="grader-age">Age <span class="label-hint">optional</span></label>
-          <input type="number" id="grader-age" class="text-input" placeholder="16" min="12" max="80" />
+          <label class="label" for="grader-age">Age <span class="label-hint">required, must be 15+</span></label>
+          <input type="number" id="grader-age" class="text-input" placeholder="16" min="15" max="80" required />
         </div>
         <div>
           <label class="label" for="grader-grade">Grade <span class="label-hint">optional</span></label>
@@ -1176,8 +1176,26 @@ async function start() {
     return;
   }
 
+  const ageRaw = document.getElementById('grader-age').value.trim();
+  if (!ageRaw) {
+    showError('Please enter your age.');
+    document.getElementById('grader-age').focus();
+    return;
+  }
+  const ageNum = parseInt(ageRaw, 10);
+  if (isNaN(ageNum) || ageNum < 1 || ageNum > 120) {
+    showError('Please enter a valid age.');
+    document.getElementById('grader-age').focus();
+    return;
+  }
+  if (ageNum < 15) {
+    showError('This study is open to participants aged 15 and older. Thank you for your interest.', false, true);
+    document.getElementById('grader-age').focus();
+    return;
+  }
+
   state.graderName = name;
-  state.graderAge = document.getElementById('grader-age').value.trim();
+  state.graderAge = ageRaw;
   state.graderGrade = document.getElementById('grader-grade').value.trim();
   state.ackOptIn = document.getElementById('ack-opt-in').checked;
 
