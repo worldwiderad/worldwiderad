@@ -1,0 +1,1215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#FAFAF8">
+<title>AI Response Evaluation Study</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/marked/12.0.1/marked.min.js"></script>
+<style>
+  :root {
+    --bg: #FAFAF8;
+    --surface: #FFFFFF;
+    --surface-alt: #F5F4F0;
+    --border: #E2E0DC;
+    --border-strong: #C8C5BE;
+    --text: #1A1A18;
+    --text-muted: #6B6960;
+    --text-faint: #8E8C84;
+    --accent: #2D5A3D;
+    --accent-hover: #1E3D2A;
+    --accent-soft: #E8F0EB;
+    --warning: #8B4513;
+    --warning-bg: #FBF3E8;
+    --error: #B23A3A;
+    --error-bg: #FBEBEB;
+    --shadow-sm: 0 1px 2px rgba(0,0,0,0.04);
+    --shadow-md: 0 2px 8px rgba(0,0,0,0.06);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  html { font-size: 16px; -webkit-text-size-adjust: 100%; }
+  body {
+    font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.55;
+    min-height: 100vh;
+    min-height: 100dvh;
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+  .screen { display: none; }
+  .screen.active { display: block; }
+  .container { max-width: 640px; margin: 0 auto; padding: 24px 20px 40px; }
+
+  /* WELCOME SCREEN */
+  .badge {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    color: var(--accent);
+    background: var(--accent-soft);
+    padding: 5px 12px;
+    border-radius: 4px;
+    margin-bottom: 20px;
+  }
+  h1.title {
+    font-family: 'Source Serif 4', Georgia, serif;
+    font-size: 30px;
+    font-weight: 700;
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+    margin-bottom: 14px;
+  }
+  .lede {
+    font-size: 15px;
+    color: var(--text-muted);
+    margin-bottom: 24px;
+    line-height: 1.65;
+  }
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: var(--shadow-sm);
+  }
+  .card h3 {
+    font-family: 'Source Serif 4', Georgia, serif;
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 12px;
+    color: var(--text);
+  }
+  .card p {
+    font-size: 14px;
+    color: var(--text-muted);
+    margin-bottom: 10px;
+  }
+  .card p:last-child { margin-bottom: 0; }
+  .what-you-do {
+    list-style: none;
+    counter-reset: step;
+  }
+  .what-you-do li {
+    counter-increment: step;
+    position: relative;
+    padding-left: 32px;
+    margin-bottom: 10px;
+    font-size: 14px;
+    color: var(--text-muted);
+    line-height: 1.6;
+  }
+  .what-you-do li::before {
+    content: counter(step);
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 22px;
+    height: 22px;
+    background: var(--accent-soft);
+    color: var(--accent);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: 600;
+  }
+  .commitment {
+    background: var(--surface-alt);
+    border-radius: 6px;
+    padding: 14px 16px;
+    margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 14px;
+    color: var(--text-muted);
+  }
+  .commitment-icon {
+    width: 32px;
+    height: 32px;
+    background: var(--accent-soft);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    color: var(--accent);
+    font-weight: 700;
+    font-size: 14px;
+  }
+
+  .form-section { margin-bottom: 24px; }
+  .label {
+    display: block;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text);
+    margin-bottom: 8px;
+  }
+  .label-hint {
+    font-weight: 400;
+    color: var(--text-faint);
+    font-size: 12px;
+    margin-left: 4px;
+  }
+  .text-input {
+    width: 100%;
+    padding: 12px 14px;
+    font-size: 16px;
+    font-family: inherit;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: var(--text);
+    transition: border-color 0.15s;
+  }
+  .text-input:focus {
+    outline: none;
+    border-color: var(--accent);
+  }
+  .text-input::placeholder { color: var(--text-faint); }
+
+  .row-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+
+  .checkbox-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 12px 14px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: border-color 0.15s;
+  }
+  .checkbox-row:hover { border-color: var(--border-strong); }
+  .checkbox-row input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    margin-top: 1px;
+    accent-color: var(--accent);
+    flex-shrink: 0;
+    cursor: pointer;
+  }
+  .checkbox-label {
+    font-size: 13px;
+    color: var(--text-muted);
+    line-height: 1.55;
+  }
+
+  .btn {
+    display: block;
+    width: 100%;
+    padding: 14px 20px;
+    font-size: 15px;
+    font-weight: 600;
+    font-family: inherit;
+    background: var(--accent);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.15s;
+    text-align: center;
+  }
+  .btn:hover { background: var(--accent-hover); }
+  .btn:active { transform: scale(0.99); }
+  .btn:disabled {
+    background: var(--border-strong);
+    cursor: not-allowed;
+  }
+  .btn-secondary {
+    background: transparent;
+    color: var(--text-muted);
+    border: 1px solid var(--border);
+  }
+  .btn-secondary:hover {
+    background: var(--surface-alt);
+    color: var(--text);
+  }
+
+  .returning {
+    background: var(--accent-soft);
+    border-radius: 6px;
+    padding: 14px 16px;
+    margin-bottom: 20px;
+    font-size: 13px;
+    color: var(--accent);
+    display: none;
+  }
+  .returning.active { display: block; }
+  .returning strong { font-weight: 600; }
+
+  /* TASK SCREEN */
+  .progress-wrap {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 12px 20px;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+  }
+  .progress-row {
+    max-width: 640px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 8px;
+    font-size: 13px;
+    color: var(--text-muted);
+  }
+  .progress-bar-bg {
+    max-width: 640px;
+    margin: 0 auto;
+    height: 4px;
+    background: var(--border);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+  .progress-bar-fill {
+    height: 100%;
+    background: var(--accent);
+    transition: width 0.3s;
+  }
+  .scenario-bar {
+    background: var(--accent-soft);
+    border-radius: 8px;
+    padding: 14px 16px;
+    margin-bottom: 16px;
+  }
+  .scenario-label {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 4px;
+  }
+  .scenario-text {
+    font-size: 14px;
+    color: var(--text);
+    font-weight: 500;
+    line-height: 1.5;
+  }
+  .context {
+    background: var(--surface-alt);
+    border-radius: 8px;
+    padding: 12px 14px;
+    margin-bottom: 20px;
+    font-size: 13px;
+    color: var(--text-muted);
+    line-height: 1.55;
+    font-style: italic;
+  }
+  .context::before {
+    content: "Context: ";
+    font-style: normal;
+    font-weight: 600;
+    color: var(--text);
+  }
+
+  .responses {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 14px;
+    margin-bottom: 24px;
+  }
+  @media (min-width: 720px) {
+    .responses { grid-template-columns: 1fr 1fr; gap: 16px; }
+  }
+  .response {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 18px;
+    box-shadow: var(--shadow-sm);
+  }
+  .response-label {
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--text-faint);
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .response-letter {
+    width: 22px;
+    height: 22px;
+    background: var(--surface-alt);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text);
+    font-weight: 700;
+    font-size: 12px;
+  }
+  .response-content {
+    font-size: 14px;
+    color: var(--text);
+    line-height: 1.65;
+    max-height: 380px;
+    overflow-y: auto;
+  }
+  .response-content h1, .response-content h2, .response-content h3 {
+    font-family: 'Source Serif 4', Georgia, serif;
+    font-weight: 600;
+    margin: 14px 0 8px;
+    line-height: 1.3;
+  }
+  .response-content h1 { font-size: 17px; }
+  .response-content h2 { font-size: 16px; }
+  .response-content h3 { font-size: 15px; }
+  .response-content p { margin-bottom: 10px; }
+  .response-content ul, .response-content ol {
+    margin: 8px 0 10px 20px;
+  }
+  .response-content li { margin-bottom: 5px; }
+  .response-content code {
+    font-family: 'SF Mono', Menlo, monospace;
+    font-size: 12px;
+    background: var(--surface-alt);
+    padding: 1px 5px;
+    border-radius: 3px;
+  }
+  .response-content pre {
+    background: var(--surface-alt);
+    padding: 10px;
+    border-radius: 6px;
+    overflow-x: auto;
+    margin: 10px 0;
+    font-size: 12px;
+  }
+  .response-content strong { font-weight: 600; }
+  .response-content em { font-style: italic; }
+
+  .ratings {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 18px;
+    margin-bottom: 16px;
+    box-shadow: var(--shadow-sm);
+  }
+  .rating-block { margin-bottom: 18px; }
+  .rating-block:last-child { margin-bottom: 0; }
+  .rating-question {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text);
+    margin-bottom: 4px;
+  }
+  .rating-help {
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-bottom: 10px;
+    line-height: 1.5;
+  }
+  .rating-options {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 6px;
+  }
+  .rating-option {
+    position: relative;
+  }
+  .rating-option input[type="radio"] {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+  }
+  .rating-option label {
+    display: block;
+    text-align: center;
+    padding: 11px 6px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: all 0.15s;
+    user-select: none;
+  }
+  .rating-option label:active { transform: scale(0.98); }
+  .rating-option input:checked + label {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: white;
+  }
+  .rating-option input:focus-visible + label {
+    box-shadow: 0 0 0 2px var(--bg), 0 0 0 4px var(--accent);
+  }
+
+  .actions {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding-top: 4px;
+  }
+  .actions-row {
+    display: flex;
+    gap: 10px;
+  }
+  .actions-row .btn { flex: 1; }
+
+  /* DONE SCREEN */
+  .done-icon {
+    width: 60px;
+    height: 60px;
+    background: var(--accent-soft);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 30px auto 20px;
+    color: var(--accent);
+  }
+  .done-icon svg { width: 28px; height: 28px; }
+  .done-title {
+    font-family: 'Source Serif 4', Georgia, serif;
+    font-size: 26px;
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 12px;
+  }
+  .done-summary {
+    text-align: center;
+    color: var(--text-muted);
+    font-size: 15px;
+    margin-bottom: 28px;
+    line-height: 1.6;
+  }
+  .stat-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+  .stat-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 16px;
+    text-align: center;
+  }
+  .stat-num {
+    font-family: 'Source Serif 4', Georgia, serif;
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--accent);
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+  .stat-label {
+    font-size: 12px;
+    color: var(--text-muted);
+    font-weight: 500;
+  }
+
+  /* ERROR / LOADING STATES */
+  .loading {
+    text-align: center;
+    padding: 40px 20px;
+    color: var(--text-muted);
+  }
+  .spinner {
+    width: 28px;
+    height: 28px;
+    border: 2.5px solid var(--border);
+    border-top-color: var(--accent);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+    margin: 0 auto 14px;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .error-banner {
+    background: var(--error-bg);
+    color: var(--error);
+    padding: 12px 14px;
+    border-radius: 8px;
+    font-size: 13px;
+    margin-bottom: 14px;
+    display: none;
+  }
+  .error-banner.active { display: block; }
+  .toast {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--text);
+    color: white;
+    padding: 12px 20px;
+    border-radius: 8px;
+    font-size: 14px;
+    box-shadow: var(--shadow-md);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s, transform 0.2s;
+    z-index: 100;
+  }
+  .toast.active {
+    opacity: 1;
+    transform: translateX(-50%) translateY(-4px);
+  }
+
+  .footer-note {
+    text-align: center;
+    font-size: 12px;
+    color: var(--text-faint);
+    margin-top: 30px;
+    padding: 0 16px;
+    line-height: 1.5;
+  }
+</style>
+</head>
+<body>
+
+<!-- WELCOME SCREEN -->
+<div id="welcome-screen" class="screen active">
+  <div class="container">
+    <span class="badge">Research Survey</span>
+    <h1 class="title">How does phrasing change AI responses?</h1>
+    <p class="lede">A blinded comparison of AI-generated outputs. Same task, two different ways of asking. You decide which response works better.</p>
+
+    <div class="commitment">
+      <div class="commitment-icon">5</div>
+      <div>
+        <div style="color: var(--text); font-weight: 500; margin-bottom: 2px;">About 5 minutes</div>
+        <div>3-5 task ratings. Stop anytime.</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>What you'll do</h3>
+      <ol class="what-you-do">
+        <li>Read a short task description.</li>
+        <li>Compare two AI-generated responses to that task.</li>
+        <li>Rate them on three quick scales: which is more useful, which is more approachable, which you prefer overall.</li>
+        <li>Repeat for as many tasks as you'd like.</li>
+      </ol>
+    </div>
+
+    <div class="card">
+      <h3>What this is for</h3>
+      <p>I'm submitting an essay to the John Locke Essay Competition (UK, judged by Oxford academics) on whether the way we phrase requests to AI changes the quality of what we get back. Your ratings are the empirical evidence in the essay.</p>
+      <p>The data is anonymous. Results appear in aggregate only ("X of N evaluators preferred…").</p>
+    </div>
+
+    <div id="returning-banner" class="returning"></div>
+
+    <div class="form-section">
+      <label class="label" for="grader-name">Display name <span class="label-hint">— pick anything, doesn't have to be your real name</span></label>
+      <input type="text" id="grader-name" class="text-input" placeholder="e.g. Apple Pie, R.K., Anonymous" maxlength="40" autocomplete="off" />
+    </div>
+
+    <div class="form-section">
+      <div class="row-2">
+        <div>
+          <label class="label" for="grader-age">Age <span class="label-hint">optional</span></label>
+          <input type="number" id="grader-age" class="text-input" placeholder="16" min="12" max="80" />
+        </div>
+        <div>
+          <label class="label" for="grader-grade">Grade <span class="label-hint">optional</span></label>
+          <input type="text" id="grader-grade" class="text-input" placeholder="G10" maxlength="20" />
+        </div>
+      </div>
+    </div>
+
+    <div class="form-section">
+      <label class="checkbox-row" for="ack-opt-in">
+        <input type="checkbox" id="ack-opt-in" />
+        <span class="checkbox-label">List my display name in the essay's acknowledgments section. Optional. The essay is published on the John Locke website if it places.</span>
+      </label>
+    </div>
+
+    <div id="error-banner" class="error-banner"></div>
+
+    <button id="start-btn" class="btn">Start →</button>
+
+    <p class="footer-note">One submission per device. No personal information collected. <br>Estimated time per task: 60-90 seconds.</p>
+  </div>
+</div>
+
+<!-- TASK SCREEN -->
+<div id="task-screen" class="screen">
+  <div class="progress-wrap">
+    <div class="progress-row">
+      <span id="progress-text">Task 1</span>
+      <span id="progress-count" style="font-weight: 500; color: var(--text);">0 rated</span>
+    </div>
+    <div class="progress-bar-bg">
+      <div id="progress-bar" class="progress-bar-fill" style="width: 0%"></div>
+    </div>
+  </div>
+
+  <div class="container">
+    <div id="error-banner-task" class="error-banner"></div>
+
+    <div class="scenario-bar">
+      <div class="scenario-label">Task</div>
+      <div id="scenario-text" class="scenario-text"></div>
+    </div>
+
+    <div id="grader-context" class="context" style="display: none;"></div>
+
+    <div class="responses">
+      <div class="response">
+        <div class="response-label"><span class="response-letter">A</span> Response A</div>
+        <div id="response-a" class="response-content"></div>
+      </div>
+      <div class="response">
+        <div class="response-label"><span class="response-letter">B</span> Response B</div>
+        <div id="response-b" class="response-content"></div>
+      </div>
+    </div>
+
+    <div class="ratings">
+      <div class="rating-block">
+        <div class="rating-question">Which is more useful for the task?</div>
+        <div class="rating-help">More accurate, complete, and actually addresses what was asked.</div>
+        <div class="rating-options">
+          <div class="rating-option">
+            <input type="radio" name="utility" id="util-a" value="A" />
+            <label for="util-a">A</label>
+          </div>
+          <div class="rating-option">
+            <input type="radio" name="utility" id="util-tie" value="Tie" />
+            <label for="util-tie">Both equal</label>
+          </div>
+          <div class="rating-option">
+            <input type="radio" name="utility" id="util-b" value="B" />
+            <label for="util-b">B</label>
+          </div>
+        </div>
+      </div>
+
+      <div class="rating-block">
+        <div class="rating-question">Which is more approachable?</div>
+        <div class="rating-help">Easier to read, better tone, more pleasant to receive.</div>
+        <div class="rating-options">
+          <div class="rating-option">
+            <input type="radio" name="approachability" id="appr-a" value="A" />
+            <label for="appr-a">A</label>
+          </div>
+          <div class="rating-option">
+            <input type="radio" name="approachability" id="appr-tie" value="Tie" />
+            <label for="appr-tie">Both equal</label>
+          </div>
+          <div class="rating-option">
+            <input type="radio" name="approachability" id="appr-b" value="B" />
+            <label for="appr-b">B</label>
+          </div>
+        </div>
+      </div>
+
+      <div class="rating-block">
+        <div class="rating-question">Overall, which response do you prefer?</div>
+        <div class="rating-help">All things considered, which would you rather have received?</div>
+        <div class="rating-options">
+          <div class="rating-option">
+            <input type="radio" name="overall" id="ov-a" value="A" />
+            <label for="ov-a">A</label>
+          </div>
+          <div class="rating-option">
+            <input type="radio" name="overall" id="ov-tie" value="Tie" />
+            <label for="ov-tie">Both equal</label>
+          </div>
+          <div class="rating-option">
+            <input type="radio" name="overall" id="ov-b" value="B" />
+            <label for="ov-b">B</label>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="actions">
+      <button id="submit-btn" class="btn">Submit & next task →</button>
+      <button id="finish-btn" class="btn btn-secondary">Finish now</button>
+    </div>
+  </div>
+</div>
+
+<!-- DONE SCREEN -->
+<div id="done-screen" class="screen">
+  <div class="container">
+    <div class="done-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="20 6 9 17 4 12"></polyline>
+      </svg>
+    </div>
+    <h1 class="done-title">Thank you</h1>
+    <p class="done-summary">Your ratings have been recorded. They go directly into the empirical section of the essay.</p>
+
+    <div class="stat-grid">
+      <div class="stat-card">
+        <div id="stat-rated" class="stat-num">0</div>
+        <div class="stat-label">tasks rated</div>
+      </div>
+      <div class="stat-card">
+        <div id="stat-time" class="stat-num">0s</div>
+        <div class="stat-label">avg time per task</div>
+      </div>
+    </div>
+
+    <p class="footer-note">If you opted into acknowledgments, your display name will appear in the essay if it's accepted by the competition. If you have questions about the study, ask Radek (G10).</p>
+  </div>
+</div>
+
+<!-- LOADING -->
+<div id="loading-screen" class="screen">
+  <div class="container">
+    <div class="loading">
+      <div class="spinner"></div>
+      <div>Loading tasks…</div>
+    </div>
+  </div>
+</div>
+
+<div id="toast" class="toast"></div>
+
+<script>
+// ============================================================
+// CONFIGURATION
+// ============================================================
+const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbw1VgSwKXkOJ08XrESrLC_Y7bXiWozEXBaUlj_Jbm-3mRRm28BqR54Bw-ayE68CC4O1/exec';
+const DATA_CSV_URL = 'data.csv'; // relative path on your hosting
+const STORAGE_KEY = 'ab_eval_v3';
+const COMPLETED_KEY = 'ab_eval_v3_completed';
+
+// ============================================================
+// STATE
+// ============================================================
+let state = {
+  graderId: null,
+  graderName: null,
+  graderAge: null,
+  graderGrade: null,
+  ackOptIn: false,
+  sessionId: null,
+  tasks: [],
+  taskQueue: [],
+  currentTaskIndex: 0,
+  ratings: [],
+  taskStartTime: null,
+  taskCounts: {}
+};
+
+// ============================================================
+// UTILITIES
+// ============================================================
+function uuid() {
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, c => {
+    const r = Math.random() * 16 | 0;
+    return (c === 'x' ? r : (r & 0x3 | 0x8)).toString(16);
+  });
+}
+
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo(0, 0);
+}
+
+function showError(msg, taskScreen = false) {
+  const id = taskScreen ? 'error-banner-task' : 'error-banner';
+  const banner = document.getElementById(id);
+  banner.textContent = msg;
+  banner.classList.add('active');
+  setTimeout(() => banner.classList.remove('active'), 5000);
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('active');
+  setTimeout(() => t.classList.remove('active'), 2200);
+}
+
+// Seeded RNG for deterministic A/B randomization per grader
+function seededRandom(seed) {
+  let h = 0;
+  for (let i = 0; i < seed.length; i++) {
+    h = ((h << 5) - h) + seed.charCodeAt(i);
+    h |= 0;
+  }
+  return function() {
+    h = Math.sin(h) * 10000;
+    return h - Math.floor(h);
+  };
+}
+
+// CSV parser (handles quoted fields with newlines and escaped quotes)
+function parseCSV(text) {
+  const rows = [];
+  let row = [];
+  let cell = '';
+  let inQuotes = false;
+  for (let i = 0; i < text.length; i++) {
+    const c = text[i];
+    if (inQuotes) {
+      if (c === '"' && text[i+1] === '"') {
+        cell += '"';
+        i++;
+      } else if (c === '"') {
+        inQuotes = false;
+      } else {
+        cell += c;
+      }
+    } else {
+      if (c === '"') {
+        inQuotes = true;
+      } else if (c === ',') {
+        row.push(cell);
+        cell = '';
+      } else if (c === '\n') {
+        row.push(cell);
+        rows.push(row);
+        row = [];
+        cell = '';
+      } else if (c === '\r') {
+        // skip
+      } else {
+        cell += c;
+      }
+    }
+  }
+  if (cell || row.length) {
+    row.push(cell);
+    rows.push(row);
+  }
+  return rows;
+}
+
+// ============================================================
+// LOAD TASKS
+// ============================================================
+async function loadTasks() {
+  try {
+    const resp = await fetch(DATA_CSV_URL);
+    if (!resp.ok) throw new Error('Could not load tasks');
+    const text = await resp.text();
+    const rows = parseCSV(text);
+    if (rows.length < 2) throw new Error('No tasks in data file');
+    const headers = rows[0].map(h => h.trim());
+    const idx = {
+      task_id: headers.indexOf('Task_ID'),
+      scenario: headers.indexOf('Scenario'),
+      grader_context: headers.indexOf('Grader_Context'),
+      imp: headers.indexOf('Imperative_Response'),
+      conv: headers.indexOf('Conversational_Response')
+    };
+    state.tasks = rows.slice(1).filter(r => r[idx.task_id]).map(r => ({
+      task_id: r[idx.task_id].trim(),
+      scenario: r[idx.scenario] || '',
+      grader_context: r[idx.grader_context] || '',
+      imperative: r[idx.imp] || '',
+      conversational: r[idx.conv] || ''
+    }));
+    return true;
+  } catch (e) {
+    console.error('Load tasks failed:', e);
+    return false;
+  }
+}
+
+// ============================================================
+// TASK COUNTS (for fewest-first ordering)
+// ============================================================
+async function fetchTaskCounts() {
+  try {
+    const resp = await fetch(APPS_SCRIPT_URL + '?mode=counts');
+    if (!resp.ok) return {};
+    return await resp.json();
+  } catch (e) {
+    console.warn('Could not fetch counts:', e);
+    return {};
+  }
+}
+
+function buildTaskQueue() {
+  const counts = state.taskCounts;
+  const rng = seededRandom(state.graderId + '_order');
+  // Sort by count ascending; break ties with seeded random
+  return state.tasks
+    .map(t => ({ ...t, count: counts[t.task_id] || 0, rand: rng() }))
+    .sort((a, b) => a.count - b.count || a.rand - b.rand);
+}
+
+// ============================================================
+// RENDER TASK
+// ============================================================
+function renderTask() {
+  if (state.currentTaskIndex >= state.taskQueue.length) {
+    finish();
+    return;
+  }
+  const task = state.taskQueue[state.currentTaskIndex];
+  const rng = seededRandom(state.graderId + '_' + task.task_id);
+  // Deterministic A/B assignment per grader per task
+  const aIsImperative = rng() < 0.5;
+  const responseA = aIsImperative ? task.imperative : task.conversational;
+  const responseB = aIsImperative ? task.conversational : task.imperative;
+  task._aIsImperative = aIsImperative;
+
+  document.getElementById('scenario-text').textContent = task.scenario;
+  const ctxEl = document.getElementById('grader-context');
+  if (task.grader_context && task.grader_context.trim()) {
+    ctxEl.textContent = task.grader_context;
+    ctxEl.style.display = 'block';
+  } else {
+    ctxEl.style.display = 'none';
+  }
+
+  document.getElementById('response-a').innerHTML = marked.parse(responseA);
+  document.getElementById('response-b').innerHTML = marked.parse(responseB);
+
+  // Reset ratings
+  document.querySelectorAll('input[type="radio"]').forEach(r => r.checked = false);
+
+  // Progress
+  const total = state.taskQueue.length;
+  const current = state.currentTaskIndex + 1;
+  document.getElementById('progress-text').textContent = `Task ${current} of ${total}`;
+  document.getElementById('progress-count').textContent = `${state.ratings.length} rated`;
+  const pct = Math.min(100, (state.ratings.length / Math.min(5, total)) * 100);
+  document.getElementById('progress-bar').style.width = pct + '%';
+
+  state.taskStartTime = Date.now();
+}
+
+// ============================================================
+// SUBMIT TASK
+// ============================================================
+function getSelected(name) {
+  const sel = document.querySelector(`input[name="${name}"]:checked`);
+  return sel ? sel.value : null;
+}
+
+async function submitCurrent() {
+  const utility = getSelected('utility');
+  const approachability = getSelected('approachability');
+  const overall = getSelected('overall');
+  if (!utility || !approachability || !overall) {
+    showError('Please rate all three questions before submitting.', true);
+    return;
+  }
+
+  const task = state.taskQueue[state.currentTaskIndex];
+  const timeSeconds = Math.round((Date.now() - state.taskStartTime) / 1000);
+  // a_was: which condition was shown as A (imperative or conversational)
+  const aWas = task._aIsImperative ? 'Imperative' : 'Conversational';
+
+  const rating = {
+    grader_id: state.graderName,
+    session_id: state.sessionId,
+    task_id: task.task_id,
+    scenario: task.scenario,
+    a_was: aWas,
+    utility: utility,
+    approachability: approachability,
+    overall: overall,
+    time_seconds: timeSeconds,
+    age: state.graderAge || '',
+    grade: state.graderGrade || '',
+    ack_opt_in: state.ackOptIn ? 'yes' : 'no'
+  };
+
+  state.ratings.push(rating);
+
+  // Send to Apps Script (fire and forget; don't block UI)
+  sendRating(rating);
+
+  showToast('Saved');
+  state.currentTaskIndex++;
+
+  // After 5 ratings, suggest stopping
+  if (state.ratings.length === 5) {
+    setTimeout(() => {
+      if (confirm("That's 5 tasks rated — thank you! Want to do a few more, or finish here?")) {
+        renderTask();
+      } else {
+        finish();
+      }
+    }, 300);
+    return;
+  }
+  renderTask();
+}
+
+async function sendRating(rating) {
+  try {
+    await fetch(APPS_SCRIPT_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ rows: [rating] })
+    });
+  } catch (e) {
+    console.error('Send failed:', e);
+    // Queue for retry
+    const queue = JSON.parse(localStorage.getItem('ab_eval_retry_queue') || '[]');
+    queue.push(rating);
+    localStorage.setItem('ab_eval_retry_queue', JSON.stringify(queue));
+  }
+}
+
+async function flushRetryQueue() {
+  const queue = JSON.parse(localStorage.getItem('ab_eval_retry_queue') || '[]');
+  if (queue.length === 0) return;
+  for (const r of queue) {
+    try {
+      await fetch(APPS_SCRIPT_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ rows: [r] })
+      });
+    } catch (e) { /* still failing, leave queued */ }
+  }
+  localStorage.removeItem('ab_eval_retry_queue');
+}
+
+// ============================================================
+// FINISH
+// ============================================================
+function finish() {
+  // Mark device as completed
+  localStorage.setItem(COMPLETED_KEY, '1');
+  // Stats
+  const total = state.ratings.length;
+  document.getElementById('stat-rated').textContent = total;
+  if (total > 0) {
+    const avgTime = Math.round(state.ratings.reduce((s, r) => s + r.time_seconds, 0) / total);
+    document.getElementById('stat-time').textContent = avgTime + 's';
+  }
+  showScreen('done-screen');
+}
+
+// ============================================================
+// START
+// ============================================================
+async function start() {
+  const name = document.getElementById('grader-name').value.trim();
+  if (!name) {
+    showError('Please enter a display name.');
+    return;
+  }
+  if (name.length < 2) {
+    showError('Display name must be at least 2 characters.');
+    return;
+  }
+
+  state.graderName = name;
+  state.graderAge = document.getElementById('grader-age').value.trim();
+  state.graderGrade = document.getElementById('grader-grade').value.trim();
+  state.ackOptIn = document.getElementById('ack-opt-in').checked;
+
+  // Persist for returning users (display only — not for bypassing duplicate check)
+  localStorage.setItem(STORAGE_KEY, JSON.stringify({
+    graderId: state.graderId,
+    graderName: state.graderName,
+    graderAge: state.graderAge,
+    graderGrade: state.graderGrade,
+    ackOptIn: state.ackOptIn
+  }));
+
+  state.sessionId = uuid();
+
+  showScreen('loading-screen');
+
+  const loaded = await loadTasks();
+  if (!loaded) {
+    showScreen('welcome-screen');
+    showError('Could not load tasks. Please refresh and try again.');
+    return;
+  }
+
+  state.taskCounts = await fetchTaskCounts();
+  state.taskQueue = buildTaskQueue();
+  state.currentTaskIndex = 0;
+
+  showScreen('task-screen');
+  renderTask();
+}
+
+// ============================================================
+// INIT
+// ============================================================
+function init() {
+  // Check for completed device
+  if (localStorage.getItem(COMPLETED_KEY)) {
+    document.getElementById('returning-banner').innerHTML =
+      '<strong>Thank you!</strong> This device has already submitted ratings. The study is one-per-device to protect data quality.';
+    document.getElementById('returning-banner').classList.add('active');
+    document.getElementById('start-btn').disabled = true;
+    document.getElementById('start-btn').textContent = 'Already submitted';
+    document.querySelectorAll('.text-input, input[type="checkbox"]').forEach(el => el.disabled = true);
+    return;
+  }
+
+  // Restore previous values if any (returning visitor who didn't finish)
+  const saved = localStorage.getItem(STORAGE_KEY);
+  if (saved) {
+    try {
+      const data = JSON.parse(saved);
+      if (data.graderId) {
+        state.graderId = data.graderId;
+        if (data.graderName) document.getElementById('grader-name').value = data.graderName;
+        if (data.graderAge) document.getElementById('grader-age').value = data.graderAge;
+        if (data.graderGrade) document.getElementById('grader-grade').value = data.graderGrade;
+        if (data.ackOptIn) document.getElementById('ack-opt-in').checked = true;
+      }
+    } catch (e) { /* ignore */ }
+  }
+
+  // Generate persistent device UUID if none
+  if (!state.graderId) {
+    state.graderId = uuid();
+    localStorage.setItem(STORAGE_KEY, JSON.stringify({ graderId: state.graderId }));
+  }
+
+  // Wire up buttons
+  document.getElementById('start-btn').addEventListener('click', start);
+  document.getElementById('submit-btn').addEventListener('click', submitCurrent);
+  document.getElementById('finish-btn').addEventListener('click', () => {
+    if (state.ratings.length === 0) {
+      if (!confirm("You haven't submitted any ratings yet. Are you sure you want to leave?")) return;
+    }
+    finish();
+  });
+
+  // Enter key on welcome screen submits
+  document.getElementById('grader-name').addEventListener('keypress', (e) => {
+    if (e.key === 'Enter') start();
+  });
+
+  // Try to flush any failed sends from previous visit
+  flushRetryQueue();
+}
+
+document.addEventListener('DOMContentLoaded', init);
+</script>
+
+</body>
+</html>
