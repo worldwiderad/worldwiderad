@@ -831,12 +831,14 @@ function showScreen(id) {
   window.scrollTo(0, 0);
 }
 
-function showError(msg, taskScreen = false) {
+function showError(msg, taskScreen = false, persistent = false) {
   const id = taskScreen ? 'error-banner-task' : 'error-banner';
   const banner = document.getElementById(id);
   banner.textContent = msg;
   banner.classList.add('active');
-  setTimeout(() => banner.classList.remove('active'), 5000);
+  if (!persistent) {
+    setTimeout(() => banner.classList.remove('active'), 5000);
+  }
 }
 
 function showToast(msg) {
@@ -904,31 +906,85 @@ function parseCSV(text) {
 // ============================================================
 // LOAD TASKS
 // ============================================================
+// Normalize a header name for matching: strip BOM, trim, lowercase, remove
+// non-alphanumerics. So "Task_ID", "task id", "TaskID", "\ufeffTask_ID" all match.
+function normalizeHeader(h) {
+  return String(h || '')
+    .replace(/^\ufeff/, '')
+    .trim()
+    .toLowerCase()
+    .replace(/[^a-z0-9]/g, '');
+}
+
+function findHeaderIndex(headers, candidates) {
+  const normalized = headers.map(normalizeHeader);
+  for (const cand of candidates) {
+    const idx = normalized.indexOf(normalizeHeader(cand));
+    if (idx !== -1) return idx;
+  }
+  return -1;
+}
+
+let lastLoadError = null;
+
 async function loadTasks() {
   try {
-    const resp = await fetch(DATA_CSV_URL);
-    if (!resp.ok) throw new Error('Could not load tasks');
-    const text = await resp.text();
+    let resp;
+    try {
+      resp = await fetch(DATA_CSV_URL, { cache: 'no-store' });
+    } catch (e) {
+      throw new Error('Network error fetching data.csv: ' + e.message + ' (if testing locally with file://, you need a real http server — try a free GitHub Pages or run `python -m http.server` in this folder)');
+    }
+    if (!resp.ok) throw new Error('Server returned HTTP ' + resp.status + ' for data.csv');
+
+    let text = await resp.text();
+    // Strip UTF-8 BOM if present (common when CSV is saved from Excel/Sheets)
+    if (text.charCodeAt(0) === 0xFEFF) text = text.slice(1);
+
     const rows = parseCSV(text);
-    if (rows.length < 2) throw new Error('No tasks in data file');
-    const headers = rows[0].map(h => h.trim());
+    if (rows.length < 2) throw new Error('CSV has fewer than 2 rows. First row should be headers, then one row per task.');
+
+    const headers = rows[0];
     const idx = {
-      task_id: headers.indexOf('Task_ID'),
-      scenario: headers.indexOf('Scenario'),
-      grader_context: headers.indexOf('Grader_Context'),
-      imp: headers.indexOf('Imperative_Response'),
-      conv: headers.indexOf('Conversational_Response')
+      task_id: findHeaderIndex(headers, ['Task_ID', 'TaskID', 'Task ID', 'id']),
+      scenario: findHeaderIndex(headers, ['Scenario', 'Task', 'Title']),
+      grader_context: findHeaderIndex(headers, ['Grader_Context', 'Context', 'GraderContext']),
+      imp: findHeaderIndex(headers, ['Imperative_Response', 'ImperativeResponse', 'Imperative', 'Direct_Response', 'Direct']),
+      conv: findHeaderIndex(headers, ['Conversational_Response', 'ConversationalResponse', 'Conversational', 'Polite_Response', 'Polite'])
     };
-    state.tasks = rows.slice(1).filter(r => r[idx.task_id]).map(r => ({
-      task_id: r[idx.task_id].trim(),
-      scenario: r[idx.scenario] || '',
-      grader_context: r[idx.grader_context] || '',
-      imperative: r[idx.imp] || '',
-      conversational: r[idx.conv] || ''
-    }));
+
+    const missing = [];
+    if (idx.task_id === -1) missing.push('Task_ID');
+    if (idx.scenario === -1) missing.push('Scenario');
+    if (idx.imp === -1) missing.push('Imperative_Response');
+    if (idx.conv === -1) missing.push('Conversational_Response');
+
+    if (missing.length > 0) {
+      throw new Error(
+        'CSV missing required columns: ' + missing.join(', ') +
+        '. Found columns: [' + headers.map(h => '"' + h + '"').join(', ') + ']'
+      );
+    }
+
+    state.tasks = rows.slice(1)
+      .filter(r => r[idx.task_id] && r[idx.task_id].trim())
+      .map(r => ({
+        task_id: r[idx.task_id].trim(),
+        scenario: r[idx.scenario] || '',
+        grader_context: idx.grader_context !== -1 ? (r[idx.grader_context] || '') : '',
+        imperative: r[idx.imp] || '',
+        conversational: r[idx.conv] || ''
+      }));
+
+    if (state.tasks.length === 0) {
+      throw new Error('CSV had headers but no task rows (or all rows had empty Task_ID).');
+    }
+
+    console.log('Loaded ' + state.tasks.length + ' tasks from data.csv');
     return true;
   } catch (e) {
     console.error('Load tasks failed:', e);
+    lastLoadError = e.message || String(e);
     return false;
   }
 }
@@ -1141,7 +1197,7 @@ async function start() {
   const loaded = await loadTasks();
   if (!loaded) {
     showScreen('welcome-screen');
-    showError('Could not load tasks. Please refresh and try again.');
+    showError(lastLoadError || 'Could not load tasks. Open the browser console (F12) for details.', false, true);
     return;
   }
 
