@@ -3,379 +3,965 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AI Response Evaluation Study</title>
+<title>Survey Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/marked/12.0.1/marked.min.js"></script>
 <style>
   :root {
     --bg: #FAFAF8;
     --surface: #FFFFFF;
+    --surface-alt: #F5F4F0;
     --border: #E2E0DC;
+    --border-strong: #C8C5BE;
     --text: #1A1A18;
-    --text-secondary: #6B6960;
+    --text-muted: #6B6960;
+    --text-faint: #8E8C84;
     --accent: #2D5A3D;
-    --accent-light: #E8F0EB;
-    --accent-hover: #1E3D2A;
+    --accent-soft: #E8F0EB;
+    --imp: #B68A50;
+    --imp-soft: #F5EBDC;
+    --conv: #2D5A3D;
+    --conv-soft: #E8F0EB;
+    --tie: #888780;
+    --tie-soft: #EEEDEA;
     --warning: #8B4513;
-    --warning-bg: #FFF8F0;
-    --progress-bg: #EEEDEA;
-    --radio-border: #C8C5BE;
-    --finish-color: #5A4A2D;
-    --finish-bg: #F5F0E6;
-    --finish-border: #D4C9A8;
+    --warning-bg: #FBF3E8;
+    --shadow-sm: 0 1px 2px rgba(0,0,0,0.04);
   }
   * { margin: 0; padding: 0; box-sizing: border-box; }
-  body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; min-height: 100vh; }
-  .screen { display: none; }
-  .screen.active { display: block; }
-  #welcome-screen { max-width: 580px; margin: 0 auto; padding: 80px 24px; }
-  .study-badge { display: inline-block; font-size: 11px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; color: var(--accent); background: var(--accent-light); padding: 6px 14px; border-radius: 4px; margin-bottom: 24px; }
-  .welcome-title { font-family: 'Source Serif 4', serif; font-size: 32px; font-weight: 700; line-height: 1.25; margin-bottom: 16px; }
-  .welcome-desc { font-size: 15px; color: var(--text-secondary); margin-bottom: 32px; line-height: 1.7; }
-  .instructions { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 24px; margin-bottom: 32px; }
-  .instructions h3 { font-family: 'Source Serif 4', serif; font-size: 16px; font-weight: 600; margin-bottom: 12px; }
-  .instructions ul { list-style: none; padding: 0; }
-  .instructions li { font-size: 14px; color: var(--text-secondary); padding: 6px 0; padding-left: 20px; position: relative; }
-  .instructions li::before { content: '\2014'; position: absolute; left: 0; color: var(--accent); }
-  .name-input-group { margin-bottom: 24px; }
-  .name-input-group label { display: block; font-size: 13px; font-weight: 600; margin-bottom: 8px; }
-  .name-input { width: 100%; padding: 12px 16px; font-family: 'DM Sans', sans-serif; font-size: 15px; border: 1px solid var(--border); border-radius: 6px; background: var(--surface); color: var(--text); outline: none; transition: border-color 0.2s; }
-  .name-input:focus { border-color: var(--accent); }
-  .btn-primary { display: inline-flex; align-items: center; justify-content: center; width: 100%; padding: 14px 24px; font-family: 'DM Sans', sans-serif; font-size: 15px; font-weight: 600; color: #fff; background: var(--accent); border: none; border-radius: 6px; cursor: pointer; transition: background 0.2s; }
-  .btn-primary:hover { background: var(--accent-hover); }
-  .btn-primary:disabled { background: var(--radio-border); cursor: not-allowed; }
-  .error-msg { color: var(--warning); background: var(--warning-bg); border: 1px solid #E8D5C0; padding: 12px 16px; border-radius: 6px; font-size: 14px; margin-bottom: 16px; display: none; }
-  .already-done { text-align: center; padding: 48px 24px; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; margin-top: 24px; }
-  .already-done p { font-size: 15px; color: var(--text-secondary); }
-  #eval-screen { max-width: 1100px; margin: 0 auto; padding: 24px; }
-  .eval-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 24px; padding-bottom: 16px; border-bottom: 1px solid var(--border); }
-  .progress-info { font-size: 13px; font-weight: 600; color: var(--text-secondary); }
-  .progress-bar-container { flex: 1; max-width: 300px; height: 6px; background: var(--progress-bg); border-radius: 3px; margin: 0 20px; overflow: hidden; }
-  .progress-bar-fill { height: 100%; background: var(--accent); border-radius: 3px; transition: width 0.4s ease; }
-  .grader-tag { font-size: 12px; color: var(--text-secondary); background: var(--progress-bg); padding: 4px 10px; border-radius: 4px; }
-  .task-header { margin-bottom: 20px; }
-  .task-scenario { font-family: 'Source Serif 4', serif; font-size: 22px; font-weight: 700; margin-bottom: 8px; }
-  .task-context { font-size: 14px; color: var(--text-secondary); background: var(--surface); border: 1px solid var(--border); border-radius: 6px; padding: 14px 18px; line-height: 1.6; }
-  .task-context strong { color: var(--text); font-weight: 600; }
-  .responses-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 28px; }
-  @media (max-width: 768px) { .responses-grid { grid-template-columns: 1fr; } }
-  .response-panel { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; overflow: hidden; }
-  .response-label { font-size: 13px; font-weight: 600; letter-spacing: 0.5px; padding: 12px 20px; border-bottom: 1px solid var(--border); background: var(--progress-bg); color: var(--text-secondary); }
-  .response-text { padding: 20px; font-size: 14px; line-height: 1.75; color: var(--text); max-height: 500px; overflow-y: auto; word-wrap: break-word; }
-  .response-text h1,.response-text h2,.response-text h3,.response-text h4 { font-family: 'Source Serif 4', serif; margin: 16px 0 8px; line-height: 1.3; }
-  .response-text h1 { font-size: 18px; } .response-text h2 { font-size: 16px; } .response-text h3 { font-size: 15px; } .response-text h4 { font-size: 14px; }
-  .response-text p { margin: 8px 0; }
-  .response-text ul,.response-text ol { margin: 8px 0; padding-left: 24px; }
-  .response-text li { margin: 4px 0; }
-  .response-text strong { font-weight: 600; }
-  .response-text blockquote { border-left: 3px solid var(--border); padding-left: 14px; margin: 10px 0; color: var(--text-secondary); }
-  .response-text code { background: var(--progress-bg); padding: 2px 5px; border-radius: 3px; font-size: 13px; }
-  .response-text pre { background: var(--progress-bg); padding: 12px; border-radius: 6px; overflow-x: auto; margin: 10px 0; }
-  .response-text table { border-collapse: collapse; width: 100%; margin: 10px 0; font-size: 13px; }
-  .response-text th,.response-text td { border: 1px solid var(--border); padding: 6px 10px; text-align: left; }
-  .response-text th { background: var(--progress-bg); font-weight: 600; }
-  .response-text hr { border: none; border-top: 1px solid var(--border); margin: 16px 0; }
-  .response-text::-webkit-scrollbar { width: 6px; }
-  .response-text::-webkit-scrollbar-track { background: transparent; }
-  .response-text::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
-  .rating-section { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 28px; margin-bottom: 20px; }
-  .rating-title { font-family: 'Source Serif 4', serif; font-size: 16px; font-weight: 600; margin-bottom: 20px; }
-  .rating-group { margin-bottom: 20px; }
-  .rating-group:last-of-type { margin-bottom: 0; }
-  .rating-question { font-size: 14px; font-weight: 500; margin-bottom: 10px; }
-  .rating-options { display: flex; gap: 10px; }
-  .rating-option { flex: 1; }
-  .rating-option input[type="radio"] { display: none; }
-  .rating-option label { display: block; text-align: center; padding: 10px 16px; font-size: 14px; font-weight: 500; color: var(--text-secondary); background: var(--bg); border: 1px solid var(--border); border-radius: 6px; cursor: pointer; transition: all 0.15s; }
-  .rating-option label:hover { border-color: var(--accent); color: var(--accent); }
-  .rating-option input[type="radio"]:checked + label { background: var(--accent); border-color: var(--accent); color: #fff; }
-  .nav-row { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
-  .btn-finish { padding: 12px 24px; font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 500; color: var(--finish-color); background: var(--finish-bg); border: 1px solid var(--finish-border); border-radius: 6px; cursor: pointer; transition: all 0.2s; }
-  .btn-finish:hover { background: #EDE6D4; }
-  .btn-next { padding: 12px 32px; font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 600; color: #fff; background: var(--accent); border: none; border-radius: 6px; cursor: pointer; transition: background 0.2s; }
-  .btn-next:hover { background: var(--accent-hover); }
-  .btn-next:disabled { background: var(--radio-border); cursor: not-allowed; }
-  .tasks-completed-note { font-size: 13px; color: var(--text-secondary); flex: 1; text-align: center; }
-  #complete-screen { max-width: 520px; margin: 0 auto; padding: 100px 24px; text-align: center; }
-  .complete-check { width: 64px; height: 64px; border-radius: 50%; background: var(--accent-light); display: flex; align-items: center; justify-content: center; margin: 0 auto 24px; }
-  .complete-check svg { width: 28px; height: 28px; stroke: var(--accent); }
-  .complete-title { font-family: 'Source Serif 4', serif; font-size: 26px; font-weight: 700; margin-bottom: 12px; }
-  .complete-desc { font-size: 15px; color: var(--text-secondary); line-height: 1.7; }
-  .complete-stat { display: inline-block; margin-top: 16px; padding: 8px 16px; background: var(--accent-light); border-radius: 6px; font-size: 14px; font-weight: 600; color: var(--accent); }
+  html { font-size: 16px; -webkit-text-size-adjust: 100%; }
+  body {
+    font-family: 'DM Sans', -apple-system, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.55;
+    min-height: 100vh;
+  }
+  .container {
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 24px 20px 40px;
+  }
+
+  header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    flex-wrap: wrap;
+    gap: 16px;
+    margin-bottom: 28px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--border);
+  }
+  .h-title {
+    font-family: 'Source Serif 4', Georgia, serif;
+    font-size: 26px;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    margin-bottom: 4px;
+  }
+  .h-sub {
+    font-size: 14px;
+    color: var(--text-muted);
+  }
+  .h-meta {
+    display: flex;
+    gap: 14px;
+    align-items: center;
+    font-size: 13px;
+    color: var(--text-faint);
+  }
+  .live-dot {
+    width: 8px;
+    height: 8px;
+    background: #4CAF50;
+    border-radius: 50%;
+    animation: pulse 2s infinite;
+    display: inline-block;
+    margin-right: 6px;
+    vertical-align: middle;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+  }
+  .refresh-btn {
+    padding: 6px 12px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 13px;
+    color: var(--text-muted);
+    font-family: inherit;
+  }
+  .refresh-btn:hover { background: var(--surface-alt); border-color: var(--border-strong); }
+
+  /* Section headers */
+  .section {
+    margin-bottom: 32px;
+  }
+  .section-head {
+    margin-bottom: 14px;
+  }
+  .section-title {
+    font-family: 'Source Serif 4', Georgia, serif;
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 4px;
+  }
+  .section-desc {
+    font-size: 13px;
+    color: var(--text-muted);
+  }
+
+  /* Stat cards */
+  .stat-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 12px;
+  }
+  .stat-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 18px 18px;
+    box-shadow: var(--shadow-sm);
+  }
+  .stat-num {
+    font-family: 'Source Serif 4', Georgia, serif;
+    font-size: 30px;
+    font-weight: 700;
+    line-height: 1;
+    color: var(--text);
+    margin-bottom: 6px;
+  }
+  .stat-num.accent { color: var(--accent); }
+  .stat-label {
+    font-size: 12px;
+    color: var(--text-muted);
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .stat-sub {
+    font-size: 12px;
+    color: var(--text-faint);
+    margin-top: 4px;
+  }
+
+  /* Targets / progress to goal */
+  .target-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 18px;
+    box-shadow: var(--shadow-sm);
+  }
+  .target-row {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+  @media (min-width: 700px) {
+    .target-row { grid-template-columns: 1fr 1fr; gap: 18px; }
+  }
+  .target {
+    padding: 14px;
+    background: var(--surface-alt);
+    border-radius: 6px;
+  }
+  .target-label {
+    font-size: 12px;
+    color: var(--text-muted);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 4px;
+  }
+  .target-row-num {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    margin-bottom: 8px;
+  }
+  .target-current {
+    font-family: 'Source Serif 4', Georgia, serif;
+    font-size: 22px;
+    font-weight: 700;
+  }
+  .target-goal {
+    font-size: 14px;
+    color: var(--text-muted);
+  }
+  .target-bar-bg {
+    height: 6px;
+    background: var(--border);
+    border-radius: 3px;
+    overflow: hidden;
+    margin-bottom: 6px;
+  }
+  .target-bar-fill {
+    height: 100%;
+    background: var(--accent);
+    transition: width 0.4s;
+  }
+  .target-bar-fill.done {
+    background: #4CAF50;
+  }
+  .target-status {
+    font-size: 12px;
+    color: var(--text-muted);
+  }
+  .target-status.done {
+    color: #2E7D32;
+    font-weight: 500;
+  }
+
+  /* Preference bars (the headline result) */
+  .pref-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+  @media (min-width: 700px) {
+    .pref-grid { grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+  }
+  .pref-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 18px;
+    box-shadow: var(--shadow-sm);
+  }
+  .pref-title {
+    font-family: 'Source Serif 4', Georgia, serif;
+    font-size: 15px;
+    font-weight: 600;
+    margin-bottom: 4px;
+  }
+  .pref-sub {
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-bottom: 14px;
+  }
+  .pref-bar {
+    display: flex;
+    height: 32px;
+    border-radius: 4px;
+    overflow: hidden;
+    background: var(--border);
+    margin-bottom: 12px;
+  }
+  .pref-segment {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 12px;
+    font-weight: 600;
+    transition: width 0.4s;
+  }
+  .pref-conv { background: var(--conv); }
+  .pref-tie { background: var(--tie); }
+  .pref-imp { background: var(--imp); }
+
+  .pref-legend {
+    display: flex;
+    gap: 14px;
+    font-size: 12px;
+    color: var(--text-muted);
+    flex-wrap: wrap;
+  }
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+  .legend-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 2px;
+  }
+  .pref-headline {
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px solid var(--border);
+    font-size: 13px;
+    color: var(--text);
+  }
+  .pref-headline strong { color: var(--accent); }
+
+  /* Bootstrap CI display */
+  .ci-card {
+    background: var(--accent-soft);
+    border: 1px solid #C8DDD0;
+    border-radius: 8px;
+    padding: 18px;
+  }
+  .ci-line {
+    font-size: 14px;
+    color: var(--text);
+    margin-bottom: 6px;
+  }
+  .ci-line:last-child { margin-bottom: 0; }
+  .ci-line strong { color: var(--accent); font-weight: 600; }
+  .ci-explain {
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-top: 8px;
+    font-style: italic;
+  }
+
+  /* Per-task table */
+  .task-table-wrap {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow-x: auto;
+    box-shadow: var(--shadow-sm);
+  }
+  .task-table {
+    width: 100%;
+    font-size: 13px;
+    border-collapse: collapse;
+    min-width: 600px;
+  }
+  .task-table th {
+    background: var(--surface-alt);
+    padding: 10px 12px;
+    text-align: left;
+    font-weight: 600;
+    color: var(--text-muted);
+    border-bottom: 1px solid var(--border);
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+  }
+  .task-table td {
+    padding: 10px 12px;
+    border-bottom: 1px solid var(--border);
+    color: var(--text);
+  }
+  .task-table tr:last-child td { border-bottom: none; }
+  .task-table .task-id {
+    font-weight: 600;
+    color: var(--accent);
+    width: 60px;
+  }
+  .task-table .task-scenario {
+    color: var(--text-muted);
+    font-size: 12px;
+  }
+  .mini-bar {
+    display: inline-flex;
+    height: 16px;
+    width: 100px;
+    background: var(--border);
+    border-radius: 2px;
+    overflow: hidden;
+    vertical-align: middle;
+    margin-right: 6px;
+  }
+  .mini-seg { height: 100%; }
+  .pill {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-size: 11px;
+    font-weight: 500;
+  }
+  .pill.under { background: var(--warning-bg); color: var(--warning); }
+  .pill.ok { background: var(--accent-soft); color: var(--accent); }
+
+  /* Per-grader table */
+  .grader-table-wrap {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow-x: auto;
+    box-shadow: var(--shadow-sm);
+  }
+  .grader-table {
+    width: 100%;
+    font-size: 13px;
+    border-collapse: collapse;
+    min-width: 600px;
+  }
+  .grader-table th {
+    background: var(--surface-alt);
+    padding: 10px 12px;
+    text-align: left;
+    font-weight: 600;
+    color: var(--text-muted);
+    border-bottom: 1px solid var(--border);
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+  }
+  .grader-table td {
+    padding: 10px 12px;
+    border-bottom: 1px solid var(--border);
+  }
+  .grader-table tr:last-child td { border-bottom: none; }
+
+  /* Timing histogram */
+  .hist-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 18px;
+    box-shadow: var(--shadow-sm);
+  }
+  .hist-bars {
+    display: flex;
+    align-items: flex-end;
+    gap: 8px;
+    height: 140px;
+    margin-bottom: 10px;
+  }
+  .hist-col {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+  }
+  .hist-bar {
+    width: 100%;
+    background: var(--accent);
+    border-radius: 3px 3px 0 0;
+    min-height: 2px;
+    transition: height 0.4s;
+  }
+  .hist-bar.warn { background: var(--warning); }
+  .hist-label {
+    font-size: 11px;
+    color: var(--text-muted);
+    text-align: center;
+  }
+  .hist-count {
+    font-size: 11px;
+    color: var(--text);
+    font-weight: 600;
+  }
+
+  /* Sensitivity analysis card */
+  .sensi-card {
+    background: var(--warning-bg);
+    border: 1px solid #E5C49A;
+    border-radius: 8px;
+    padding: 14px 18px;
+    margin-top: 12px;
+    font-size: 13px;
+    color: var(--warning);
+  }
+  .sensi-card strong { font-weight: 600; }
+
+  /* Loading & error */
+  .empty {
+    background: var(--surface);
+    border: 1px dashed var(--border);
+    border-radius: 8px;
+    padding: 40px 20px;
+    text-align: center;
+    color: var(--text-muted);
+  }
+  .spinner {
+    width: 24px;
+    height: 24px;
+    border: 2.5px solid var(--border);
+    border-top-color: var(--accent);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+    margin: 0 auto 12px;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
 </style>
 </head>
 <body>
-<div id="welcome-screen" class="screen active">
-  <div class="study-badge">Research Study</div>
-  <h1 class="welcome-title">AI Response Evaluation</h1>
-  <p class="welcome-desc">You will be shown pairs of AI-generated responses and asked to evaluate which you prefer. Complete as many or as few tasks as you like &#8212; even 5 tasks helps. The tool will prioritise tasks that need more responses.</p>
-  <div class="instructions">
-    <h3>Before you begin</h3>
-    <ul>
-      <li>You will see a brief task description explaining what was asked of the AI</li>
-      <li>Read both responses carefully before rating</li>
-      <li>Rate your preference on three dimensions: Functional Utility, Approachability, and Overall Preference</li>
-      <li>There are no right or wrong answers &#8212; we want your honest judgment</li>
-      <li>You can stop at any time by clicking &#8220;Finish &#38; Submit&#8221;</li>
-    </ul>
+<div class="container">
+
+<header>
+  <div>
+    <h1 class="h-title">Politeness Study Dashboard</h1>
+    <p class="h-sub">Imperative vs. conversational prompts on DeepSeek-R1, blinded evaluation</p>
   </div>
-  <div id="already-completed" class="already-done" style="display:none;">
-    <p>You have already completed this evaluation. Thank you for your participation.</p>
+  <div class="h-meta">
+    <span><span class="live-dot"></span><span id="live-time">Loading…</span></span>
+    <button id="refresh-btn" class="refresh-btn">Refresh</button>
   </div>
-  <div id="welcome-form">
-    <div id="error-box" class="error-msg"></div>
-    <div class="name-input-group">
-      <label for="grader-name">Your Grader ID (name or identifier)</label>
-      <input type="text" id="grader-name" class="name-input" placeholder="e.g. Alex K." autocomplete="off">
-    </div>
-    <button class="btn-primary" id="start-btn" onclick="startEval()">Begin Evaluation</button>
-  </div>
+</header>
+
+<div id="content">
+  <div class="empty"><div class="spinner"></div>Loading data…</div>
 </div>
 
-<div id="eval-screen" class="screen">
-  <div class="eval-header">
-    <span class="progress-info" id="progress-text">Task 1</span>
-    <div class="progress-bar-container">
-      <div class="progress-bar-fill" id="progress-bar" style="width: 0%"></div>
-    </div>
-    <span class="grader-tag" id="grader-tag"></span>
-  </div>
-  <div class="task-header">
-    <h2 class="task-scenario" id="task-scenario"></h2>
-    <div class="task-context"><strong>Task:</strong> <span id="task-context-text"></span></div>
-  </div>
-  <div class="responses-grid">
-    <div class="response-panel">
-      <div class="response-label">Response A</div>
-      <div class="response-text" id="response-a"></div>
-    </div>
-    <div class="response-panel">
-      <div class="response-label">Response B</div>
-      <div class="response-text" id="response-b"></div>
-    </div>
-  </div>
-  <div class="rating-section">
-    <h3 class="rating-title">Your Evaluation</h3>
-    <div class="rating-group">
-      <div class="rating-question">1. Which response is more functionally useful for the task?</div>
-      <div class="rating-options">
-        <div class="rating-option"><input type="radio" name="utility" id="util-a" value="A"><label for="util-a">Response A</label></div>
-        <div class="rating-option"><input type="radio" name="utility" id="util-tie" value="Tie"><label for="util-tie">Tie</label></div>
-        <div class="rating-option"><input type="radio" name="utility" id="util-b" value="B"><label for="util-b">Response B</label></div>
-      </div>
-    </div>
-    <div class="rating-group">
-      <div class="rating-question">2. Which response feels more approachable and easy to engage with?</div>
-      <div class="rating-options">
-        <div class="rating-option"><input type="radio" name="approachability" id="appr-a" value="A"><label for="appr-a">Response A</label></div>
-        <div class="rating-option"><input type="radio" name="approachability" id="appr-tie" value="Tie"><label for="appr-tie">Tie</label></div>
-        <div class="rating-option"><input type="radio" name="approachability" id="appr-b" value="B"><label for="appr-b">Response B</label></div>
-      </div>
-    </div>
-    <div class="rating-group">
-      <div class="rating-question">3. Overall, which response do you prefer?</div>
-      <div class="rating-options">
-        <div class="rating-option"><input type="radio" name="overall" id="over-a" value="A"><label for="over-a">Response A</label></div>
-        <div class="rating-option"><input type="radio" name="overall" id="over-tie" value="Tie"><label for="over-tie">Tie</label></div>
-        <div class="rating-option"><input type="radio" name="overall" id="over-b" value="B"><label for="over-b">Response B</label></div>
-      </div>
-    </div>
-  </div>
-  <div class="nav-row">
-    <button class="btn-finish" id="finish-btn" onclick="finishEval()" style="display:none">Finish &amp; Submit</button>
-    <span class="tasks-completed-note" id="completed-note"></span>
-    <button class="btn-next" id="next-btn" disabled onclick="nextTask()">Submit &amp; Next</button>
-  </div>
-</div>
-
-<div id="complete-screen" class="screen">
-  <div class="complete-check">
-    <svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
-  </div>
-  <h1 class="complete-title">Evaluation Complete</h1>
-  <p class="complete-desc">Thank you for participating in this study. Your responses have been recorded.</p>
-  <div class="complete-stat" id="complete-stat"></div>
 </div>
 
 <script>
-const SHEET_URL = 'https://script.google.com/macros/s/AKfycbw5ERCNqfOSyWkwN1J8660wIuZzB6i-nTgGNCw4OLfzZtNLmjjnnkeQAIo94OhabWa3/exec';
+const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbw1VgSwKXkOJ08XrESrLC_Y7bXiWozEXBaUlj_Jbm-3mRRm28BqR54Bw-ayE68CC4O1/exec';
+const REFRESH_MS = 60000;
+const SUSPECT_TIME_THRESHOLD = 10; // seconds
+const COMFORTABLE = { graders: 30, ratings: 200 };
+const STRETCH = { graders: 50, ratings: 400 };
 
-let tasks = [];
-let taskOrder = [];
-let currentOrderIndex = 0;
-let tasksCompleted = 0;
-let graderID = '';
-let abMapping = [];
-let taskCounts = {};
+let lastData = null;
 
-function parseCSV(text) {
-  const rows = []; let current = ''; let inQuotes = false; let row = [];
-  for (let i = 0; i < text.length; i++) {
-    const ch = text[i]; const next = text[i + 1];
-    if (inQuotes) {
-      if (ch === '"' && next === '"') { current += '"'; i++; }
-      else if (ch === '"') { inQuotes = false; }
-      else { current += ch; }
-    } else {
-      if (ch === '"') { inQuotes = true; }
-      else if (ch === ',') { row.push(current.trim()); current = ''; }
-      else if (ch === '\n' || (ch === '\r' && next === '\n')) {
-        row.push(current.trim()); current = '';
-        if (row.length > 1) rows.push(row); row = [];
-        if (ch === '\r') i++;
-      } else { current += ch; }
+// ============================================================
+// FETCH
+// ============================================================
+async function fetchAll() {
+  try {
+    const resp = await fetch(APPS_SCRIPT_URL + '?mode=all');
+    if (!resp.ok) throw new Error('HTTP ' + resp.status);
+    const data = await resp.json();
+    return Array.isArray(data) ? data : [];
+  } catch (e) {
+    console.error('Fetch failed:', e);
+    return null;
+  }
+}
+
+// ============================================================
+// STATS
+// ============================================================
+function computePreferenceCounts(rows, metric) {
+  // Each row has a_was = 'Imperative' or 'Conversational'
+  // and a metric value of 'A', 'B', or 'Tie'
+  // We need to translate the A/B vote into Imperative/Conversational
+  let conv = 0, imp = 0, tie = 0;
+  for (const row of rows) {
+    const vote = row[metric];
+    const aWas = row.A_Was;
+    if (!vote) continue;
+    if (vote === 'Tie') {
+      tie++;
+    } else if (vote === 'A') {
+      if (aWas === 'Conversational') conv++;
+      else imp++;
+    } else if (vote === 'B') {
+      if (aWas === 'Conversational') imp++;
+      else conv++;
     }
   }
-  row.push(current.trim());
-  if (row.length > 1) rows.push(row);
-  return rows;
+  return { conv, imp, tie, total: conv + imp + tie };
 }
 
-async function loadCSV() {
-  try {
-    const resp = await fetch('data.csv');
-    if (!resp.ok) throw new Error('CSV not found');
-    const text = await resp.text();
-    const rows = parseCSV(text);
-    const header = rows[0].map(h => h.toLowerCase().replace(/[^a-z_]/g, ''));
-    const idxID = header.findIndex(h => h.includes('task') && h.includes('id'));
-    const idxScenario = header.findIndex(h => h.includes('scenario'));
-    const idxContext = header.findIndex(h => h.includes('grader') || h.includes('context'));
-    const idxImp = header.findIndex(h => h.includes('imperative') && h.includes('resp'));
-    const idxConv = header.findIndex(h => h.includes('conversational') && h.includes('resp'));
-    if (idxImp === -1 || idxConv === -1) throw new Error('Could not find Imperative_Response and Conversational_Response columns');
-    for (let i = 1; i < rows.length; i++) {
-      const r = rows[i];
-      if (!r[idxImp] && !r[idxConv]) continue;
-      tasks.push({ id: r[idxID] || String(i), scenario: r[idxScenario] || 'Task ' + i, context: r[idxContext] || '', imperative: r[idxImp] || '', conversational: r[idxConv] || '' });
+// Bootstrap CI for the proportion preferring conversational (excluding ties)
+function bootstrapCI(rows, metric, iterations = 2000) {
+  // Translate each row to 1 (conv preferred), 0 (imp preferred), null (tie)
+  const samples = [];
+  for (const row of rows) {
+    const vote = row[metric];
+    const aWas = row.A_Was;
+    if (!vote || vote === 'Tie') continue;
+    let convPreferred;
+    if (vote === 'A') convPreferred = aWas === 'Conversational' ? 1 : 0;
+    else convPreferred = aWas === 'Conversational' ? 0 : 1;
+    samples.push(convPreferred);
+  }
+  if (samples.length < 5) return null;
+  const means = [];
+  for (let i = 0; i < iterations; i++) {
+    let sum = 0;
+    for (let j = 0; j < samples.length; j++) {
+      sum += samples[Math.floor(Math.random() * samples.length)];
     }
-    if (tasks.length === 0) throw new Error('No tasks found in CSV');
-    return true;
-  } catch (err) {
-    console.error('CSV load error:', err);
-    showError('Failed to load task data: ' + err.message + '. Make sure data.csv is in the same folder as this file.');
-    return false;
+    means.push(sum / samples.length);
   }
+  means.sort((a, b) => a - b);
+  return {
+    mean: samples.reduce((a, b) => a + b, 0) / samples.length,
+    ci_low: means[Math.floor(iterations * 0.025)],
+    ci_high: means[Math.floor(iterations * 0.975)],
+    n: samples.length
+  };
 }
 
-async function fetchTaskCounts() {
-  try {
-    const resp = await fetch(SHEET_URL + '?mode=counts');
-    if (!resp.ok) throw new Error('Failed to fetch counts');
-    taskCounts = await resp.json();
-  } catch (err) {
-    console.warn('Could not fetch task counts, using empty:', err);
-    taskCounts = {};
-  }
-}
+function formatPct(n) { return (n * 100).toFixed(1) + '%'; }
 
-function buildTaskOrder() {
-  const indices = tasks.map((_, i) => i);
-  indices.sort((a, b) => {
-    const countA = taskCounts[tasks[a].id] || 0;
-    const countB = taskCounts[tasks[b].id] || 0;
-    if (countA !== countB) return countA - countB;
-    return seedHash(graderID + '_order_' + a) - seedHash(graderID + '_order_' + b);
-  });
-  taskOrder = indices;
-}
-
-function seedHash(str) {
-  let hash = 0;
-  for (let i = 0; i < str.length; i++) { hash = ((hash << 5) - hash) + str.charCodeAt(i); hash |= 0; }
-  return Math.abs(hash);
-}
-
-function generateABMapping(name) {
-  abMapping = [];
-  for (let i = 0; i < tasks.length; i++) { abMapping.push(seedHash(name + '_task_' + i) % 2 === 0); }
-}
-
-function showScreen(id) { document.querySelectorAll('.screen').forEach(s => s.classList.remove('active')); document.getElementById(id).classList.add('active'); }
-function showError(msg) { const b = document.getElementById('error-box'); b.textContent = msg; b.style.display = 'block'; }
-function hideError() { document.getElementById('error-box').style.display = 'none'; }
-
-async function startEval() {
-  hideError();
-  graderID = document.getElementById('grader-name').value.trim();
-  if (!graderID) { showError('Please enter your grader ID to continue.'); return; }
-  if (localStorage.getItem('ab_eval_done_' + graderID)) {
-    document.getElementById('welcome-form').style.display = 'none';
-    document.getElementById('already-completed').style.display = 'block';
+// ============================================================
+// RENDER
+// ============================================================
+function render(data) {
+  if (!data) {
+    document.getElementById('content').innerHTML =
+      '<div class="empty">Could not fetch data. Check the Apps Script URL and try refreshing.</div>';
     return;
   }
-  document.getElementById('start-btn').disabled = true;
-  document.getElementById('start-btn').textContent = 'Loading tasks...';
-  const [csvOk] = await Promise.all([loadCSV(), fetchTaskCounts()]);
-  if (!csvOk) { document.getElementById('start-btn').disabled = false; document.getElementById('start-btn').textContent = 'Begin Evaluation'; return; }
-  generateABMapping(graderID);
-  buildTaskOrder();
-  document.getElementById('grader-tag').textContent = graderID;
-  currentOrderIndex = 0;
-  tasksCompleted = 0;
-  renderTask();
-  showScreen('eval-screen');
+  if (data.length === 0) {
+    document.getElementById('content').innerHTML =
+      '<div class="empty">No ratings yet. Once people start submitting, results will appear here.</div>';
+    return;
+  }
+
+  // Normalize rows
+  const rows = data.map(r => ({
+    timestamp: r.Timestamp,
+    grader_id: r.Grader_ID,
+    session_id: r.Session_ID,
+    task_id: r.Task_ID,
+    scenario: r.Scenario,
+    A_Was: r.A_Was,
+    Utility: r.Utility,
+    Approachability: r.Approachability,
+    Overall: r.Overall,
+    time_seconds: parseInt(r.Time_Seconds) || 0
+  }));
+
+  const totalRatings = rows.length;
+  const uniqueGraders = new Set(rows.map(r => r.grader_id)).size;
+  const uniqueSessions = new Set(rows.map(r => r.session_id)).size;
+  const totalTime = rows.reduce((s, r) => s + r.time_seconds, 0);
+  const avgTime = totalRatings > 0 ? Math.round(totalTime / totalRatings) : 0;
+  const suspectRatings = rows.filter(r => r.time_seconds < SUSPECT_TIME_THRESHOLD && r.time_seconds > 0).length;
+
+  // Preference counts
+  const utilityPref = computePreferenceCounts(rows, 'Utility');
+  const approachPref = computePreferenceCounts(rows, 'Approachability');
+  const overallPref = computePreferenceCounts(rows, 'Overall');
+
+  // Sensitivity analysis (excluding sub-10s ratings)
+  const cleanRows = rows.filter(r => r.time_seconds >= SUSPECT_TIME_THRESHOLD);
+  const overallPrefClean = computePreferenceCounts(cleanRows, 'Overall');
+
+  // Bootstrap CI on Overall metric
+  const ci = bootstrapCI(rows, 'Overall');
+
+  // Per-task breakdown
+  const taskMap = {};
+  for (const r of rows) {
+    if (!taskMap[r.task_id]) {
+      taskMap[r.task_id] = { task_id: r.task_id, scenario: r.scenario, rows: [] };
+    }
+    taskMap[r.task_id].rows.push(r);
+  }
+  const taskList = Object.values(taskMap).sort((a, b) => parseInt(a.task_id) - parseInt(b.task_id));
+
+  // Per-grader breakdown
+  const graderMap = {};
+  for (const r of rows) {
+    if (!graderMap[r.grader_id]) {
+      graderMap[r.grader_id] = { grader_id: r.grader_id, rows: [], sessions: new Set() };
+    }
+    graderMap[r.grader_id].rows.push(r);
+    graderMap[r.grader_id].sessions.add(r.session_id);
+  }
+  const graderList = Object.values(graderMap).sort((a, b) => b.rows.length - a.rows.length);
+
+  // Time histogram buckets
+  const buckets = [
+    { label: '<10s', min: 0, max: 10, warn: true, count: 0 },
+    { label: '10-30s', min: 10, max: 30, count: 0 },
+    { label: '30-60s', min: 30, max: 60, count: 0 },
+    { label: '60-120s', min: 60, max: 120, count: 0 },
+    { label: '120s+', min: 120, max: Infinity, count: 0 }
+  ];
+  for (const r of rows) {
+    if (r.time_seconds <= 0) continue;
+    for (const b of buckets) {
+      if (r.time_seconds >= b.min && r.time_seconds < b.max) {
+        b.count++;
+        break;
+      }
+    }
+  }
+  const maxBucket = Math.max(1, ...buckets.map(b => b.count));
+
+  // BUILD HTML
+  let html = '';
+
+  // ---- Section 1: Progress to goal ----
+  html += `
+    <div class="section">
+      <div class="section-head">
+        <div class="section-title">Progress to data goals</div>
+        <div class="section-desc">Targets that determine how confidently the essay can report results.</div>
+      </div>
+      <div class="target-card">
+        <div class="target-row">
+          ${renderTargetBar('Comfortable', uniqueGraders, totalRatings, COMFORTABLE)}
+          ${renderTargetBar('Stretch', uniqueGraders, totalRatings, STRETCH)}
+        </div>
+      </div>
+    </div>
+  `;
+
+  // ---- Section 2: Top-line counts ----
+  html += `
+    <div class="section">
+      <div class="section-head">
+        <div class="section-title">Top-line counts</div>
+        <div class="section-desc">Raw numbers — what goes directly into the essay.</div>
+      </div>
+      <div class="stat-grid">
+        <div class="stat-card">
+          <div class="stat-num accent">${uniqueGraders}</div>
+          <div class="stat-label">Unique graders</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num accent">${totalRatings}</div>
+          <div class="stat-label">Total ratings</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num">${uniqueSessions}</div>
+          <div class="stat-label">Unique sessions</div>
+          <div class="stat-sub">browser identifiers</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num">${avgTime}s</div>
+          <div class="stat-label">Avg time per rating</div>
+          ${suspectRatings > 0 ? `<div class="stat-sub">${suspectRatings} under ${SUSPECT_TIME_THRESHOLD}s</div>` : ''}
+        </div>
+      </div>
+    </div>
+  `;
+
+  // ---- Section 3: Preference results ----
+  html += `
+    <div class="section">
+      <div class="section-head">
+        <div class="section-title">Headline result</div>
+        <div class="section-desc">How evaluators voted across the three metrics. Shown as raw counts.</div>
+      </div>
+      <div class="pref-grid">
+        ${renderPrefCard('Utility', 'Which response is more useful', utilityPref)}
+        ${renderPrefCard('Approachability', 'Which is more approachable', approachPref)}
+        ${renderPrefCard('Overall', 'Which response do you prefer overall', overallPref)}
+      </div>
+  `;
+
+  // Bootstrap CI card
+  if (ci) {
+    html += `
+      <div class="ci-card" style="margin-top: 16px;">
+        <div class="ci-line">
+          <strong>Conversational preference (Overall, excluding ties):</strong>
+          ${formatPct(ci.mean)} (95% bootstrap CI: ${formatPct(ci.ci_low)}–${formatPct(ci.ci_high)}, n=${ci.n})
+        </div>
+        <div class="ci-explain">CI computed by bootstrap resampling, 2000 iterations. Excludes "Both equal" votes. This is the format the essay will use.</div>
+      </div>
+    `;
+  }
+
+  // Sensitivity analysis
+  if (suspectRatings > 0) {
+    html += `
+      <div class="sensi-card">
+        <strong>Sensitivity check:</strong> excluding ${suspectRatings} ratings completed in under ${SUSPECT_TIME_THRESHOLD}s,
+        Overall conversational preference is <strong>${overallPrefClean.conv}</strong> of ${overallPrefClean.total - overallPrefClean.tie} non-tie votes
+        (${formatPct((overallPrefClean.conv) / Math.max(1, overallPrefClean.total - overallPrefClean.tie))}).
+      </div>
+    `;
+  }
+
+  html += '</div>';
+
+  // ---- Section 4: Per-task breakdown ----
+  html += `
+    <div class="section">
+      <div class="section-head">
+        <div class="section-title">Per-task breakdown (Overall preference)</div>
+        <div class="section-desc">Where the effect is strongest and where it's weakest. Tasks with fewer than 3 ratings are flagged for needing more coverage.</div>
+      </div>
+      <div class="task-table-wrap">
+        <table class="task-table">
+          <thead>
+            <tr>
+              <th>Task</th>
+              <th>Scenario</th>
+              <th>N</th>
+              <th>Distribution</th>
+              <th>Conv lead</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${taskList.map(t => {
+              const pref = computePreferenceCounts(t.rows, 'Overall');
+              const total = pref.total;
+              const lead = pref.conv - pref.imp;
+              const widthConv = total > 0 ? (pref.conv / total * 100) : 0;
+              const widthTie = total > 0 ? (pref.tie / total * 100) : 0;
+              const widthImp = total > 0 ? (pref.imp / total * 100) : 0;
+              return `
+                <tr>
+                  <td class="task-id">#${t.task_id}</td>
+                  <td>
+                    <div>${escapeHtml(t.scenario || '—').slice(0, 60)}${t.scenario && t.scenario.length > 60 ? '…' : ''}</div>
+                  </td>
+                  <td>${total} ${total < 3 ? '<span class="pill under">low</span>' : ''}</td>
+                  <td>
+                    <div class="mini-bar">
+                      <div class="mini-seg" style="width: ${widthConv}%; background: var(--conv);" title="Conv: ${pref.conv}"></div>
+                      <div class="mini-seg" style="width: ${widthTie}%; background: var(--tie);" title="Tie: ${pref.tie}"></div>
+                      <div class="mini-seg" style="width: ${widthImp}%; background: var(--imp);" title="Imp: ${pref.imp}"></div>
+                    </div>
+                    <span style="font-size: 11px; color: var(--text-faint);">${pref.conv}/${pref.tie}/${pref.imp}</span>
+                  </td>
+                  <td><strong style="color: ${lead > 0 ? 'var(--conv)' : (lead < 0 ? 'var(--imp)' : 'var(--text-muted)')};">${lead > 0 ? '+' : ''}${lead}</strong></td>
+                </tr>
+              `;
+            }).join('')}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  `;
+
+  // ---- Section 5: Per-grader breakdown ----
+  html += `
+    <div class="section">
+      <div class="section-head">
+        <div class="section-title">Per-grader summary</div>
+        <div class="section-desc">Each row is one display name. Multiple sessions on the same name suggest browser switching (or family sharing a device).</div>
+      </div>
+      <div class="grader-table-wrap">
+        <table class="grader-table">
+          <thead>
+            <tr>
+              <th>Grader</th>
+              <th>Ratings</th>
+              <th>Sessions</th>
+              <th>Avg time</th>
+              <th>Overall: Conv / Tie / Imp</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${graderList.map(g => {
+              const pref = computePreferenceCounts(g.rows, 'Overall');
+              const avgT = g.rows.length > 0 ? Math.round(g.rows.reduce((s, r) => s + r.time_seconds, 0) / g.rows.length) : 0;
+              const sessions = g.sessions.size;
+              return `
+                <tr>
+                  <td><strong>${escapeHtml(g.grader_id)}</strong></td>
+                  <td>${g.rows.length}</td>
+                  <td>${sessions} ${sessions > 1 ? '<span class="pill under">multi</span>' : ''}</td>
+                  <td>${avgT}s ${avgT < SUSPECT_TIME_THRESHOLD ? '<span class="pill under">fast</span>' : ''}</td>
+                  <td><span style="color: var(--conv); font-weight: 600;">${pref.conv}</span> / <span style="color: var(--tie);">${pref.tie}</span> / <span style="color: var(--imp); font-weight: 600;">${pref.imp}</span></td>
+                </tr>
+              `;
+            }).join('')}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  `;
+
+  // ---- Section 6: Timing histogram ----
+  html += `
+    <div class="section">
+      <div class="section-head">
+        <div class="section-title">Time per rating</div>
+        <div class="section-desc">Distribution of how long each rating took. Sub-10s ratings are flagged for sensitivity analysis.</div>
+      </div>
+      <div class="hist-card">
+        <div class="hist-bars">
+          ${buckets.map(b => `
+            <div class="hist-col">
+              <div class="hist-count">${b.count}</div>
+              <div class="hist-bar ${b.warn ? 'warn' : ''}" style="height: ${(b.count / maxBucket * 100).toFixed(0)}%"></div>
+              <div class="hist-label">${b.label}</div>
+            </div>
+          `).join('')}
+        </div>
+      </div>
+    </div>
+  `;
+
+  document.getElementById('content').innerHTML = html;
 }
 
-function renderTask() {
-  const taskIdx = taskOrder[currentOrderIndex];
-  const task = tasks[taskIdx];
-  const aIsImp = abMapping[taskIdx];
-  document.getElementById('progress-text').textContent = 'Task ' + (currentOrderIndex + 1) + ' of ' + tasks.length;
-  document.getElementById('progress-bar').style.width = ((currentOrderIndex / tasks.length) * 100) + '%';
-  document.getElementById('completed-note').textContent = tasksCompleted > 0 ? tasksCompleted + ' task' + (tasksCompleted !== 1 ? 's' : '') + ' submitted' : '';
-  document.getElementById('finish-btn').style.display = tasksCompleted > 0 ? 'inline-block' : 'none';
-  document.getElementById('task-scenario').textContent = task.scenario;
-  document.getElementById('task-context-text').textContent = task.context;
-  const respA = aIsImp ? task.imperative : task.conversational;
-  const respB = aIsImp ? task.conversational : task.imperative;
-  document.getElementById('response-a').innerHTML = marked.parse(respA);
-  document.getElementById('response-b').innerHTML = marked.parse(respB);
-  document.getElementById('response-a').scrollTop = 0;
-  document.getElementById('response-b').scrollTop = 0;
-  document.querySelectorAll('input[type="radio"]').forEach(r => r.checked = false);
-  document.getElementById('next-btn').disabled = true;
-  document.getElementById('next-btn').textContent = (currentOrderIndex === tasks.length - 1) ? 'Submit (Final Task)' : 'Submit & Next \u2192';
-  window.scrollTo(0, 0);
+function renderTargetBar(label, currGraders, currRatings, target) {
+  const gPct = Math.min(100, (currGraders / target.graders) * 100);
+  const rPct = Math.min(100, (currRatings / target.ratings) * 100);
+  const gDone = currGraders >= target.graders;
+  const rDone = currRatings >= target.ratings;
+  return `
+    <div class="target">
+      <div class="target-label">${label} target</div>
+      <div style="margin-bottom: 12px;">
+        <div class="target-row-num">
+          <span class="target-current">${currGraders}</span>
+          <span class="target-goal">/ ${target.graders} graders</span>
+        </div>
+        <div class="target-bar-bg"><div class="target-bar-fill ${gDone ? 'done' : ''}" style="width: ${gPct.toFixed(0)}%"></div></div>
+        <div class="target-status ${gDone ? 'done' : ''}">${gDone ? '✓ Goal reached' : `${target.graders - currGraders} more needed`}</div>
+      </div>
+      <div>
+        <div class="target-row-num">
+          <span class="target-current">${currRatings}</span>
+          <span class="target-goal">/ ${target.ratings} ratings</span>
+        </div>
+        <div class="target-bar-bg"><div class="target-bar-fill ${rDone ? 'done' : ''}" style="width: ${rPct.toFixed(0)}%"></div></div>
+        <div class="target-status ${rDone ? 'done' : ''}">${rDone ? '✓ Goal reached' : `${target.ratings - currRatings} more needed`}</div>
+      </div>
+    </div>
+  `;
 }
 
-function checkAllRated() {
-  const u = document.querySelector('input[name="utility"]:checked');
-  const a = document.querySelector('input[name="approachability"]:checked');
-  const o = document.querySelector('input[name="overall"]:checked');
-  document.getElementById('next-btn').disabled = !(u && a && o);
+function renderPrefCard(title, sub, pref) {
+  const total = pref.total;
+  if (total === 0) {
+    return `
+      <div class="pref-card">
+        <div class="pref-title">${title}</div>
+        <div class="pref-sub">${sub}</div>
+        <div class="empty" style="padding: 20px; font-size: 12px;">No ratings yet</div>
+      </div>
+    `;
+  }
+  const wConv = (pref.conv / total) * 100;
+  const wTie = (pref.tie / total) * 100;
+  const wImp = (pref.imp / total) * 100;
+  const lead = pref.conv > pref.imp ? 'Conversational' : (pref.imp > pref.conv ? 'Imperative' : 'Tied');
+  const leadCount = Math.abs(pref.conv - pref.imp);
+
+  return `
+    <div class="pref-card">
+      <div class="pref-title">${title}</div>
+      <div class="pref-sub">${sub}</div>
+      <div class="pref-bar">
+        ${pref.conv > 0 ? `<div class="pref-segment pref-conv" style="width: ${wConv}%;">${wConv.toFixed(0)}%</div>` : ''}
+        ${pref.tie > 0 ? `<div class="pref-segment pref-tie" style="width: ${wTie}%;">${wTie.toFixed(0)}%</div>` : ''}
+        ${pref.imp > 0 ? `<div class="pref-segment pref-imp" style="width: ${wImp}%;">${wImp.toFixed(0)}%</div>` : ''}
+      </div>
+      <div class="pref-legend">
+        <span class="legend-item"><span class="legend-dot" style="background: var(--conv);"></span>Conv ${pref.conv}</span>
+        <span class="legend-item"><span class="legend-dot" style="background: var(--tie);"></span>Tie ${pref.tie}</span>
+        <span class="legend-item"><span class="legend-dot" style="background: var(--imp);"></span>Imp ${pref.imp}</span>
+      </div>
+      <div class="pref-headline">
+        ${lead === 'Tied' ? '<span>No clear preference.</span>' :
+          `<strong>${lead}</strong> preferred (${pref.conv} vs ${pref.imp}, lead of ${leadCount})`}
+      </div>
+    </div>
+  `;
 }
-document.querySelectorAll('input[type="radio"]').forEach(r => r.addEventListener('change', checkAllRated));
 
-async function nextTask() {
-  submitCurrentRating();
-  tasksCompleted++;
-  currentOrderIndex++;
-  if (currentOrderIndex >= tasks.length) { completeEval(); } else { renderTask(); }
+function escapeHtml(s) {
+  if (!s) return '';
+  return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[c]);
 }
 
-function submitCurrentRating() {
-  const utility = document.querySelector('input[name="utility"]:checked').value;
-  const approachability = document.querySelector('input[name="approachability"]:checked').value;
-  const overall = document.querySelector('input[name="overall"]:checked').value;
-  const taskIdx = taskOrder[currentOrderIndex];
-  const task = tasks[taskIdx];
-  const aWas = abMapping[taskIdx] ? 'Imperative' : 'Conversational';
-  fetch(SHEET_URL, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ rows: [{ grader_id: graderID, task_id: task.id, scenario: task.scenario, a_was: aWas, utility: utility, approachability: approachability, overall: overall }] })
-  }).catch(err => console.warn('Sheet post error:', err));
+// ============================================================
+// LIFECYCLE
+// ============================================================
+async function refresh() {
+  const data = await fetchAll();
+  lastData = data;
+  render(data);
+  document.getElementById('live-time').textContent =
+    'Updated ' + new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 }
 
-function finishEval() { completeEval(); }
+document.getElementById('refresh-btn').addEventListener('click', refresh);
 
-function completeEval() {
-  localStorage.setItem('ab_eval_done_' + graderID, 'true');
-  document.getElementById('progress-bar').style.width = '100%';
-  document.getElementById('complete-stat').textContent = tasksCompleted + ' task' + (tasksCompleted !== 1 ? 's' : '') + ' evaluated';
-  showScreen('complete-screen');
-}
-
-document.getElementById('grader-name').addEventListener('keydown', function(e) { if (e.key === 'Enter') startEval(); });
+refresh();
+setInterval(refresh, REFRESH_MS);
 </script>
+
 </body>
 </html>
