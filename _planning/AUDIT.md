@@ -229,8 +229,8 @@ Result: the rounds found no blockers after round 3, and every should-fix found i
 Radek found "Sound on scroll" clunky: each section restarted the music with an 8-second clip, and the clip stopped on its own. The audio code is rewritten.
 
 - Playback is continuous. Reaching a section only moves the music if what is playing is outside that section's stretch of the piece. Sections that share music (CIS-MAP after 4part, the essays and the research, the hackathon and the finale) don't interrupt it.
-- A move waits until scrolling settles (450 ms), so a fast scroll past several sections makes one move, not several.
-- Moves crossfade over about 1.6 s between two audio elements through Web Audio gain nodes. Web Audio is used because iOS ignores `audio.volume`, so the old volume fades never finished there. If a second element can't start, it falls back to a dip on one element.
+- A move waits until scrolling settles (now 120 ms, or at most 250 ms while scrolling continues; the section counts as reached when its first line passes 25% of the window), so a fast scroll past several sections makes one move, not several.
+- Moves crossfade over 0.6 s between two audio elements through Web Audio gain nodes. Web Audio is used because iOS ignores `audio.volume`, so the old volume fades never finished there. If a second element can't start, it falls back to a dip on one element.
 - The playhead follows the audio on every frame and eases to a new position after a jump (it snaps with reduced motion).
 - Motif demos crossfade from the statement to the return. "Hear the ending" plays to the end.
 - Pause turns sound on scroll off. Turning it off stops only music it started.
