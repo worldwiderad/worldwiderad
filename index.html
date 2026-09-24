@@ -46,7 +46,7 @@ header p { margin: 0.6rem 0 0; max-width: 40rem; }
 .part { top: 0; font-weight: 600; font-size: 1.15rem; }
 .part em { font-weight: 400; font-size: 0.8rem; margin-left: 0.2rem; }
 .tempo { top: 1.55rem; }
-.tempo.burst { top: 2.3rem; }
+.tempo.burst { margin-left: 2.4rem; }
 .gl, .sig i, .ts span { font-family: Bravura; font-weight: 400; font-style: normal; }
 .gl { font-size: 1.4em; line-height: 0; vertical-align: -0.1em; margin-right: 0.15em; }
 .sig { top: 3.1rem; height: 1.2rem; display: flex; }
@@ -54,9 +54,10 @@ header p { margin: 0.6rem 0 0; max-width: 40rem; }
 .ts { display: block; position: relative; width: 0.75rem; margin-left: 0.3rem; font-size: 1.2rem; }
 .ts span { position: absolute; left: 0; line-height: 0; }
 .ts span:first-child { top: 0.3rem; } .ts span:last-child { top: 0.9rem; }
-.motifs { height: 1.9rem; }
+.motifs { height: 2.7rem; }
 .motif { position: absolute; bottom: 0.25rem; height: 0.5rem; padding: 0; background: none; border: 1px solid #000; border-bottom: 0; cursor: pointer; font: inherit; min-width: 0.6rem; }
 .motif span { position: absolute; bottom: 0.45rem; left: -1px; white-space: nowrap; font-style: italic; font-size: 0.82rem; }
+.motif.up span { bottom: 1.3rem; }
 .motif:hover, .motif.on { border-color: #2340a8; color: #2340a8; }
 .system { height: 20rem; }
 .system img { position: absolute; inset: 0; width: 100%; height: 100%; }
@@ -215,8 +216,8 @@ footer { border-top: 1px solid #000; margin-top: 2rem; padding-top: 1rem; font-s
 
 <main>
 <figure class="score" aria-labelledby="score-cap">
-  <div class="row cond" aria-hidden="true"><span class="clef"></span><span class="part" style="--at:0.000;left:0.00%">I <em>Initialisation</em></span><span class="part" style="--at:0.167;left:16.74%">II <em>Descent</em></span><span class="part" style="--at:0.442;left:44.24%">III <em>Local minimum</em></span><span class="part" style="--at:0.628;left:62.83%">IV <em>Convergence</em></span><span class="tempo" style="--at:0.000;left:0.00%"><b class="gl"></b> = 100</span><span class="tempo" style="--at:0.442;left:44.24%"><b class="gl"></b> = 60</span><span class="tempo" style="--at:0.594;left:59.41%"><b class="gl"></b> = 80</span><span class="tempo burst" style="--at:0.042;left:4.15%;width:1.26%"><b class="gl"></b> = 160</span><span class="sig" style="--at:0.000;left:0.00%"><b class="ts"><span></span><span></span></b></span><span class="sig" style="--at:0.167;left:16.74%"><i style="--y:4"></i><i style="--y:7"></i><i style="--y:3"></i></span><span class="sig" style="--at:0.281;left:28.06%"><i style="--y:8"></i><i style="--y:5"></i></span><span class="sig" style="--at:0.442;left:44.24%"><b class="ts"><span></span><span></span></b></span><span class="sig" style="--at:0.488;left:48.79%"><i style="--y:4"></i></span><span class="sig" style="--at:0.549;left:54.86%"><i style="--y:4"></i><i style="--y:7"></i></span><span class="sig" style="--at:0.628;left:62.83%"><i style="--y:8"></i><i style="--y:5"></i><b class="ts"><span></span><span></span></b></span><span class="sig" style="--at:0.685;left:68.51%"><i style="--y:4"></i><i style="--y:7"></i><i style="--y:3"></i></span><span class="sig" style="--at:0.772;left:77.24%"><i style="--y:8"></i><i style="--y:5"></i><i style="--y:9"></i><i style="--y:6"></i><i style="--y:3"></i><i style="--y:7"></i><i style="--y:4"></i></span><span class="sig" style="--at:0.823;left:82.30%"><i style="--y:4"></i></span><span class="sig" style="--at:0.975;left:97.47%"><b class="ts"><span></span><span></span></b></span></div>
-  <div class="row motifs"><button hidden class="motif" data-m="run" data-from="8.5" data-to="526" style="--at:0.014;left:1.43%;width:0.76%"><span>scale run</span></button><button hidden class="motif" data-m="call" data-from="50.2" data-to="176.8" style="--at:0.085;left:8.51%;width:1.26%"><span>horn call</span></button><button hidden class="motif" data-m="rock" data-from="99.3" data-to="178" style="--at:0.167;left:16.74%;width:2.14%"><span>rocking figure</span></button><button hidden class="motif" data-m="call" data-from="176.8" data-to="" style="--at:0.298;left:29.80%;width:2.90%"><span>horn call again</span></button><button hidden class="motif" data-m="arp" data-from="479.2" data-to="527" style="--at:0.808;left:80.82%;width:1.10%"><span>arpeggio</span></button><button hidden class="motif" data-m="all" data-from="525.5" data-to="" style="--at:0.887;left:88.65%;width:3.37%"><span>run, call and arpeggio</span></button></div>
+  <div class="row cond" aria-hidden="true"><span class="clef"></span><span class="part" style="--at:0.000;left:0.00%">I <em>Initialisation</em></span><span class="part" style="--at:0.167;left:16.74%">II <em>Descent</em></span><span class="part" style="--at:0.442;left:44.24%">III <em>Local minimum</em></span><span class="part" style="--at:0.628;left:62.83%">IV <em>Convergence</em></span><span class="tempo" style="--at:0.000;left:0.00%"><b class="gl"></b> = 100</span><span class="tempo" style="--at:0.442;left:44.24%"><b class="gl"></b> = 60</span><span class="tempo" style="--at:0.594;left:59.41%"><b class="gl"></b> = 80</span><span class="tempo burst" style="--at:0.042;left:4.15%;width:1.26%"><b class="gl"></b> = 160</span><span class="sig" style="--at:0.000;left:0.00%"><b class="ts"><span></span><span></span></b></span><span class="sig" style="--at:0.041;left:4.15%"><b class="ts"><span></span><span></span></b></span><span class="sig" style="--at:0.167;left:16.74%"><i style="--y:4"></i><i style="--y:7"></i><i style="--y:3"></i></span><span class="sig" style="--at:0.281;left:28.06%"><i style="--y:8"></i><i style="--y:5"></i></span><span class="sig" style="--at:0.442;left:44.24%"><b class="ts"><span></span><span></span></b></span><span class="sig" style="--at:0.488;left:48.79%"><i style="--y:4"></i></span><span class="sig" style="--at:0.549;left:54.86%"><i style="--y:4"></i><i style="--y:7"></i></span><span class="sig" style="--at:0.628;left:62.83%"><i style="--y:8"></i><i style="--y:5"></i><b class="ts"><span></span><span></span></b></span><span class="sig" style="--at:0.685;left:68.51%"><i style="--y:4"></i><i style="--y:7"></i><i style="--y:3"></i></span><span class="sig" style="--at:0.772;left:77.24%"><i style="--y:8"></i><i style="--y:5"></i><i style="--y:9"></i><i style="--y:6"></i><i style="--y:3"></i><i style="--y:7"></i><i style="--y:4"></i></span><span class="sig" style="--at:0.823;left:82.30%"><i style="--y:4"></i></span><span class="sig" style="--at:0.975;left:97.47%"><b class="ts"><span></span><span></span></b></span></div>
+  <div class="row motifs"><button hidden class="motif" data-m="call" data-from="2.3" data-to="171.2" style="--at:0.004;left:0.40%;width:0.89%"><span>horn call</span></button><button hidden class="motif up" data-m="run" data-from="8.6" data-to="526.3" style="--at:0.015;left:1.52%;width:0.10%"><span>scale run</span></button><button hidden class="motif" data-m="rock" data-from="99.3" data-to="197.7" style="--at:0.167;left:16.74%;width:2.12%"><span>rocking figure</span></button><button hidden class="motif" data-m="call" data-from="171.2" data-to="" style="--at:0.289;left:28.87%;width:2.02%"><span>horn call in D</span></button><button hidden class="motif" data-m="theme" data-from="378.6" data-to="527.2" style="--at:0.638;left:63.84%;width:1.01%"><span>theme</span></button><button hidden class="motif" data-m="arp" data-from="459.3" data-to="527.2" style="--at:0.774;left:77.43%;width:1.32%"><span>arpeggio</span></button><button hidden class="motif" data-m="all" data-from="525.5" data-to="" style="--at:0.887;left:88.74%;width:3.29%"><span>run, theme and arpeggio</span></button></div>
   <div class="row system" role="img" aria-label="Every note of the piece, instrument by instrument, in score order">
     <img class="base" src="/static/score/piece.svg" alt="">
     <div class="groups" aria-hidden="true"><span style="top:0.0%;height:20.2%">Woodwinds</span><span style="top:22.6%;height:11.0%">Horns</span><span style="top:36.0%;height:18.3%">Trumpets, trombones, tubas</span><span style="top:56.7%;height:18.3%">Percussion</span><span style="top:77.4%;height:11.0%">Harp, synth, piano</span><span style="top:90.8%;height:9.2%">Strings</span></div>
@@ -255,7 +256,7 @@ footer { border-top: 1px solid #000; margin-top: 2rem; padding-top: 1rem; font-s
   <p class="when">November 2025 to April 2026</p>
   <div><h2 id="writing-h">Writing 4part</h2>
   <p>4part is called that because it has four parts. It’s my take on the hero’s journey. I wrote it in MuseScore and produced it in Logic Pro. There are 48 tracks, eleven of them woodwinds (one is a bass oboe) and six of them horns.</p>
-  <p>I named the parts after a training run, since the two stories line up closely. Part III is the local minimum. It’s the quietest stretch of the piece, three instruments at 60 beats a minute, and the earlier motifs only come back after it.</p></div>
+  <p>I named the parts after a training run, since the two stories line up closely. Part III is the local minimum. It comes after the longest silence in the piece and starts with three instruments at 60 beats a minute. The melody the piece ends on first appears after it, in the horns at 6:18.</p></div>
 </section>
 <section class="station " id="cismap" data-f="" aria-labelledby="cismap-h">
   <p class="when">being built</p>
@@ -331,7 +332,7 @@ footer { border-top: 1px solid #000; margin-top: 2rem; padding-top: 1rem; font-s
 <section class="station ahead" id="coda" data-f="1.0000" data-t="525.5" aria-labelledby="coda-h">
   <p class="when">2027</p>
   <div><h2 id="coda-h">Next</h2>
-  <p>From 8:45 the whole orchestra comes back in, and the scale run, the horn call and the arpeggio return together. <button hidden class="hear" type="button" data-from="525.5">Hear the ending</button></p>
+  <p>At 8:46 the whole orchestra comes back in. The scale run from the opening leads into the melody from 6:18, now in D major at full strength, and the horns take over the piano’s arpeggios. <button hidden class="hear" type="button" data-from="525.5">Hear the ending</button></p>
   <p>Next is a multi-movement symphony that can be played live. My MYP Personal Project was a symphony in one movement, rated Excellent. More recordings are on <a href="https://soundcloud.com/radekgreen">SoundCloud</a>, and I’m at <a href="mailto:radoslawgreen@gmail.com">radoslawgreen@gmail.com</a>.</p></div>
 </section>
 </div>
@@ -345,7 +346,7 @@ var link = fig.querySelector('a.play'), btn = document.createElement('button'), 
 var still = matchMedia('(prefers-reduced-motion: reduce)').matches;
 btn.className = 'play'; btn.type = 'button'; btn.textContent = 'Listen (9:53)'; link.replaceWith(btn);
 [sys, pin.querySelector('.notes')].forEach(function (el) { var i = new Image(); i.className = 'played'; i.alt = ''; el.insertBefore(i, el.children[1] || null); });
-['run', 'call', 'rock', 'arp'].forEach(function (m) { var i = new Image(); i.className = 'hl'; i.alt = ''; i.dataset.m = m; sys.insertBefore(i, sys.querySelector('.groups')); });
+['run', 'call', 'rock', 'theme', 'arp'].forEach(function (m) { var i = new Image(); i.className = 'hl'; i.alt = ''; i.dataset.m = m; sys.insertBefore(i, sys.querySelector('.groups')); });
 document.querySelectorAll('.motif, .hear').forEach(function (b) { b.hidden = false; });
 fig.querySelectorAll('.motif').forEach(function (b) { b.setAttribute('aria-pressed', 'false'); });
 
@@ -537,7 +538,7 @@ function restore() {
 }
 function show(m) {
   fig.querySelectorAll('.hl').forEach(function (img) {
-    var on = m === 'all' ? img.dataset.m !== 'rock' : img.dataset.m === m;
+    var on = m === 'all' ? /^(run|theme|arp)$/.test(img.dataset.m) : img.dataset.m === m;
     if (on && !img.src) img.src = img.dataset.src;
     img.classList.toggle('on', on);
   });

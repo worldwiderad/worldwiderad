@@ -245,3 +245,21 @@ At Radek's request, so more readers find the music. One second after the page op
 - "Sound on" starts the piece where the reader is and turns on sound on scroll.
 - Once answered or timed out, it isn't shown again in that browser session (`sessionStorage`, wrapped in try/catch). Without JS it doesn't exist.
 - Checks: axe 0 violations at 360 and 1440 with the box on screen; no horizontal scroll at 360.
+
+## After launch: the score annotations checked against the MIDI
+
+Radek pointed out that the motif labels were wrong (the "horn call" at 0:50 is not the horn call). Every claim about the piece has been re-derived from the MIDI; the method and findings are in `_planning/PIECE_NOTES.md`. The earlier motif search matched short, generic interval patterns (repeated notes then a step), so it labelled accompaniment as themes.
+
+| Was | Now |
+|---|---|
+| "horn call" at 0:50.2, returning at 2:56.8 | horn call at 0:02.4 (horns, trumpet, trombone), returning in D major at 2:51 |
+| "horn call again" at 2:56.8 | "horn call in D" at 2:51 (trumpets and trombones; horns at 3:03) |
+| rocking figure returning at 2:58 | returning in the vibes at 3:17 |
+| no Part IV theme | "theme" at 6:18.75, returning in full at 8:47 |
+| "arpeggio" at 7:59.2 | 7:39.4, where the piano's broken chords begin |
+| finale "run, call and arpeggio" | "run, theme and arpeggio" |
+| 𝅗𝅥 = 160, no 2/2 | ♩ = 160, 2/2 at 0:24.6 |
+| "Part III … the quietest stretch … the earlier motifs only come back after it" | "It comes after the longest silence in the piece and starts with three instruments at 60 beats a minute. The melody the piece ends on first appears after it, in the horns at 6:18." |
+| "From 8:45 … the scale run, the horn call and the arpeggio return together" | "At 8:46 the whole orchestra comes back in. The scale run from the opening leads into the melody from 6:18, now in D major at full strength, and the horns take over the piano's arpeggios." |
+
+The highlight images are regenerated from the matched notes. Checks: axe 0 violations at 360 and 1440; no horizontal scroll; each motif button plays its statement and jumps to its return (tested in Chromium).
