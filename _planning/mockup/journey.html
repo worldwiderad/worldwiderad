@@ -5,24 +5,12 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Radek Green</title>
 <meta name="description" content="Radek Green, IB Diploma student in Singapore. Research on how language models predict each other, two John Locke essays, software, and 4part, a piece for orchestra you can play here.">
-<link rel="canonical" href="https://worldwiderad.com/">
-<link rel="icon" href="/static/favicon.svg" type="image/svg+xml">
-<link rel="preload" href="/static/fonts/petrona.woff2" as="font" type="font/woff2" crossorigin>
-<meta property="og:type" content="website">
-<meta property="og:url" content="https://worldwiderad.com/">
-<meta property="og:title" content="Radek Green">
-<meta property="og:description" content="Research on how language models predict each other, two John Locke essays, software, and 4part, a piece for orchestra you can play here.">
-<meta property="og:image" content="https://worldwiderad.com/static/og.png">
-<meta property="og:image:width" content="1200">
-<meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="The first screen of the site: every note of 4part drawn as a score, with a timeline of my work underneath.">
-<meta name="twitter:card" content="summary_large_image">
 <style>
-@font-face { font-family: Petrona; src: url(/static/fonts/petrona.woff2) format("woff2"); font-weight: 100 900; font-display: swap; }
-@font-face { font-family: Petrona; src: url(/static/fonts/petrona-italic.woff2) format("woff2"); font-weight: 100 900; font-style: italic; font-display: swap; }
-@font-face { font-family: Bravura; src: url(/static/fonts/bravura.woff2) format("woff2"); }
+@font-face { font-family: Petrona; src: url(fonts/petrona.woff2) format("woff2"); font-weight: 100 900; font-display: swap; }
+@font-face { font-family: Petrona; src: url(fonts/petrona-italic.woff2) format("woff2"); font-weight: 100 900; font-style: italic; font-display: swap; }
+@font-face { font-family: Bravura; src: url(fonts/bravura.woff2) format("woff2"); }
 
-html { scroll-padding-top: 9.5rem; background: #fff; color: #000; font: 18px/1.55 Petrona, Georgia, serif; }
+html { background: #fff; color: #000; font: 18px/1.55 Petrona, Georgia, serif; }
 body { margin: 0; }
 a, .play { color: inherit; text-underline-offset: 0.2em; }
 a:hover { text-decoration-thickness: 2px; }
@@ -58,7 +46,7 @@ header p { margin: 0.6rem 0 0; max-width: 40rem; }
 .motif { position: absolute; bottom: 0.25rem; height: 0.5rem; padding: 0; background: none; border: 1px solid #000; border-bottom: 0; cursor: pointer; font: inherit; min-width: 0.6rem; }
 .motif span { position: absolute; bottom: 0.45rem; left: -1px; white-space: nowrap; font-style: italic; font-size: 0.82rem; }
 .motif:hover, .motif.on { border-color: #2340a8; color: #2340a8; }
-.system { height: 20rem; }
+.system { height: 20rem; cursor: pointer; }
 .system img { position: absolute; inset: 0; width: 100%; height: 100%; }
 .system .played { clip-path: inset(0 calc(100% - var(--p, 0%)) 0 0); }
 .system .hl { display: none; }
@@ -84,7 +72,7 @@ header p { margin: 0.6rem 0 0; max-width: 40rem; }
 .today { position: absolute; top: -0.2rem; bottom: -1.5rem; left: var(--now); border-left: 2px solid #2340a8; }
 .today span { position: absolute; top: -1.1rem; left: 0.3rem; font-size: 0.72rem; font-style: italic; color: #2340a8; white-space: nowrap; }
 .head { position: absolute; top: 0; bottom: 0; left: calc(var(--m) + (100% - var(--m)) * var(--f, 0)); border-left: 2px solid #2340a8; display: none; pointer-events: none; }
-.score.moved .head { display: block; }
+.score.on .head, .score.moved .head { display: block; }
 .score figcaption { position: relative; z-index: 1; background: #fff; padding-top: 1.4rem; margin-left: var(--m); max-width: 44rem; font-size: 0.95rem; }
 .play { font: inherit; background: none; border: 0; padding: 0; text-decoration: underline; cursor: pointer; }
 
@@ -94,8 +82,8 @@ header p { margin: 0.6rem 0 0; max-width: 40rem; }
 .score .cond > span, .score .motif { animation: arrive .35s both; animation-delay: calc(var(--at, 0) * 2.6s); }
 .score .staff .lane, .score .today, .score .months { animation: arrive .6s 2.5s both; }
 
-.pin { position: fixed; top: 0; left: 0; right: 0; z-index: 5; background: #fff; border-bottom: 1px solid #000; padding: 0.55rem 3rem 0.5rem 4vw; transform: translateY(-110%); visibility: hidden; transition: transform .25s, visibility 0s .25s; }
-.pin.show { transform: none; visibility: visible; transition: transform .25s; }
+.pin { position: fixed; top: 0; left: 0; right: 0; z-index: 5; background: #fff; border-bottom: 1px solid #000; padding: 0.55rem 3rem 0.5rem 4vw; transform: translateY(-110%); transition: transform .25s; }
+.pin.show { transform: none; }
 .pin .inner { max-width: 80rem; display: grid; grid-template-columns: 9.5rem 1fr; }
 .pin .what { font-size: 0.8rem; line-height: 1.25; padding-right: 0.8rem; }
 .pin .what b { display: block; font-weight: 600; }
@@ -108,12 +96,12 @@ header p { margin: 0.6rem 0 0; max-width: 40rem; }
 .pin .mini .lab, .pin .mini .tie { display: none; }
 .pin .mini .span { bottom: 0.1rem; height: 3px; }
 .pin .mini .dot { bottom: 0; width: 7px; height: 6px; margin-left: -3px; }
-.pin .mini a { position: absolute; top: calc(var(--l) * 33.33%); height: 33.33%; }
-.pin .ph, .pin .today2 { pointer-events: none; }
+.pin .mini a { position: absolute; top: 0; bottom: 0; }
 .pin .ph { position: absolute; top: -0.2rem; bottom: 0; left: calc(var(--f, 0) * 100%); border-left: 2px solid #2340a8; }
 .pin .today2 { position: absolute; top: 3.3rem; bottom: 1.5rem; left: var(--now); border-left: 1px dashed #2340a8; }
 .pin .ctl { font-size: 0.78rem; margin-top: 0.3rem; display: flex; gap: 1.2rem; }
 .pin .ctl button { font: inherit; background: none; border: 0; padding: 0; text-decoration: underline; cursor: pointer; }
+.pin .ctl .clock { color: #555; margin-left: auto; font-variant-numeric: tabular-nums; }
 
 .station { display: grid; grid-template-columns: 9.5rem minmax(0, 36rem); column-gap: 2.5rem; padding: 2.6rem 0 3rem; }
 .station.has-side { grid-template-columns: 9.5rem minmax(0, 36rem) minmax(0, 20rem); padding-bottom: 4rem; }
@@ -144,15 +132,12 @@ figure.lead figcaption { margin-top: 0.7rem; color: #333; }
 
 footer { border-top: 1px solid #000; margin-top: 2rem; padding-top: 1rem; font-size: 0.9rem; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 1rem; }
 
-.evlist { display: none; }
-@media (max-width: 1350px) { .ruler.months span:nth-child(12n+2) { visibility: hidden; } }
-
 @media (prefers-reduced-motion: reduce) {
   .score *, .score .system .base { animation: none !important; }
   .pin { transition: none; }
 }
 
-@media (max-width: 1200px) {
+@media (max-width: 900px) {
   .page { padding: 1.5rem 1.1rem 3rem; }
   header { display: block; }
   header p { font-size: 0.95rem; }
@@ -168,10 +153,10 @@ footer { border-top: 1px solid #000; margin-top: 2rem; padding-top: 1rem; font-s
   .motif span { position: static; font-size: 0.85rem; }
   .motif[data-m="all"] { display: none; }
   .system { height: 10.5rem; }
-  .groups span { right: auto; left: 0; width: auto; border: 0; padding: 0 0.3rem; font-size: 0.64rem; text-shadow: 0 0 2px #fff, 0 0 2px #fff; justify-content: flex-start; height: auto !important; }
+  .groups span { right: auto; left: 0; width: auto; border: 0; padding: 0 0.3rem; font-size: 0.64rem; background: rgba(255,255,255,0.85); justify-content: flex-start; height: auto !important; }
   .staffname { position: static; width: auto; height: auto; border: 0; text-align: left; padding: 0.3rem 0 0.2rem; display: block; }
-  .lane { height: 1.1rem; }
-  .score .lab { display: none; }
+  .lane { font-size: 0.7rem; height: auto; min-height: 1.9rem; padding: 0.15rem 0 1.1rem; box-sizing: border-box; }
+  .lab { position: static !important; display: inline-block; margin-right: 0.7rem; }
   .today span { display: none; }
   .ruler { font-size: 0.62rem; }
   .ruler.months span:not(:nth-child(12n+1)) { visibility: hidden; }
@@ -182,18 +167,36 @@ footer { border-top: 1px solid #000; margin-top: 2rem; padding-top: 1rem; font-s
   .pin .notes { height: 2.2rem; }
   .pin .today2 { top: 2.3rem; }
   .pin .ctl { font-size: 0.68rem; gap: 0.8rem; }
+  .pin .ctl .clock { white-space: nowrap; }
   .pin .mini .lane { height: 0.45rem; min-height: 0; padding: 0; }
   .station, .station.has-side { display: block; padding: 2.2rem 0 2.4rem; }
   .station .when { text-align: left; margin-bottom: 0.3rem; }
   .station .side { margin-top: 1.2rem; }
-  .evlist { display: grid; grid-template-columns: 8.4rem 1fr; column-gap: 0.6rem; position: relative; z-index: 1; background: #fff; list-style: none; margin: 0; padding: 0.8rem 0 0; font-size: 0.8rem; line-height: 1.35; }
+}
+.evlist { display: none; }
+@media (max-width: 900px) {
+  .score .lab { display: none; }
+  .lane { min-height: 0; height: 1.1rem; padding: 0; }
+  .evlist { display: grid; grid-template-columns: 8.4rem 1fr; column-gap: 0.6rem; order: 5; position: relative; z-index: 1; background: #fff; list-style: none; margin: 0; padding: 0.8rem 0 0; font-size: 0.8rem; line-height: 1.35; }
   .evlist li { display: contents; }
   .evlist span { font-style: italic; color: #555; padding-bottom: 0.35rem; }
   .evlist .plan span { color: #2340a8; }
+  .groups span { background: none; text-shadow: 0 0 2px #fff, 0 0 2px #fff; }
 }
 </style>
 </head>
 <body>
+<div class="pin" role="region" aria-label="Pinned score and timeline">
+ <div class="inner">
+  <div class="what"><b>Radek Green</b><span id="where">2025</span></div>
+  <div class="bar">
+   <div class="notes"><img src="piece.svg" alt=""><img class="played" alt=""></div>
+   <div class="mini"><div class="lane"><span class="dot " style="left:15.33%"></span><span class="lab" style="left:15.93%">World Scholar’s Cup, Singapore</span><span class="dot " style="left:32.53%"></span><span class="lab" style="left:33.13%">Bangkok</span><span class="dot " style="left:40.67%"></span><span class="lab" style="left:41.27%">Yale</span><span class="dot " style="left:67.87%"></span><span class="tie" style="left:67.87%;width:16.40%"></span><span class="dot open" style="left:84.27%"></span><span class="lab end" style="right:32.73%">Locke essays sent</span><span class="lab plan" style="left:84.87%">results 3 Oct</span></div><div class="lane"><span class="span" style="left:40.00%;width:23.87%"></span><span class="lab end" style="right:60.60%">writing 4part</span><span class="dot " style="left:68.00%"></span><span class="tie" style="left:68.00%;width:24.00%"></span><span class="span hatch plan" style="left:92.00%;width:8.00%"></span><span class="lab" style="left:72.10%">research question</span><span class="lab end plan" style="right:0.60%">to TMLR</span></div><div class="lane"><span class="span" style="left:68.00%;width:12.00%"></span><span class="lab end" style="right:32.60%">VPS Veritas</span><span class="dot open" style="left:83.60%"></span><span class="span plan" style="left:90.40%;width:2.67%"></span><span class="lab end plan" style="right:10.20%">hackathon</span></div><a href="#wsc" style="left:calc(15.33% - 6px);width:12px" aria-label="World Scholar’s Cup"></a><a href="#writing" style="left:calc(40.00% - 6px);width:12px" aria-label="Writing 4part"></a><a href="#locke" style="left:calc(67.87% - 6px);width:12px" aria-label="Two essays for the John Locke prize"></a><a href="#other" style="left:calc(68.00% - 6px);width:12px" aria-label="Modelling the Other"></a><a href="#vps" style="left:calc(73.87% - 6px);width:12px" aria-label="VPS Veritas"></a><a href="#hack" style="left:calc(90.40% - 6px);width:12px" aria-label="gvhackathon.com"></a></div>
+   <div class="ph"></div><div class="today2"></div>
+   <div class="ctl"><button type="button" class="snd" >Sound on scroll: off</button><button type="button" class="lis">Listen</button><span class="clock"></span></div>
+  </div>
+ </div>
+</div>
 <div class="page">
 <header>
   <div>
@@ -206,33 +209,24 @@ footer { border-top: 1px solid #000; margin-top: 2rem; padding-top: 1rem; font-s
 <main>
 <figure class="score" aria-labelledby="score-cap">
   <div class="row cond" aria-hidden="true"><span class="clef"></span><span class="part" style="--at:0.000;left:0.00%">I <em>Initialisation</em></span><span class="part" style="--at:0.167;left:16.74%">II <em>Descent</em></span><span class="part" style="--at:0.442;left:44.24%">III <em>Local minimum</em></span><span class="part" style="--at:0.628;left:62.83%">IV <em>Convergence</em></span><span class="tempo" style="--at:0.000;left:0.00%"><b class="gl"></b> = 100</span><span class="tempo" style="--at:0.442;left:44.24%"><b class="gl"></b> = 60</span><span class="tempo" style="--at:0.594;left:59.41%"><b class="gl"></b> = 80</span><span class="tempo burst" style="--at:0.042;left:4.15%;width:1.26%"><b class="gl"></b> = 160</span><span class="sig" style="--at:0.000;left:0.00%"><b class="ts"><span></span><span></span></b></span><span class="sig" style="--at:0.167;left:16.74%"><i style="--y:4"></i><i style="--y:7"></i><i style="--y:3"></i></span><span class="sig" style="--at:0.281;left:28.06%"><i style="--y:8"></i><i style="--y:5"></i></span><span class="sig" style="--at:0.442;left:44.24%"><b class="ts"><span></span><span></span></b></span><span class="sig" style="--at:0.488;left:48.79%"><i style="--y:4"></i></span><span class="sig" style="--at:0.549;left:54.86%"><i style="--y:4"></i><i style="--y:7"></i></span><span class="sig" style="--at:0.628;left:62.83%"><i style="--y:8"></i><i style="--y:5"></i><b class="ts"><span></span><span></span></b></span><span class="sig" style="--at:0.685;left:68.51%"><i style="--y:4"></i><i style="--y:7"></i><i style="--y:3"></i></span><span class="sig" style="--at:0.772;left:77.24%"><i style="--y:8"></i><i style="--y:5"></i><i style="--y:9"></i><i style="--y:6"></i><i style="--y:3"></i><i style="--y:7"></i><i style="--y:4"></i></span><span class="sig" style="--at:0.823;left:82.30%"><i style="--y:4"></i></span><span class="sig" style="--at:0.975;left:97.47%"><b class="ts"><span></span><span></span></b></span></div>
-  <div class="row motifs"><button hidden class="motif" data-m="run" data-from="8.5" data-to="526" style="--at:0.014;left:1.43%;width:0.76%"><span>scale run</span></button><button hidden class="motif" data-m="call" data-from="50.2" data-to="176.8" style="--at:0.085;left:8.51%;width:1.26%"><span>horn call</span></button><button hidden class="motif" data-m="rock" data-from="99.3" data-to="178" style="--at:0.167;left:16.74%;width:2.14%"><span>rocking figure</span></button><button hidden class="motif" data-m="call" data-from="176.8" data-to="" style="--at:0.298;left:29.80%;width:2.90%"><span>horn call again</span></button><button hidden class="motif" data-m="arp" data-from="479.2" data-to="527" style="--at:0.808;left:80.82%;width:1.10%"><span>arpeggio</span></button><button hidden class="motif" data-m="all" data-from="525.5" data-to="" style="--at:0.887;left:88.65%;width:3.37%"><span>run, call and arpeggio</span></button></div>
+  <div class="row motifs"><button class="motif" data-m="run" data-from="8.5" data-to="526" style="--at:0.014;left:1.43%;width:0.76%"><span>scale run</span></button><button class="motif" data-m="call" data-from="50.2" data-to="176.8" style="--at:0.085;left:8.51%;width:1.26%"><span>horn call</span></button><button class="motif" data-m="rock" data-from="99.3" data-to="178" style="--at:0.167;left:16.74%;width:2.14%"><span>rocking figure</span></button><button class="motif" data-m="call" data-from="176.8" data-to="" style="--at:0.298;left:29.80%;width:2.90%"><span>horn call again</span></button><button class="motif" data-m="arp" data-from="479.2" data-to="527" style="--at:0.808;left:80.82%;width:1.10%"><span>arpeggio</span></button><button class="motif" data-m="all" data-from="525.5" data-to="" style="--at:0.887;left:88.65%;width:3.37%"><span>run, call and arpeggio</span></button></div>
   <div class="row system" role="img" aria-label="Every note of the piece, instrument by instrument, in score order">
-    <img class="base" src="/static/score/piece.svg" alt="">
+    <img class="base" src="piece.svg" alt="">
+    <img class="played" alt="">
+    <img class="hl" data-m="run" alt=""><img class="hl" data-m="call" alt=""><img class="hl" data-m="rock" alt=""><img class="hl" data-m="arp" alt="">
     <div class="groups" aria-hidden="true"><span style="top:0.0%;height:20.2%">Woodwinds</span><span style="top:22.6%;height:11.0%">Horns</span><span style="top:36.0%;height:18.3%">Trumpets, trombones, tubas</span><span style="top:56.7%;height:18.3%">Percussion</span><span style="top:77.4%;height:11.0%">Harp, synth, piano</span><span style="top:90.8%;height:9.2%">Strings</span></div>
   </div>
   <div class="row ruler" aria-hidden="true"><span style="left:0.00%">0:00</span><span style="left:20.23%">2:00</span><span style="left:40.45%">4:00</span><span style="left:60.68%">6:00</span><span style="left:80.90%">8:00</span></div>
   <div class="row staff">
     <span class="staffname">R. Green,<br>Jan 2025 to Jan 2027</span>
-    <div class="lane"><span class="dot " style="left:15.33%"></span><span class="lab" style="left:15.93%">WSC, Singapore</span><span class="dot " style="left:32.53%"></span><span class="lab" style="left:33.13%">Bangkok</span><span class="dot " style="left:40.67%"></span><span class="lab" style="left:41.27%">Yale</span><span class="dot " style="left:67.87%"></span><span class="tie" style="left:67.87%;width:16.40%"></span><span class="dot open" style="left:84.27%"></span><span class="lab end" style="right:32.73%">Locke essays sent</span><span class="lab plan" style="left:84.87%">results 3 Oct</span></div><div class="lane"><span class="span" style="left:40.00%;width:23.87%"></span><span class="lab" style="left:40.00%">writing 4part</span><span class="dot " style="left:68.00%"></span><span class="tie" style="left:68.00%;width:24.00%"></span><span class="span hatch plan" style="left:92.00%;width:8.00%"></span><span class="lab" style="left:72.10%">research question</span><span class="lab end plan" style="right:0.60%">to TMLR</span></div><div class="lane"><span class="span" style="left:68.00%;width:12.00%"></span><span class="lab end" style="right:32.60%">VPS Veritas</span><span class="dot open" style="left:83.60%"></span><span class="span plan" style="left:90.40%;width:2.67%"></span><span class="lab end plan" style="right:10.20%">hackathon</span></div>
+    <div class="lane"><span class="dot " style="left:15.33%"></span><span class="lab" style="left:15.93%">World Scholar’s Cup, Singapore</span><span class="dot " style="left:32.53%"></span><span class="lab" style="left:33.13%">Bangkok</span><span class="dot " style="left:40.67%"></span><span class="lab" style="left:41.27%">Yale</span><span class="dot " style="left:67.87%"></span><span class="tie" style="left:67.87%;width:16.40%"></span><span class="dot open" style="left:84.27%"></span><span class="lab end" style="right:32.73%">Locke essays sent</span><span class="lab plan" style="left:84.87%">results 3 Oct</span></div><div class="lane"><span class="span" style="left:40.00%;width:23.87%"></span><span class="lab end" style="right:60.60%">writing 4part</span><span class="dot " style="left:68.00%"></span><span class="tie" style="left:68.00%;width:24.00%"></span><span class="span hatch plan" style="left:92.00%;width:8.00%"></span><span class="lab" style="left:72.10%">research question</span><span class="lab end plan" style="right:0.60%">to TMLR</span></div><div class="lane"><span class="span" style="left:68.00%;width:12.00%"></span><span class="lab end" style="right:32.60%">VPS Veritas</span><span class="dot open" style="left:83.60%"></span><span class="span plan" style="left:90.40%;width:2.67%"></span><span class="lab end plan" style="right:10.20%">hackathon</span></div>
     <div class="today"><span>today</span></div>
   </div>
   <div class="row ruler months" aria-hidden="true"><span style="left:0.00%">J<b>2025</b></span><span style="left:4.00%">F</span><span style="left:8.00%">M</span><span style="left:12.00%">A</span><span style="left:16.00%">M</span><span style="left:20.00%">J</span><span style="left:24.00%">J</span><span style="left:28.00%">A</span><span style="left:32.00%">S</span><span style="left:36.00%">O</span><span style="left:40.00%">N</span><span style="left:44.00%">D</span><span style="left:48.00%">J<b>2026</b></span><span style="left:52.00%">F</span><span style="left:56.00%">M</span><span style="left:60.00%">A</span><span style="left:64.00%">M</span><span style="left:68.00%">J</span><span style="left:72.00%">J</span><span style="left:76.00%">A</span><span style="left:80.00%">S</span><span style="left:84.00%">O</span><span style="left:88.00%">N</span><span style="left:92.00%">D</span><span style="left:96.00%">J<b>2027</b></span></div>
   <ol class="evlist"><li><span>26–27 Apr 2025</span> World Scholar’s Cup, Singapore round</li><li><span>5–10 Sep 2025</span> Global round, Bangkok</li><li><span>6–12 Nov 2025</span> Tournament of Champions, Yale</li><li><span>Nov 2025 to Apr 2026</span> writing 4part</li><li><span>end of May 2026</span> Locke essays sent</li><li><span>June 2026</span> research question</li><li><span>Jun to Aug 2026</span> VPS Veritas</li><li class="plan"><span>3 Oct 2026</span> Locke results</li><li class="plan"><span>19 Nov to 9 Dec 2026</span> gvhackathon.com</li><li class="plan"><span>Dec 2026 to Jan 2027</span> paper to TMLR</li></ol>
   <div class="head"></div>
-  <figcaption id="score-cap">4part, for 48 tracks, 9:53. Markings above the notes are from the MIDI file. The line under the basses is my own timeline, January 2025 to January 2027, with what hasn’t happened yet in blue.<br><a class="play" href="/static/audio/4part.m4a">Listen</a></figcaption>
+  <figcaption id="score-cap">4part, for 48 tracks, 9:53. Markings above the notes are from the MIDI file. The line under the basses is my own timeline, January 2025 to January 2027.<br><a class="play" href="audio/piece.m4a">Listen</a></figcaption>
 </figure>
-<div class="pin" role="region" aria-label="Pinned score and timeline">
- <div class="inner">
-  <div class="what"><b>Radek Green</b><span id="where">2025</span></div>
-  <div class="bar">
-   <div class="notes"><img src="/static/score/piece.svg" alt=""></div>
-   <div class="mini"><div class="lane"><span class="dot " style="left:15.33%"></span><span class="lab" style="left:15.93%">WSC, Singapore</span><span class="dot " style="left:32.53%"></span><span class="lab" style="left:33.13%">Bangkok</span><span class="dot " style="left:40.67%"></span><span class="lab" style="left:41.27%">Yale</span><span class="dot " style="left:67.87%"></span><span class="tie" style="left:67.87%;width:16.40%"></span><span class="dot open" style="left:84.27%"></span><span class="lab end" style="right:32.73%">Locke essays sent</span><span class="lab plan" style="left:84.87%">results 3 Oct</span></div><div class="lane"><span class="span" style="left:40.00%;width:23.87%"></span><span class="lab" style="left:40.00%">writing 4part</span><span class="dot " style="left:68.00%"></span><span class="tie" style="left:68.00%;width:24.00%"></span><span class="span hatch plan" style="left:92.00%;width:8.00%"></span><span class="lab" style="left:72.10%">research question</span><span class="lab end plan" style="right:0.60%">to TMLR</span></div><div class="lane"><span class="span" style="left:68.00%;width:12.00%"></span><span class="lab end" style="right:32.60%">VPS Veritas</span><span class="dot open" style="left:83.60%"></span><span class="span plan" style="left:90.40%;width:2.67%"></span><span class="lab end plan" style="right:10.20%">hackathon</span></div><a href="#wsc" style="--l:0;left:calc(15.33% - 8px);width:16px" aria-label="World Scholar’s Cup"></a><a href="#writing" style="--l:1;left:calc(40.00% - 8px);width:16px" aria-label="Writing 4part"></a><a href="#locke" style="--l:0;left:calc(67.87% - 8px);width:16px" aria-label="Two essays for the John Locke prize"></a><a href="#other" style="--l:1;left:calc(68.00% - 8px);width:16px" aria-label="Modelling the Other"></a><a href="#vps" style="--l:2;left:calc(68.00% - 8px);width:16px" aria-label="VPS Veritas"></a><a href="#hack" style="--l:2;left:calc(90.40% - 8px);width:16px" aria-label="gvhackathon.com"></a></div>
-   <div class="ph"></div><div class="today2"></div>
-   <div class="ctl"><button type="button" class="snd" >Sound on scroll: off</button><button type="button" class="lis">Listen</button></div>
-  </div>
- </div>
-</div>
 
 <div class="journey">
 <section class="station " id="wsc" data-f="0.1533" aria-labelledby="wsc-h">
@@ -244,7 +238,7 @@ footer { border-top: 1px solid #000; margin-top: 2rem; padding-top: 1rem; font-s
 <section class="station " id="writing" data-f="0.4000" aria-labelledby="writing-h">
   <p class="when">November 2025 to April 2026</p>
   <div><h2 id="writing-h">Writing 4part</h2>
-  <p>4part is called that because it has four parts. It’s my take on the hero’s journey. I wrote it in MuseScore and produced it in Logic Pro. There are 48 tracks, eleven of them woodwinds (one is a bass oboe) and six of them horns.</p>
+  <p>4part is called that because it has four parts. It’s my take on the hero’s journey. I wrote it from late last year to this spring in MuseScore and produced it in Logic Pro. There are 48 tracks, eleven of them woodwinds (one is a bass oboe) and six of them horns.</p>
   <p>I named the parts after a training run, since the two stories line up closely. Part III is the local minimum. It’s the quietest stretch of the piece, three instruments at 60 beats a minute, and the earlier motifs only come back after it.</p></div>
 </section>
 <section class="station " id="cismap" data-f="" aria-labelledby="cismap-h">
@@ -257,10 +251,10 @@ footer { border-top: 1px solid #000; margin-top: 2rem; padding-top: 1rem; font-s
 <section class="station has-side" id="locke" data-f="0.6787" aria-labelledby="locke-h">
   <p class="when">end of May 2026<br><span class="plan">results 3 October</span></p>
   <div><h2 id="locke-h">Two essays for the John Locke prize</h2>
-  <p><a href="/static/essays/determinism-and-sentencing.pdf">The law essay</a> (PDF) asks what would happen to criminal sentencing if judges and legislators accepted determinism.</p>
+  <p><a href="https://cztdhwzvmmioaqaeewpz.supabase.co/storage/v1/object/public/essays/submissions/7c67e44e-4b67-4f72-8107-4dcbeecb2ba9/law-1-1780137234064.pdf">The law essay</a> (PDF) asks what would happen to criminal sentencing if judges and legislators accepted determinism.</p>
   <blockquote>“A court that accepts determinism can still decide who to sentence. It can no longer say by how much.”</blockquote>
-  <p><a href="/static/essays/polite-to-chatgpt.pdf">The science and technology essay</a> (PDF) asks whether we should be polite to ChatGPT. For it I ran a blinded study in which 43 students aged 15–19 compared DeepSeek-R1’s answers to 25 pairs of prompts, one written politely and one as a bare command, without knowing which was which.</p>
-  <details><summary>Results</summary><p>62.2% of the votes that weren’t ties went to the answer from the polite prompt (95% CI 55.5–68.9%, 241 votes). The polite answers were 29% longer on average, but length barely tracked preference (r = 0.16). Split by task it looks different: on interpersonal tasks like an apology or a salary negotiation the polite prompt won by a wide margin, and on structured ones like a grading rubric the bare command won. My argument in the essay is that the benefit goes to the person asking, because a polite request makes you say what you want and why.</p><p>I noticed one mistake only after sending it in. Footnote 10 says the medical diagnosis task was left out of the 62.2%, but the task-by-task numbers only add up to 62.2% if it’s counted. I wrote that footnote, so there’s nobody else to blame.</p></details></div>
+  <p><a href="https://cztdhwzvmmioaqaeewpz.supabase.co/storage/v1/object/public/essays/submissions/7c67e44e-4b67-4f72-8107-4dcbeecb2ba9/science%20&amp;%20technology-3-1780201877477.pdf">The science and technology essay</a> (PDF) asks whether we should be polite to ChatGPT. For it I ran a blinded study in which 43 students aged 15–19 compared DeepSeek-R1’s answers to 25 pairs of prompts, one written politely and one as a bare command, without knowing which was which.</p>
+  <details><summary>Results</summary><p>62.2% of the votes that weren’t ties went to the answer from the polite prompt (95% CI 55.5–68.9%, 241 votes). The polite answers were 29% longer on average, but length barely tracked preference (r = 0.16). Split by task it looks different: on interpersonal tasks like an apology or a salary negotiation the polite prompt won by a wide margin, and on structured ones like a grading rubric the bare command won. My argument in the essay is that the benefit goes to the person asking, because a polite request makes you say what you want and why.</p></details></div>
   <div class="side"><figure class="lead"><h3>Which prompt raters preferred, task by task</h3><table>
     <thead><tr><th scope="col">Task</th><th scope="col">Lead</th><td></td></tr></thead>
     <tbody>
@@ -304,7 +298,7 @@ footer { border-top: 1px solid #000; margin-top: 2rem; padding-top: 1rem; font-s
 <section class="station " id="vps" data-f="0.7387" aria-labelledby="vps-h">
   <p class="when">June to August 2026</p>
   <div><h2 id="vps-h">VPS Veritas</h2>
-  <p>A paid AI consulting internship with a marine fuel testing company. I spent two weeks in person in Singapore and six working remotely from Toronto, twelve hours behind. I built three things and handed each one over with documentation.</p>
+  <p>A paid AI consulting internship with a marine fuel testing company. I spent two weeks in person in Singapore and six working remotely from Toronto, twelve hours behind. I built three things and handed each over with its own documentation.</p>
   <p>The biggest is an offline-first app for the company’s bunker quantity surveyors. A surveyor records a whole fuel delivery on board a ship with no connection, the office sees it as soon as the device is back online, and the quantity calculations run as the figures go in. It replaced an Excel workbook that the office used to type out again by hand. It runs on Windows and Android, with a database on each device and a cloud API behind it.</p>
   <details><summary>The other two</summary><p>A sales tool the commercial team uses in client meetings, with seven savings calculators tested against the spreadsheets they came from and a generator that writes the full proposal as a Word document. And an analysis pipeline in Python that costed the bids in a freight tender and produced the recommendation.</p></details></div>
 </section>
@@ -316,12 +310,12 @@ footer { border-top: 1px solid #000; margin-top: 2rem; padding-top: 1rem; font-s
   <p class="when">28 September to 9 December 2026</p>
   <div><h2 id="hack-h"><a href="https://gvhackathon.com">gvhackathon.com</a></h2>
   <p>An international hackathon our school runs online, free for students aged 14 to 18 in teams of two to four, judged in two divisions with US$3,000 in prizes. I co-lead it with Ruchika Dutt, who teaches computer science at CIS, and I built the competition platform on my own.</p>
-  <p>Registration opens on 28 September. The challenge stays sealed until the opening ceremony on 19 November, and teams then have seven days to build. Judging runs to 8 December and includes an on-camera interview about each team’s code, then live interviews for finalists. The closing ceremony is on 9 December. I also negotiated with school leadership and an outside vendor so the event got its own week.</p></div>
+  <p>Registration opens on 28 September. The challenge stays sealed until the opening ceremony on 19 November, and teams then have seven days to build. Judging runs to 8 December and includes an on-camera interview built from each team’s own code, then live interviews for finalists. The closing ceremony is on 9 December. I also negotiated with school leadership and an outside vendor so the event got its own week.</p></div>
 </section>
 <section class="station ahead" id="coda" data-f="1.0000" aria-labelledby="coda-h">
   <p class="when">2027</p>
   <div><h2 id="coda-h">Next</h2>
-  <p>From 8:45 the whole orchestra comes back in, and the scale run, the horn call and the arpeggio return together. <button hidden class="hear" type="button" data-from="525.5">Hear the ending</button></p>
+  <p>From 8:45 the whole orchestra comes back in, and the scale run, the horn call and the arpeggio return together. <button class="hear" type="button" data-from="525.5">Hear the ending</button></p>
   <p>Next is a multi-movement symphony that can be played live. My MYP Personal Project was a symphony in one movement, rated Excellent. More recordings are on <a href="https://soundcloud.com/radekgreen">SoundCloud</a>, and I’m at <a href="mailto:radoslawgreen@gmail.com">radoslawgreen@gmail.com</a>.</p></div>
 </section>
 </div>
@@ -329,21 +323,17 @@ footer { border-top: 1px solid #000; margin-top: 2rem; padding-top: 1rem; font-s
 <footer><span>IB Diploma: HL Mathematics AA, HL Physics, HL Economics, SL Theatre, SL English Literature, French ab initio. AP Computer Science Principles.</span><span><a href="mailto:radoslawgreen@gmail.com">radoslawgreen@gmail.com</a>. Last updated 24 September 2026.</span></footer>
 </div>
 <script>
-var LEN = 593.32;
+var LEN = 593.32, MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
 var fig = document.querySelector('.score'), sys = fig.querySelector('.system'), pin = document.querySelector('.pin');
 var link = fig.querySelector('a.play'), btn = document.createElement('button');
 var audio, stopAt = null, then = null, soundOnScroll = false, following = false;
 btn.className = 'play'; btn.type = 'button'; btn.textContent = 'Listen (9:53)'; link.replaceWith(btn);
-[sys, pin.querySelector('.notes')].forEach(function (el) { var i = new Image(); i.className = 'played'; i.alt = ''; el.insertBefore(i, el.children[1] || null); });
-['run', 'call', 'rock', 'arp'].forEach(function (m) { var i = new Image(); i.className = 'hl'; i.alt = ''; i.dataset.m = m; sys.insertBefore(i, sys.querySelector('.groups')); });
-document.querySelectorAll('.motif, .hear').forEach(function (b) { b.hidden = false; });
-fig.querySelectorAll('.motif').forEach(function (b) { b.setAttribute('aria-pressed', 'false'); });
 
 function load() {
   if (audio) return;
   var m4a = link.getAttribute('href');
   audio = new Audio(new Audio().canPlayType('audio/mp4; codecs="mp4a.40.2"') ? m4a : m4a.replace('.m4a', '.webm'));
-  document.querySelectorAll('.played').forEach(function (i) { i.src = '/static/score/piece-played.svg'; });
+  document.querySelectorAll('.played').forEach(function (i) { i.src = 'piece-played.svg'; });
   audio.addEventListener('timeupdate', function () {
     if (following) setF(audio.currentTime / LEN);
     if (stopAt !== null && audio.currentTime >= stopAt) {
@@ -352,17 +342,13 @@ function load() {
     }
   });
   audio.addEventListener('play', function () { btn.textContent = 'Pause'; pin.querySelector('.lis').textContent = 'Pause'; });
-  audio.addEventListener('pause', function () { btn.textContent = 'Resume'; pin.querySelector('.lis').textContent = 'Resume'; following = false; clearMotif(); });
-  audio.addEventListener('error', function () { btn.textContent = pin.querySelector('.lis').textContent = "The recording didn't load"; });
+  audio.addEventListener('pause', function () { btn.textContent = 'Resume'; pin.querySelector('.lis').textContent = 'Listen'; following = false; });
+  audio.addEventListener('error', function () { btn.textContent = "The recording didn't load"; });
 }
 var fadeTimer;
 function play(t, secs) {
   load(); clearInterval(fadeTimer); audio.volume = 1;
-  audio.currentTime = t; stopAt = secs ? t + secs : null; then = null; start();
-}
-function start() {
-  var p = audio.play();
-  if (p && p.catch) p.catch(function () {});
+  audio.currentTime = t; stopAt = secs ? t + secs : null; then = null; audio.play();
 }
 function fadeOut() {
   stopAt = null; clearInterval(fadeTimer);
@@ -371,11 +357,16 @@ function fadeOut() {
     if (audio.volume === 0) { clearInterval(fadeTimer); audio.pause(); audio.volume = 1; }
   }, 60);
 }
+function clock(f) {
+  var s = Math.round(f * LEN), m = Math.min(f * 25, 24.99), y = 2025 + Math.floor(m / 12);
+  return MONTHS[Math.floor(m) % 12] + ' ' + y + ', ' + Math.floor(s / 60) + ':' + ('0' + s % 60).slice(-2);
+}
 function setF(f) {
   f = Math.max(0, Math.min(1, f));
   document.documentElement.style.setProperty('--f', f);
   sys.style.setProperty('--p', f * 100 + '%');
   fig.style.setProperty('--f', f); fig.classList.add('moved');
+  pin.querySelector('.clock').textContent = clock(f);
 }
 var stations = [].slice.call(document.querySelectorAll('.station'));
 var current = null, ticking = false;
@@ -383,53 +374,45 @@ function onScroll() {
   ticking = false;
   var heroGone = fig.getBoundingClientRect().bottom < 0;
   pin.classList.toggle('show', heroGone);
-  var line = innerHeight * 0.38, prev = null, next = null, f = 0, last = 0;
+  if (following) return;
+  var line = innerHeight * 0.45, prev = null, next = null, f = 0, last = 0;
   stations.forEach(function (s) {
     var top = s.getBoundingClientRect().top, sf = s.dataset.f === '' ? null : +s.dataset.f;
     if (sf === null) sf = last; else last = sf;
     if (top <= line) prev = { el: s, top: top, f: sf };
     else if (!next) next = { el: s, top: top, f: sf };
   });
-  if (innerHeight + scrollY >= document.documentElement.scrollHeight - 2) { var end = stations[stations.length - 1]; prev = { el: end, f: +end.dataset.f }; next = null; }
   if (prev && next) f = prev.f + (next.f - prev.f) * Math.max(0, Math.min(1, ((line - prev.top) / (next.top - prev.top) - 0.5) * 2));
   else if (prev) f = prev.f;
-  if (!following && (heroGone || prev)) setF(f);
+  if (heroGone || prev) setF(f);
   var here = prev ? prev.el : null;
   if (here !== current) {
     current = here;
+    stations.forEach(function (s) { s.classList.toggle('now', s === here); });
     pin.querySelector('#where').textContent = here ? here.querySelector('h2').textContent : '';
-    if (soundOnScroll && here && !following) play(f * LEN, 8);
+    if (soundOnScroll && here) play(f * LEN, 8);
   }
 }
 addEventListener('scroll', function () { if (!ticking) { ticking = true; requestAnimationFrame(onScroll); } }, { passive: true });
 onScroll();
 btn.addEventListener('click', function () {
   load();
-  if (audio.paused) { clearInterval(fadeTimer); audio.volume = 1; following = true; stopAt = null; start(); } else audio.pause();
+  if (audio.paused) { following = true; stopAt = null; audio.play(); } else audio.pause();
 });
 pin.querySelector('.lis').addEventListener('click', function () { btn.click(); });
 pin.querySelector('.snd').addEventListener('click', function () {
   soundOnScroll = !soundOnScroll;
   this.textContent = 'Sound on scroll: ' + (soundOnScroll ? 'on' : 'off');
-  if (soundOnScroll) { load(); if (current && audio.paused) play(+getComputedStyle(document.documentElement).getPropertyValue('--f') * LEN, 8); }
-  else if (audio && !following) fadeOut();
+  if (soundOnScroll) { load(); if (current) play(+getComputedStyle(document.documentElement).getPropertyValue('--f') * LEN, 8); }
+  else if (audio) fadeOut();
 });
-sys.style.cursor = 'pointer';
 sys.addEventListener('click', function (e) {
   var r = sys.getBoundingClientRect(); following = true; play((e.clientX - r.left) / r.width * LEN);
 });
 document.querySelectorAll('.hear').forEach(function (b) {
   b.addEventListener('click', function () { following = true; play(+b.dataset.from, 30); });
 });
-fig.querySelectorAll('.hl').forEach(function (img) { img.dataset.src = '/static/score/motif-' + img.dataset.m + '.svg'; });
-function clearMotif() {
-  fig.querySelectorAll('.motif').forEach(function (o) { o.classList.remove('on'); o.setAttribute('aria-pressed', 'false'); });
-  show(null);
-}
-function restore() {
-  var on = fig.querySelector('.motif.on');
-  show(on ? on.dataset.m : null);
-}
+fig.querySelectorAll('.hl').forEach(function (img) { img.dataset.src = 'motif-' + img.dataset.m + '.svg'; });
 function show(m) {
   fig.querySelectorAll('.hl').forEach(function (img) {
     var on = m === 'all' ? img.dataset.m !== 'rock' : img.dataset.m === m;
@@ -441,11 +424,10 @@ function show(m) {
 fig.querySelectorAll('.motif').forEach(function (b) {
   b.addEventListener('mouseenter', function () { show(b.dataset.m); });
   b.addEventListener('focus', function () { show(b.dataset.m); });
-  b.addEventListener('mouseleave', restore);
-  b.addEventListener('blur', restore);
+  b.addEventListener('mouseleave', function () { if (!b.classList.contains('on')) show(null); });
+  b.addEventListener('blur', function () { if (!b.classList.contains('on')) show(null); });
   b.addEventListener('click', function () {
-    if (b.classList.contains('on')) { clearMotif(); if (audio) fadeOut(); return; }
-    fig.querySelectorAll('.motif').forEach(function (o) { o.classList.toggle('on', o === b); o.setAttribute('aria-pressed', o === b); });
+    fig.querySelectorAll('.motif').forEach(function (o) { o.classList.toggle('on', o === b); });
     show(b.dataset.m); following = true;
     var from = +b.dataset.from, to = b.dataset.to;
     play(from, to ? 7 : 22); then = to ? +to : null;
