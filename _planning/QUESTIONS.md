@@ -29,6 +29,14 @@ Answer inline, in chat, or not at all. Each question has a default in square bra
 17. **gvhackathon.com public details.** Your public site says it is international and online, for ages 14 to 18, in teams of 2 to 4, with Junior and Senior divisions. The brief calls it a "school-hosted AI and CS hackathon". May I use the public details? [use only what the brief says, plus the dates]
 18. **Evidence for smaller builds.** The brief says every entry links to its evidence. Do the security node, the synthesiser, the vocabulary app and the Claude skills have repos, photos or videos I can link? [entries without evidence are listed plainly, with no link]
 
+## Raised by the research and the mockup
+
+25. **The repository shows how the site was made** (details in DESIGN_PROPOSAL.md). The repo is public. This branch's `_planning/` notes, its `claude/` name and the `Co-Authored-By: Claude` commit trailers can be seen by anyone who opens it. Should everything stay visible, or should only the site files be merged to `master` in a single commit, with this branch deleted afterwards? [I keep committing as the environment is set up; nothing is merged until you choose]
+26. **Instrumentation of the 49-track piece.** A parts list, e.g. "3 flutes (3rd doubling piccolo), 2 oboes, bass oboe, …", would let the works list give it the way a concert programme does. [written as "49 tracks, with six independent horn parts"]
+27. **Years.** When were CIS-MAP and the MYP symphony finished? [no years shown for them]
+28. **Is `github.com/worldwiderad/CIS-MAP-V2` public?** From here it returned 403, and a private repo would give readers a 404. [linked as in the brief]
+29. **A number in the politeness essay you may want to check.** The 24 leads other than Medical Diagnosis sum to +61. With 241 non-tie votes that would give about 62.7%. The published 62.2% matches the sum *including* the set-aside task (+59). Probably an exclusion or rounding detail. The site quotes the PDF's numbers unchanged either way.
+
 ## About the domain (details in SITE_INVENTORY.md)
 
 19. `/Page-2.html`, an old Nicepage copy of the homepage: replace it with a pointer to `/`, or keep it byte-identical? [replace, then remove the Nicepage CSS/JS/vendor files]

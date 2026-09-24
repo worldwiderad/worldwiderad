@@ -19,12 +19,16 @@ This folder is `_planning/`. GitHub Pages runs Jekyll on this repo, and Jekyll n
 | Other branches | `reorganize-files-8370551243610107617` (PR #1 by the Jules bot, merged March 2026, stale) | `git ls-remote` |
 | Git history | 51 commits; the pack is 60 MB because deleted videos and photos from 2020 are still in history | `git count-objects` |
 
+I checked all of this against a real build. With the `github-pages` gem (Jekyll 3.10.0, the version Pages uses), building `master` locally gives the same output as the live site: every repo file copied byte for byte, plus one generated file (see `/assets/css/style.css` below). `CNAME` is not copied and `_planning/` is excluded. A test `NOTES.md` at the root was published as a themed `NOTES.html`, with SEO tags and a canonical URL, alongside the raw `.md`.
+
 What Jekyll processing means for the rebuild:
 
 - Plain `.html` files without front matter are copied as they are. New pages behave the same way unless they start with a `---` front-matter block.
-- A `.md` file at the root without front matter gets published as an HTML page. That is why these notes live in `_planning/`.
+- Any page *with* front matter gets the default theme's layout (Primer) and SEO tags injected, unless it sets `layout: null`. Every templated page has to set that.
+- A `.md` file at the root without front matter gets published as a themed HTML page. That is why these notes live in `_planning/`.
 - Any new folder that must be published cannot start with `_`.
 - Jekyll can already build the site from data files (`_data/*.yml`) with no new tooling, because Pages runs it anyway. Question 11 in section 6 asks whether to use this.
+- To build locally: `bundle exec jekyll build --safe` with the `github-pages` gem, `API_URL=http://127.0.0.1:9/` (so the metadata plugin doesn't call the GitHub API), `PAGES_REPO_NWO=worldwiderad/worldwiderad` and a UTF-8 locale.
 
 ## 2. Every path the domain serves
 
@@ -52,6 +56,7 @@ What Jekyll processing means for the rebuild:
 | `/hackathon/` = `/hackathon/index.html` | 1.71 MB | "Hackathon Portal — Wireframe": a self-unpacking bundle with its own assets. Radek says it is outdated; the live platform is gvhackathon.com | nothing | identical | **b** for now, see Q3 |
 | `/README.md` | 1 B | a single newline | – | identical | **b** keep |
 | `CNAME` | 16 B | `worldwiderad.com` | Pages config (not served: `/CNAME` returns 404, as expected) | n/a | **b** never touch |
+| `/assets/css/style.css` | 76.6 KB | **Not in the repo.** Generated at build time by Pages' default theme (Primer), because no theme is configured | nothing | served, 200 | leave as is (it keeps being generated as long as no `_config.yml` changes the theme). New files must not go under `/assets/` |
 
 Dependencies of the pages that must survive:
 
@@ -68,9 +73,9 @@ The Nicepage dependency chain is closed. `css/style.css`, `js/*` and `vendor/int
 | Replace | `/index.html`, `/sitemap.xml` | on approval of the preview |
 | Remove | `/css/style.css`, `/js/nicepage.js`, `/js/jquery-1.9.1.min.js`, `/vendor/intlTelInput/*` | only if `Page-2.html` is removed or replaced (Q2) |
 | Keep, byte-identical | `/images/*` (all six), `/IEEEv39.pdf`, `/jlec-form/*`, `/hackathon/*` (pending Q3), `/README.md`, `CNAME` | always |
-| Add | new pages and assets under paths that do not exist today. Proposed: `/cv/`, `/assets/` (CSS, fonts, resized images), `/favicon.ico`, `/robots.txt` if wanted. Individual project pages only if the content needs them, under `/work/<slug>/` | none of these paths exist now; all currently return 404 |
+| Add | new pages and files under paths that do not exist today. Proposed: `/cv/`, `/static/` (CSS, fonts, resized images), `/favicon.ico`, `/robots.txt` if wanted. Individual project pages only if the content needs them, under `/work/<slug>/`. **Not** `/assets/`, which the theme already uses | none of these paths exist now; all currently return 404 |
 
-About `/images/`: I would keep all six files exactly as they are, including the three that only Nicepage uses. Keeping them costs nothing and removes any risk that something outside this repo links to them. The new site will not load the 7.5 MB originals. It will use resized copies under `/assets/`.
+About `/images/`: I would keep all six files exactly as they are, including the three that only Nicepage uses. Keeping them costs nothing and removes any risk that something outside this repo links to them. The new site will not load the 7.5 MB originals. It will use resized copies under `/static/`.
 
 Removing the current homepage also removes Google Analytics and the AdSense script from the domain, because no other page carries them. That matches the brief's "no analytics" rule. If the AdSense account is still used for anything, you should know it will stop seeing this site.
 
