@@ -145,7 +145,7 @@ footer { border-top: 1px solid #000; margin-top: 2rem; padding-top: 1rem; font-s
   .links { margin-top: 0.7rem; } .links a { margin: 0 1rem 0 0; }
   .score { --m: 0rem; display: flex; flex-direction: column; }
   .score .cond { order: 0; height: 1.5rem; background: none; } .score .system { order: 1; } .score .ruler { order: 2; }
-  .score .motifs { order: 3; margin-top: 0.4rem; } .score .staff { order: 4; } .score .months { order: 5; } .score figcaption { order: 6; }
+  .score .motifs { order: 3; margin-top: 0.4rem; } .score .staff { order: 4; } .score .months { order: 5; } .score .evlist { order: 6; } .score figcaption { order: 7; }
   .tempo, .sig, .cond .clef, .part em { display: none; }
   .part { font-size: 0.95rem; }
   .motifs { height: auto; display: flex; flex-wrap: wrap; gap: 0.3rem 1rem; margin-bottom: 0.6rem; }
@@ -172,6 +172,16 @@ footer { border-top: 1px solid #000; margin-top: 2rem; padding-top: 1rem; font-s
   .station, .station.has-side { display: block; padding: 2.2rem 0 2.4rem; }
   .station .when { text-align: left; margin-bottom: 0.3rem; }
   .station .side { margin-top: 1.2rem; }
+}
+.evlist { display: none; }
+@media (max-width: 900px) {
+  .score .lab { display: none; }
+  .lane { min-height: 0; height: 1.1rem; padding: 0; }
+  .evlist { display: grid; grid-template-columns: 8.4rem 1fr; column-gap: 0.6rem; order: 5; position: relative; z-index: 1; background: #fff; list-style: none; margin: 0; padding: 0.8rem 0 0; font-size: 0.8rem; line-height: 1.35; }
+  .evlist li { display: contents; }
+  .evlist span { font-style: italic; color: #555; padding-bottom: 0.35rem; }
+  .evlist .plan span { color: #2340a8; }
+  .groups span { background: none; text-shadow: 0 0 2px #fff, 0 0 2px #fff; }
 }
 </style>
 </head>
@@ -213,8 +223,9 @@ footer { border-top: 1px solid #000; margin-top: 2rem; padding-top: 1rem; font-s
     <div class="today"><span>today</span></div>
   </div>
   <div class="row ruler months" aria-hidden="true"><span style="left:0.00%">J<b>2025</b></span><span style="left:4.00%">F</span><span style="left:8.00%">M</span><span style="left:12.00%">A</span><span style="left:16.00%">M</span><span style="left:20.00%">J</span><span style="left:24.00%">J</span><span style="left:28.00%">A</span><span style="left:32.00%">S</span><span style="left:36.00%">O</span><span style="left:40.00%">N</span><span style="left:44.00%">D</span><span style="left:48.00%">J<b>2026</b></span><span style="left:52.00%">F</span><span style="left:56.00%">M</span><span style="left:60.00%">A</span><span style="left:64.00%">M</span><span style="left:68.00%">J</span><span style="left:72.00%">J</span><span style="left:76.00%">A</span><span style="left:80.00%">S</span><span style="left:84.00%">O</span><span style="left:88.00%">N</span><span style="left:92.00%">D</span><span style="left:96.00%">J<b>2027</b></span></div>
+  <ol class="evlist"><li><span>26–27 Apr 2025</span> World Scholar’s Cup, Singapore round</li><li><span>5–10 Sep 2025</span> Global round, Bangkok</li><li><span>6–12 Nov 2025</span> Tournament of Champions, Yale</li><li><span>Nov 2025 to Apr 2026</span> writing 4part</li><li><span>end of May 2026</span> Locke essays sent</li><li><span>June 2026</span> research question</li><li><span>Jun to Aug 2026</span> VPS Veritas</li><li class="plan"><span>3 Oct 2026</span> Locke results</li><li class="plan"><span>19 Nov to 9 Dec 2026</span> gvhackathon.com</li><li class="plan"><span>Dec 2026 to Jan 2027</span> paper to TMLR</li></ol>
   <div class="head"></div>
-  <figcaption id="score-cap">4part, for 48 tracks, 9:53. The markings above the notes are the tempo, key and metre changes in the MIDI file. Under the basses is a line for me, January 2025 to January 2027.<br><a class="play" href="audio/piece.m4a">Listen</a></figcaption>
+  <figcaption id="score-cap">4part, for 48 tracks, 9:53. Markings above the notes are from the MIDI file. The line under the basses is my own timeline, January 2025 to January 2027.<br><a class="play" href="audio/piece.m4a">Listen</a></figcaption>
 </figure>
 
 <div class="journey">
@@ -227,14 +238,14 @@ footer { border-top: 1px solid #000; margin-top: 2rem; padding-top: 1rem; font-s
 <section class="station " id="writing" data-f="0.4000" aria-labelledby="writing-h">
   <p class="when">November 2025 to April 2026</p>
   <div><h2 id="writing-h">Writing 4part</h2>
-  <p>4part is called that because it has four parts. It’s my take on the hero’s journey. I wrote it from late last year to this spring in MuseScore and produced it in Logic Pro: 48 tracks, including eleven woodwind parts with a bass oboe, six horns, harp, piano and two synths.</p>
-  <p>I named the parts after a training run, since the two stories line up closely. Part III is the local minimum: the quietest stretch of the piece, three instruments at 60 beats a minute, before the motifs from earlier come back in Part IV.</p></div>
+  <p>4part is called that because it has four parts. It’s my take on the hero’s journey. I wrote it from late last year to this spring in MuseScore and produced it in Logic Pro. There are 48 tracks, eleven of them woodwinds (one is a bass oboe) and six of them horns.</p>
+  <p>I named the parts after a training run, since the two stories line up closely. Part III is the local minimum. It’s the quietest stretch of the piece, three instruments at 60 beats a minute, and the earlier motifs only come back after it.</p></div>
 </section>
 <section class="station " id="cismap" data-f="" aria-labelledby="cismap-h">
   <p class="when">being built</p>
   <div><h2 id="cismap-h">CIS-MAP</h2>
-  <p>New English-language learners get lost on our campus, where the signs are only in English. CIS-MAP lets them scan a QR code, search for a room in English or Chinese, and see the route drawn on the floor plan.</p>
-  <details><summary>How the routes are made</summary><p>A C++ program precomputes the routes between 53 locations: A* search, a cost that keeps paths away from walls, Laplacian smoothing and Ramer–Douglas–Peucker simplification. The results go into a JSON table, so the page does no pathfinding while someone is using it. Room search is fuzzy, with a language model as a fallback, and there is a Three.js prototype of the building in 3D. It started as a Service as Action project, and I presented it to senior school leadership.</p></details>
+  <p>New English-language learners get lost on our campus, where the signs are only in English. With CIS-MAP they scan a QR code, type a room in English or Chinese, and get the route on the floor plan.</p>
+  <details><summary>How the routes are made</summary><p>A C++ program precomputes the routes between 53 locations with A* search, using a cost that keeps paths away from walls, then smooths and simplifies them. The results go into a JSON table, so the page does no pathfinding while someone is using it. Room search is fuzzy, with a language model as a fallback, and there is a Three.js prototype of the building in 3D. It started as a Service as Action project, and I presented it to senior school leadership.</p></details>
   <p>I’m still building it, moving from the one-floor prototype to the full campus (<a href="https://github.com/worldwiderad/CIS-MAP-V2">code</a>).</p></div>
 </section>
 <section class="station has-side" id="locke" data-f="0.6787" aria-labelledby="locke-h">
@@ -242,7 +253,7 @@ footer { border-top: 1px solid #000; margin-top: 2rem; padding-top: 1rem; font-s
   <div><h2 id="locke-h">Two essays for the John Locke prize</h2>
   <p><a href="https://cztdhwzvmmioaqaeewpz.supabase.co/storage/v1/object/public/essays/submissions/7c67e44e-4b67-4f72-8107-4dcbeecb2ba9/law-1-1780137234064.pdf">The law essay</a> (PDF) asks what would happen to criminal sentencing if judges and legislators accepted determinism.</p>
   <blockquote>“A court that accepts determinism can still decide who to sentence. It can no longer say by how much.”</blockquote>
-  <p><a href="https://cztdhwzvmmioaqaeewpz.supabase.co/storage/v1/object/public/essays/submissions/7c67e44e-4b67-4f72-8107-4dcbeecb2ba9/science%20&amp;%20technology-3-1780201877477.pdf">The science and technology essay</a> (PDF) asks whether we should be polite to ChatGPT. For it I ran a blinded study: 43 students aged 15–19 compared DeepSeek-R1’s answers to 25 pairs of prompts, one written politely and one as a bare command, without knowing which was which.</p>
+  <p><a href="https://cztdhwzvmmioaqaeewpz.supabase.co/storage/v1/object/public/essays/submissions/7c67e44e-4b67-4f72-8107-4dcbeecb2ba9/science%20&amp;%20technology-3-1780201877477.pdf">The science and technology essay</a> (PDF) asks whether we should be polite to ChatGPT. For it I ran a blinded study in which 43 students aged 15–19 compared DeepSeek-R1’s answers to 25 pairs of prompts, one written politely and one as a bare command, without knowing which was which.</p>
   <details><summary>Results</summary><p>62.2% of the votes that weren’t ties went to the answer from the polite prompt (95% CI 55.5–68.9%, 241 votes). The polite answers were 29% longer on average, but length barely tracked preference (r = 0.16). Split by task it looks different: on interpersonal tasks like an apology or a salary negotiation the polite prompt won by a wide margin, and on structured ones like a grading rubric the bare command won. My argument in the essay is that the benefit goes to the person asking, because a polite request makes you say what you want and why.</p></details></div>
   <div class="side"><figure class="lead"><h3>Which prompt raters preferred, task by task</h3><table>
     <thead><tr><th scope="col">Task</th><th scope="col">Lead</th><td></td></tr></thead>
@@ -273,21 +284,21 @@ footer { border-top: 1px solid #000; margin-top: 2rem; padding-top: 1rem; font-s
 <tr class="neg" style="--v:5"><th scope="row">Grading rubric</th><td>−5</td><td class="bar"><i></i></td></tr>
 <tr class="neg" style="--v:8"><th scope="row">Psychology breakdown</th><td>−8</td><td class="bar"><i></i></td></tr>
     </tbody>
-  </table><figcaption>For each task in the politeness essay: raters who preferred the answer to the polite prompt, minus those who preferred the answer to the bare one. The hollow bar is a task I set aside, because its two prompts also changed the user’s role.</figcaption></figure></div>
+  </table><figcaption>Raters who preferred the answer to the polite prompt, minus those who preferred the answer to the bare one, for each task in the politeness essay. The hollow bar is a task I set aside, because its two prompts also changed the user’s role.</figcaption></figure></div>
 
 </section>
 <section class="station " id="other" data-f="0.6800" aria-labelledby="other-h">
   <p class="when">June 2026<br><span class="plan">TMLR, December or January</span></p>
   <div><h2 id="other-h">Modelling the Other</h2>
-  <p>I came to this through folk psychology: the idea that we never know another person directly, we build a model of them and predict from it. I wanted to know whether language models do the same with each other.</p>
-  <p>The question: when a frontier model predicts how a named peer model will behave, does it use evidence about that peer, or a prior tied to who built it, such as whether it came from a US or a Chinese lab? The behaviour I measure is what I call fact-laundering, where a model states a serious negative claim about a named person as fact.</p>
+  <p>I came to this through folk psychology, the idea that we never know another person directly and only ever build a model of them to predict from. I wanted to know whether language models do the same with each other.</p>
+  <p>So when a frontier model predicts how a named peer model will behave, does it use evidence about that peer, or a prior tied to who built it, such as whether it came from a US or a Chinese lab? The behaviour I measure is what I call fact-laundering, where a model states a serious negative claim about a named person as fact.</p>
   <p>I’ve run a pilot. Before pre-registering, I’m putting the design through rounds of blind review by up to 21 model instances and checking every flaw they claim by simulation. I’m the only author; Sungjoo Ha and Min Lin advise.</p>
-  <details><summary>Build 1 and Build 2</summary><p>Build 1 measures what models actually do: sixteen subject models, with every response labelled independently by two judge models. Build 2 shows predictor models a varying number of real responses from a peer, together with an identity label, and asks them to predict its behaviour on a case they haven’t seen. The review rounds stop when one finds nothing that would change what is collected or claimed. I wrote the whole pipeline, from collection across several providers with spend limits to the dual-judge labelling, the prediction runner and the analysis.</p></details></div>
+  <details><summary>Build 1 and Build 2</summary><p>Build 1 measures what models actually do. Sixteen subject models answer, and two judge models label every response independently. Build 2 shows predictor models a varying number of real responses from a peer, together with an identity label, and asks them to predict its behaviour on a case they haven’t seen. The review rounds stop when one finds nothing that would change what is collected or claimed. I wrote the whole pipeline, from collection across several providers with spend limits to the dual-judge labelling, the prediction runner and the analysis.</p></details></div>
 </section>
 <section class="station " id="vps" data-f="0.7387" aria-labelledby="vps-h">
   <p class="when">June to August 2026</p>
   <div><h2 id="vps-h">VPS Veritas</h2>
-  <p>A paid AI consulting internship with a marine fuel testing company: two weeks in person in Singapore, then six weeks remotely from Toronto, twelve hours behind. I built three things and handed each over with its own documentation.</p>
+  <p>A paid AI consulting internship with a marine fuel testing company. I spent two weeks in person in Singapore and six working remotely from Toronto, twelve hours behind. I built three things and handed each over with its own documentation.</p>
   <p>The biggest is an offline-first app for the company’s bunker quantity surveyors. A surveyor records a whole fuel delivery on board a ship with no connection, the office sees it as soon as the device is back online, and the quantity calculations run as the figures go in. It replaced an Excel workbook that the office used to type out again by hand. It runs on Windows and Android, with a database on each device and a cloud API behind it.</p>
   <details><summary>The other two</summary><p>A sales tool the commercial team uses in client meetings, with seven savings calculators tested against the spreadsheets they came from and a generator that writes the full proposal as a Word document. And an analysis pipeline in Python that costed the bids in a freight tender and produced the recommendation.</p></details></div>
 </section>

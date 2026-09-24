@@ -135,3 +135,30 @@ Disputed or left as is:
 
 - **The feature stack** (engrave-in animation, pinned score, sound on scroll, motif playback). Radek asked for this directly.
 - **The polish of the visual system.** Both reviewers read the restrained serif-and-one-accent look as a 2026 AI default, while also calling the concept itself original. The part that reads as most human is the part that is Radek's own: the music, the data, the dates.
+
+## Round 2: journey page after the round 1 fixes
+
+| Reviewer | Framing | Probability |
+|---|---|---|
+| A (Opus) | informed reader | 60% (unchanged) |
+| B (Sonnet) | admissions reader | 8% (from 55%) |
+
+B: "one of the least AI-generated-looking student sites I've seen in 2026". Its remaining flags were the symmetry of the essay blockquote (Radek's own line), the meta description, and pending items that could be read as finished.
+
+B also suggested adding a note saying the site was "built by hand". **Rejected**, because it would be false.
+
+A's remaining case falls into three groups.
+
+1. **Fixed now:**
+   - Seven colon "reveals" rewritten.
+   - Two rhythmic lists of three rewritten.
+   - The caption made plainer.
+   - A curly/straight apostrophe inconsistency fixed.
+   - On the phone, the staff labels no longer float away from their dots. The phone now shows a dated list under the staff, with past items in grey and future ones in blue, so nothing pending looks finished.
+   - The phone group labels no longer sit on white patches.
+2. **Radek's decision, not fixed:**
+   - "Keep one metaphor, not four": the ML part names, the life-as-a-staff with noteheads and ties, the "May 2026, 6:43" clock and the engrave-on-load animation. Radek asked for the interactivity and the ML tie-in directly.
+   - Replace the drawn piano roll with a real page of engraving, plus screenshots of CIS-MAP and the survey app.
+3. **Only Radek can fix this:** the voice. A: "no joke, no aside, no enthusiasm, no failure, no sentence that sounds sixteen". Inventing opinions for him would be fabrication.
+
+A also read the seven-sharps-then-one-flat key signatures as "MIDI noise". The MIDI does change from C# to F at 8:08, so the marking is correct.
