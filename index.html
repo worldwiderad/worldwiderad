@@ -94,8 +94,8 @@ header p { margin: 0.6rem 0 0; max-width: 40rem; }
 .score .cond > span, .score .motif { animation: arrive .35s both; animation-delay: calc(var(--at, 0) * 2.6s); }
 .score .staff .lane, .score .today, .score .months { animation: arrive .6s 2.5s both; }
 
-.pin { position: fixed; top: 0; left: 0; right: 0; z-index: 5; background: #fff; border-bottom: 1px solid #000; padding: 0.55rem 3rem 0.5rem 4vw; transform: translateY(-110%); transition: transform .25s; }
-.pin.show { transform: none; }
+.pin { position: fixed; top: 0; left: 0; right: 0; z-index: 5; background: #fff; border-bottom: 1px solid #000; padding: 0.55rem 3rem 0.5rem 4vw; transform: translateY(-110%); visibility: hidden; transition: transform .25s, visibility 0s .25s; }
+.pin.show { transform: none; visibility: visible; transition: transform .25s; }
 .pin .inner { max-width: 80rem; display: grid; grid-template-columns: 9.5rem 1fr; }
 .pin .what { font-size: 0.8rem; line-height: 1.25; padding-right: 0.8rem; }
 .pin .what b { display: block; font-weight: 600; }
@@ -114,7 +114,7 @@ header p { margin: 0.6rem 0 0; max-width: 40rem; }
 .pin .ctl { font-size: 0.78rem; margin-top: 0.3rem; display: flex; gap: 1.2rem; }
 .pin .ctl button { font: inherit; background: none; border: 0; padding: 0; text-decoration: underline; cursor: pointer; }
 
-.station { display: grid; grid-template-columns: 9.5rem minmax(0, 36rem); column-gap: 2.5rem; padding: 2.6rem 0 3rem; }
+.station { scroll-margin-top: 9.5rem; display: grid; grid-template-columns: 9.5rem minmax(0, 36rem); column-gap: 2.5rem; padding: 2.6rem 0 3rem; }
 .station.has-side { grid-template-columns: 9.5rem minmax(0, 36rem) minmax(0, 20rem); padding-bottom: 4rem; }
 .station .when { font-style: italic; font-size: 0.95rem; line-height: 1.3; text-align: right; }
 .station.ahead .when, .station.ahead h2 { color: #2340a8; }
@@ -150,7 +150,7 @@ footer { border-top: 1px solid #000; margin-top: 2rem; padding-top: 1rem; font-s
   .pin { transition: none; }
 }
 
-@media (max-width: 900px) {
+@media (max-width: 1150px) {
   .page { padding: 1.5rem 1.1rem 3rem; }
   header { display: block; }
   header p { font-size: 0.95rem; }
@@ -197,7 +197,7 @@ footer { border-top: 1px solid #000; margin-top: 2rem; padding-top: 1rem; font-s
  <div class="inner">
   <div class="what"><b>Radek Green</b><span id="where">2025</span></div>
   <div class="bar">
-   <div class="notes"><img src="/static/score/piece.svg" alt=""><img class="played" alt=""></div>
+   <div class="notes"><img src="/static/score/piece.svg" alt=""></div>
    <div class="mini"><div class="lane"><span class="dot " style="left:15.33%"></span><span class="lab" style="left:15.93%">World Scholar’s Cup, Singapore</span><span class="dot " style="left:32.53%"></span><span class="lab" style="left:33.13%">Bangkok</span><span class="dot " style="left:40.67%"></span><span class="lab" style="left:41.27%">Yale</span><span class="dot " style="left:67.87%"></span><span class="tie" style="left:67.87%;width:16.40%"></span><span class="dot open" style="left:84.27%"></span><span class="lab end" style="right:32.73%">Locke essays sent</span><span class="lab plan" style="left:84.87%">results 3 Oct</span></div><div class="lane"><span class="span" style="left:40.00%;width:23.87%"></span><span class="lab" style="left:40.00%">writing 4part</span><span class="dot " style="left:68.00%"></span><span class="tie" style="left:68.00%;width:24.00%"></span><span class="span hatch plan" style="left:92.00%;width:8.00%"></span><span class="lab" style="left:72.10%">research question</span><span class="lab end plan" style="right:0.60%">to TMLR</span></div><div class="lane"><span class="span" style="left:68.00%;width:12.00%"></span><span class="lab end" style="right:32.60%">VPS Veritas</span><span class="dot open" style="left:83.60%"></span><span class="span plan" style="left:90.40%;width:2.67%"></span><span class="lab end plan" style="right:10.20%">hackathon</span></div><a href="#wsc" style="--l:0;left:calc(15.33% - 8px);width:16px" aria-label="World Scholar’s Cup"></a><a href="#writing" style="--l:1;left:calc(40.00% - 8px);width:16px" aria-label="Writing 4part"></a><a href="#locke" style="--l:0;left:calc(67.87% - 8px);width:16px" aria-label="Two essays for the John Locke prize"></a><a href="#other" style="--l:1;left:calc(68.00% - 8px);width:16px" aria-label="Modelling the Other"></a><a href="#vps" style="--l:2;left:calc(68.00% - 8px);width:16px" aria-label="VPS Veritas"></a><a href="#hack" style="--l:2;left:calc(90.40% - 8px);width:16px" aria-label="gvhackathon.com"></a></div>
    <div class="ph"></div><div class="today2"></div>
    <div class="ctl"><button type="button" class="snd" >Sound on scroll: off</button><button type="button" class="lis">Listen</button></div>
@@ -216,11 +216,9 @@ footer { border-top: 1px solid #000; margin-top: 2rem; padding-top: 1rem; font-s
 <main>
 <figure class="score" aria-labelledby="score-cap">
   <div class="row cond" aria-hidden="true"><span class="clef"></span><span class="part" style="--at:0.000;left:0.00%">I <em>Initialisation</em></span><span class="part" style="--at:0.167;left:16.74%">II <em>Descent</em></span><span class="part" style="--at:0.442;left:44.24%">III <em>Local minimum</em></span><span class="part" style="--at:0.628;left:62.83%">IV <em>Convergence</em></span><span class="tempo" style="--at:0.000;left:0.00%"><b class="gl"></b> = 100</span><span class="tempo" style="--at:0.442;left:44.24%"><b class="gl"></b> = 60</span><span class="tempo" style="--at:0.594;left:59.41%"><b class="gl"></b> = 80</span><span class="tempo burst" style="--at:0.042;left:4.15%;width:1.26%"><b class="gl"></b> = 160</span><span class="sig" style="--at:0.000;left:0.00%"><b class="ts"><span></span><span></span></b></span><span class="sig" style="--at:0.167;left:16.74%"><i style="--y:4"></i><i style="--y:7"></i><i style="--y:3"></i></span><span class="sig" style="--at:0.281;left:28.06%"><i style="--y:8"></i><i style="--y:5"></i></span><span class="sig" style="--at:0.442;left:44.24%"><b class="ts"><span></span><span></span></b></span><span class="sig" style="--at:0.488;left:48.79%"><i style="--y:4"></i></span><span class="sig" style="--at:0.549;left:54.86%"><i style="--y:4"></i><i style="--y:7"></i></span><span class="sig" style="--at:0.628;left:62.83%"><i style="--y:8"></i><i style="--y:5"></i><b class="ts"><span></span><span></span></b></span><span class="sig" style="--at:0.685;left:68.51%"><i style="--y:4"></i><i style="--y:7"></i><i style="--y:3"></i></span><span class="sig" style="--at:0.772;left:77.24%"><i style="--y:8"></i><i style="--y:5"></i><i style="--y:9"></i><i style="--y:6"></i><i style="--y:3"></i><i style="--y:7"></i><i style="--y:4"></i></span><span class="sig" style="--at:0.823;left:82.30%"><i style="--y:4"></i></span><span class="sig" style="--at:0.975;left:97.47%"><b class="ts"><span></span><span></span></b></span></div>
-  <div class="row motifs"><button class="motif" data-m="run" data-from="8.5" data-to="526" style="--at:0.014;left:1.43%;width:0.76%"><span>scale run</span></button><button class="motif" data-m="call" data-from="50.2" data-to="176.8" style="--at:0.085;left:8.51%;width:1.26%"><span>horn call</span></button><button class="motif" data-m="rock" data-from="99.3" data-to="178" style="--at:0.167;left:16.74%;width:2.14%"><span>rocking figure</span></button><button class="motif" data-m="call" data-from="176.8" data-to="" style="--at:0.298;left:29.80%;width:2.90%"><span>horn call again</span></button><button class="motif" data-m="arp" data-from="479.2" data-to="527" style="--at:0.808;left:80.82%;width:1.10%"><span>arpeggio</span></button><button class="motif" data-m="all" data-from="525.5" data-to="" style="--at:0.887;left:88.65%;width:3.37%"><span>run, call and arpeggio</span></button></div>
+  <div class="row motifs"><button hidden class="motif" data-m="run" data-from="8.5" data-to="526" style="--at:0.014;left:1.43%;width:0.76%"><span>scale run</span></button><button hidden class="motif" data-m="call" data-from="50.2" data-to="176.8" style="--at:0.085;left:8.51%;width:1.26%"><span>horn call</span></button><button hidden class="motif" data-m="rock" data-from="99.3" data-to="178" style="--at:0.167;left:16.74%;width:2.14%"><span>rocking figure</span></button><button hidden class="motif" data-m="call" data-from="176.8" data-to="" style="--at:0.298;left:29.80%;width:2.90%"><span>horn call again</span></button><button hidden class="motif" data-m="arp" data-from="479.2" data-to="527" style="--at:0.808;left:80.82%;width:1.10%"><span>arpeggio</span></button><button hidden class="motif" data-m="all" data-from="525.5" data-to="" style="--at:0.887;left:88.65%;width:3.37%"><span>run, call and arpeggio</span></button></div>
   <div class="row system" role="img" aria-label="Every note of the piece, instrument by instrument, in score order">
     <img class="base" src="/static/score/piece.svg" alt="">
-    <img class="played" alt="">
-    <img class="hl" data-m="run" alt=""><img class="hl" data-m="call" alt=""><img class="hl" data-m="rock" alt=""><img class="hl" data-m="arp" alt="">
     <div class="groups" aria-hidden="true"><span style="top:0.0%;height:20.2%">Woodwinds</span><span style="top:22.6%;height:11.0%">Horns</span><span style="top:36.0%;height:18.3%">Trumpets, trombones, tubas</span><span style="top:56.7%;height:18.3%">Percussion</span><span style="top:77.4%;height:11.0%">Harp, synth, piano</span><span style="top:90.8%;height:9.2%">Strings</span></div>
   </div>
   <div class="row ruler" aria-hidden="true"><span style="left:0.00%">0:00</span><span style="left:20.23%">2:00</span><span style="left:40.45%">4:00</span><span style="left:60.68%">6:00</span><span style="left:80.90%">8:00</span></div>
@@ -258,9 +256,9 @@ footer { border-top: 1px solid #000; margin-top: 2rem; padding-top: 1rem; font-s
 <section class="station has-side" id="locke" data-f="0.6787" aria-labelledby="locke-h">
   <p class="when">end of May 2026<br><span class="plan">results 3 October</span></p>
   <div><h2 id="locke-h">Two essays for the John Locke prize</h2>
-  <p><a href="https://cztdhwzvmmioaqaeewpz.supabase.co/storage/v1/object/public/essays/submissions/7c67e44e-4b67-4f72-8107-4dcbeecb2ba9/law-1-1780137234064.pdf">The law essay</a> (PDF) asks what would happen to criminal sentencing if judges and legislators accepted determinism.</p>
+  <p><a href="/static/essays/determinism-and-sentencing.pdf">The law essay</a> (PDF) asks what would happen to criminal sentencing if judges and legislators accepted determinism.</p>
   <blockquote>“A court that accepts determinism can still decide who to sentence. It can no longer say by how much.”</blockquote>
-  <p><a href="https://cztdhwzvmmioaqaeewpz.supabase.co/storage/v1/object/public/essays/submissions/7c67e44e-4b67-4f72-8107-4dcbeecb2ba9/science%20&amp;%20technology-3-1780201877477.pdf">The science and technology essay</a> (PDF) asks whether we should be polite to ChatGPT. For it I ran a blinded study in which 43 students aged 15–19 compared DeepSeek-R1’s answers to 25 pairs of prompts, one written politely and one as a bare command, without knowing which was which.</p>
+  <p><a href="/static/essays/polite-to-chatgpt.pdf">The science and technology essay</a> (PDF) asks whether we should be polite to ChatGPT. For it I ran a blinded study in which 43 students aged 15–19 compared DeepSeek-R1’s answers to 25 pairs of prompts, one written politely and one as a bare command, without knowing which was which.</p>
   <details><summary>Results</summary><p>62.2% of the votes that weren’t ties went to the answer from the polite prompt (95% CI 55.5–68.9%, 241 votes). The polite answers were 29% longer on average, but length barely tracked preference (r = 0.16). Split by task it looks different: on interpersonal tasks like an apology or a salary negotiation the polite prompt won by a wide margin, and on structured ones like a grading rubric the bare command won. My argument in the essay is that the benefit goes to the person asking, because a polite request makes you say what you want and why.</p><p>I noticed one mistake only after sending it in. Footnote 10 says the medical diagnosis task was left out of the 62.2%, but the task-by-task numbers only add up to 62.2% if it’s counted. I wrote that footnote, so there’s nobody else to blame.</p></details></div>
   <div class="side"><figure class="lead"><h3>Which prompt raters preferred, task by task</h3><table>
     <thead><tr><th scope="col">Task</th><th scope="col">Lead</th><td></td></tr></thead>
@@ -322,7 +320,7 @@ footer { border-top: 1px solid #000; margin-top: 2rem; padding-top: 1rem; font-s
 <section class="station ahead" id="coda" data-f="1.0000" aria-labelledby="coda-h">
   <p class="when">2027</p>
   <div><h2 id="coda-h">Next</h2>
-  <p>From 8:45 the whole orchestra comes back in, and the scale run, the horn call and the arpeggio return together. <button class="hear" type="button" data-from="525.5">Hear the ending</button></p>
+  <p>From 8:45 the whole orchestra comes back in, and the scale run, the horn call and the arpeggio return together. <button hidden class="hear" type="button" data-from="525.5">Hear the ending</button></p>
   <p>Next is a multi-movement symphony that can be played live. My MYP Personal Project was a symphony in one movement, rated Excellent. More recordings are on <a href="https://soundcloud.com/radekgreen">SoundCloud</a>, and I’m at <a href="mailto:radoslawgreen@gmail.com">radoslawgreen@gmail.com</a>.</p></div>
 </section>
 </div>
@@ -335,6 +333,10 @@ var fig = document.querySelector('.score'), sys = fig.querySelector('.system'), 
 var link = fig.querySelector('a.play'), btn = document.createElement('button');
 var audio, stopAt = null, then = null, soundOnScroll = false, following = false;
 btn.className = 'play'; btn.type = 'button'; btn.textContent = 'Listen (9:53)'; link.replaceWith(btn);
+[sys, pin.querySelector('.notes')].forEach(function (el) { var i = new Image(); i.className = 'played'; i.alt = ''; el.insertBefore(i, el.children[1] || null); });
+['run', 'call', 'rock', 'arp'].forEach(function (m) { var i = new Image(); i.className = 'hl'; i.alt = ''; i.dataset.m = m; sys.insertBefore(i, sys.querySelector('.groups')); });
+document.querySelectorAll('.motif, .hear').forEach(function (b) { b.hidden = false; });
+fig.querySelectorAll('.motif').forEach(function (b) { b.setAttribute('aria-pressed', 'false'); });
 
 function load() {
   if (audio) return;
@@ -349,13 +351,17 @@ function load() {
     }
   });
   audio.addEventListener('play', function () { btn.textContent = 'Pause'; pin.querySelector('.lis').textContent = 'Pause'; });
-  audio.addEventListener('pause', function () { btn.textContent = 'Resume'; pin.querySelector('.lis').textContent = 'Resume'; following = false; });
-  audio.addEventListener('error', function () { btn.textContent = "The recording didn't load"; });
+  audio.addEventListener('pause', function () { btn.textContent = 'Resume'; pin.querySelector('.lis').textContent = 'Resume'; following = false; clearMotif(); });
+  audio.addEventListener('error', function () { btn.textContent = pin.querySelector('.lis').textContent = "The recording didn't load"; });
 }
 var fadeTimer;
 function play(t, secs) {
   load(); clearInterval(fadeTimer); audio.volume = 1;
-  audio.currentTime = t; stopAt = secs ? t + secs : null; then = null; audio.play();
+  audio.currentTime = t; stopAt = secs ? t + secs : null; then = null; start();
+}
+function start() {
+  var p = audio.play();
+  if (p && p.catch) p.catch(function () {});
 }
 function fadeOut() {
   stopAt = null; clearInterval(fadeTimer);
@@ -384,6 +390,7 @@ function onScroll() {
     if (top <= line) prev = { el: s, top: top, f: sf };
     else if (!next) next = { el: s, top: top, f: sf };
   });
+  if (innerHeight + scrollY >= document.documentElement.scrollHeight - 2) { var end = stations[stations.length - 1]; prev = { el: end, f: +end.dataset.f }; next = null; }
   if (prev && next) f = prev.f + (next.f - prev.f) * Math.max(0, Math.min(1, ((line - prev.top) / (next.top - prev.top) - 0.5) * 2));
   else if (prev) f = prev.f;
   if (heroGone || prev) setF(f);
@@ -398,13 +405,13 @@ addEventListener('scroll', function () { if (!ticking) { ticking = true; request
 onScroll();
 btn.addEventListener('click', function () {
   load();
-  if (audio.paused) { following = true; stopAt = null; audio.play(); } else audio.pause();
+  if (audio.paused) { clearInterval(fadeTimer); audio.volume = 1; following = true; stopAt = null; start(); } else audio.pause();
 });
 pin.querySelector('.lis').addEventListener('click', function () { btn.click(); });
 pin.querySelector('.snd').addEventListener('click', function () {
   soundOnScroll = !soundOnScroll;
   this.textContent = 'Sound on scroll: ' + (soundOnScroll ? 'on' : 'off');
-  if (soundOnScroll) { load(); if (current) play(+getComputedStyle(document.documentElement).getPropertyValue('--f') * LEN, 8); }
+  if (soundOnScroll) { load(); if (current && audio.paused) play(+getComputedStyle(document.documentElement).getPropertyValue('--f') * LEN, 8); }
   else if (audio) fadeOut();
 });
 sys.addEventListener('click', function (e) {
@@ -414,6 +421,10 @@ document.querySelectorAll('.hear').forEach(function (b) {
   b.addEventListener('click', function () { following = true; play(+b.dataset.from, 30); });
 });
 fig.querySelectorAll('.hl').forEach(function (img) { img.dataset.src = '/static/score/motif-' + img.dataset.m + '.svg'; });
+function clearMotif() {
+  fig.querySelectorAll('.motif').forEach(function (o) { o.classList.remove('on'); o.setAttribute('aria-pressed', 'false'); });
+  show(null);
+}
 function show(m) {
   fig.querySelectorAll('.hl').forEach(function (img) {
     var on = m === 'all' ? img.dataset.m !== 'rock' : img.dataset.m === m;
@@ -428,7 +439,8 @@ fig.querySelectorAll('.motif').forEach(function (b) {
   b.addEventListener('mouseleave', function () { if (!b.classList.contains('on')) show(null); });
   b.addEventListener('blur', function () { if (!b.classList.contains('on')) show(null); });
   b.addEventListener('click', function () {
-    fig.querySelectorAll('.motif').forEach(function (o) { o.classList.toggle('on', o === b); });
+    if (b.classList.contains('on')) { clearMotif(); if (audio) fadeOut(); return; }
+    fig.querySelectorAll('.motif').forEach(function (o) { o.classList.toggle('on', o === b); o.setAttribute('aria-pressed', o === b); });
     show(b.dataset.m); following = true;
     var from = +b.dataset.from, to = b.dataset.to;
     play(from, to ? 7 : 22); then = to ? +to : null;

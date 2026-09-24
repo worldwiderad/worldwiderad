@@ -162,3 +162,45 @@ A's remaining case falls into three groups.
 3. **Only Radek can fix this:** the voice. A: "no joke, no aside, no enthusiasm, no failure, no sentence that sounds sixteen". Inventing opinions for him would be fabrication.
 
 A also read the seven-sharps-then-one-flat key signatures as "MIDI noise". The MIDI does change from C# to F at 8:08, so the marking is correct.
+
+## Round 3: production pages (`/index.html` and `/cv/`), 24 September 2026
+
+This round ran on the built site (a local GitHub Pages build served over HTTP) with two fresh reviewers. Reviewer A saw only the review pack: screenshots, text and HTML for both pages, plus the CV printed to A4. The question was the usual one. Reviewer B was a pre-launch QA check against the brief's hard requirements (accessibility, 360 px, no JS, no third-party requests, print, privacy, facts), and could drive the local site in Playwright.
+
+| Reviewer | Framing | Result |
+|---|---|---|
+| A (Opus) | informed reader | 55% |
+| B (Opus) | pre-launch QA | 7 should-fix, 9 nits |
+
+Self-checks before the round: the copy check leaves only accepted flags; axe finds 0 violations on both pages at 360 and 1440; no horizontal scroll; the preserved-path script passes against the local build.
+
+Fixed:
+
+| Finding | Raised by | Change |
+|---|---|---|
+| The Locke and Modelling the Other links in the pinned bar overlap, so Locke can't be clicked | A, B | Each link covers its own lane of the mini timeline and is 16 px wide. VPS starts at its bar |
+| Hidden pinned bar is still in the tab order, focused off-screen | B | `visibility: hidden` while it is out of view |
+| A motif highlight can't be turned off | B | A second click turns it off and fades the clip. The highlight clears on pause. `aria-pressed` added |
+| A jump from the pinned bar hides the heading under the bar | B | `scroll-margin-top` on stations |
+| Labels overlap between 901 and ~1150 px | B | Phone layout up to 1150 px |
+| Essay PDFs hosted in a third-party storage bucket | B | Copied byte for byte to `/static/essays/` (checked: the covers carry only the prompt) |
+| Motif and "Hear the ending" buttons do nothing without JS | B | `hidden` in the HTML, shown by the script |
+| Fade could pause a new playback; sound-on-scroll cut a full listen to 8 s; unhandled `play()` promise | B | Fade cleared on Listen; sound-on-scroll leaves a playing track alone; `.catch` added |
+| The two Listen buttons disagreed after a pause; the error message only on one | A, B | Both say "Resume"; both show the error |
+| `<img>` elements without `src` | B | Score overlays created by the script |
+| Stray `.score.on` and `.station.now` code; two phone media blocks | A | Removed; one media block |
+| The last station ("Next") could not reach the trigger line | found while fixing | Reaching the bottom of the page selects it |
+| "from late last year to this spring" will go stale | A | Cut; the dates are in the margin |
+| Blue never explained | A | The caption says blue is what hasn't happened yet |
+| "its own" four times | A | Two removed |
+| "writing 4part" label before its bar | A | Above it |
+| CV: "2026 to 2028" beside 2025 school results; hackathon under "Software"; "15 to 19" vs "15–19"; repo and SoundCloud URLs lost in print; no OG tags | A, B | "class of 2028"; "Projects"; en dash; URLs printed; OG tags |
+| Footnote 10 of the politeness essay says the medical task was left out of the 62.2%, but the figures only add up with it counted | A, B | This is in the published essay, so the numbers stay as printed. Radek asked for a short note owning it, in the Results section |
+
+Left as is:
+
+- **The pull quote's antithesis.** It is Radek's sentence from the essay (kept in round 2 for the same reason).
+- **The even register of the prose, and the notation conceit carried through every element.** Reviewer A's 55% rests mostly on these. The voice is Radek's next step. The conceit is what he asked for.
+- **Scrolling while paused moves the playhead.** Scroll drives the playhead whenever the piece isn't playing; that is the design.
+- **The fixed "today".** `_planning/UPDATING.md` covers how to move it.
+- **"working remotely from Toronto".** A city, not a neighbourhood, so it is within the brief. Flagged to Radek.
