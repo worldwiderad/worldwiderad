@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Radek Green</title>
-<meta name="description" content="Research, essays, software and orchestral music by Radek Green, an IB Diploma student in Singapore, with links to the work itself.">
+<meta name="description" content="I’m Radek Green, an IB Diploma student in Singapore. This page lists what I’m working on and links to each piece of work.">
 <style>
 @font-face { font-family: Petrona; src: url(fonts/petrona.woff2) format("woff2"); font-weight: 100 900; font-display: swap; }
 @font-face { font-family: Petrona; src: url(fonts/petrona-italic.woff2) format("woff2"); font-weight: 100 900; font-style: italic; font-display: swap; }
@@ -17,12 +17,11 @@ a:visited { text-decoration-color: #999; }
 a:focus-visible { outline: 2px solid #000; outline-offset: 3px; }
 
 .page { max-width: 60rem; padding: 3rem 2rem 4rem 8vw; }
-header { display: flex; justify-content: space-between; gap: 3rem; margin-bottom: 2.5rem; }
+header { display: grid; grid-template-columns: minmax(0, 34rem) 20rem; column-gap: 4.5rem; margin-bottom: 2.5rem; }
 h1 { font-size: 2rem; font-weight: 600; line-height: 1.1; margin: 0 0 0.5rem; }
 header p { margin: 0; max-width: 32rem; }
-.links { width: 20rem; flex-shrink: 0; }
+.links { margin-top: 0.4rem; }
 .links a { margin-right: 1rem; }
-.links span { display: block; margin-top: 0.3rem; color: #555; }
 
 main { display: grid; grid-template-columns: minmax(0, 34rem) 20rem; column-gap: 4.5rem; align-items: start; }
 section { grid-column: 1; margin-bottom: 1.6rem; }
@@ -45,7 +44,7 @@ figcaption { margin-top: 0.7rem; color: #333; }
 @media (max-width: 1080px) {
   .page { padding: 1.6rem 1.25rem 3rem; }
   header { display: block; margin-bottom: 2rem; }
-  .links { width: auto; margin-top: 0.8rem; }
+  .links { margin-top: 0.8rem; }
   main { display: block; }
   figure { margin-top: 2rem; font-size: 0.82rem; }
 }
@@ -66,35 +65,34 @@ figcaption { margin-top: 0.7rem; color: #333; }
     <a href="/cv/">CV</a>
     <a href="https://github.com/worldwiderad">GitHub</a>
     <a href="https://soundcloud.com/radekgreen">SoundCloud</a>
-    <span>Singapore, and Toronto in the summer</span>
   </p>
 </header>
 
 <main>
 <section>
   <h2>Modelling the Other</h2>
-  <p>In June 2026 I started asking how one language model predicts another. Told the name of a peer model, does it use evidence about how that peer behaves, or a prior about where the peer was built, such as the US or China? I’m writing the paper alone and aiming it at TMLR.</p>
-  <p>A pilot has run. The design is now under review, and I’ll pre-register the study before submitting in December or January.</p>
+  <p>This started in June 2026 with a question about language models. When one model predicts how a named peer will behave, is it using evidence about that peer, or a prior about where the peer was built, such as the US or China? I’m the only author, and I’m aiming the paper at TMLR.</p>
+  <p>I’ve run a pilot. Before pre-registering, I’m putting the design through rounds of blind review by up to 21 model instances and checking every flaw they claim by simulation. Submission is planned for December or January.</p>
 </section>
 
 <section>
   <h2>Essays for the John Locke prize, 2026</h2>
-  <p>I entered two. <a href="https://cztdhwzvmmioaqaeewpz.supabase.co/storage/v1/object/public/essays/submissions/7c67e44e-4b67-4f72-8107-4dcbeecb2ba9/law-1-1780137234064.pdf">The law essay</a> (PDF) argues that a court which accepted determinism “can still decide who to sentence. It can no longer say by how much.” <a href="https://cztdhwzvmmioaqaeewpz.supabase.co/storage/v1/object/public/essays/submissions/7c67e44e-4b67-4f72-8107-4dcbeecb2ba9/science%20&amp;%20technology-3-1780201877477.pdf">The other one</a> (PDF) asks whether we should be polite to ChatGPT; for it I ran a blinded study with 43 student raters. Results are announced on 3 October.</p>
+  <p>I entered two. <a href="https://cztdhwzvmmioaqaeewpz.supabase.co/storage/v1/object/public/essays/submissions/7c67e44e-4b67-4f72-8107-4dcbeecb2ba9/law-1-1780137234064.pdf">The law essay</a> (PDF) asks what would happen to criminal sentencing if judges accepted determinism, and part of its answer is that “irrationality is also a safeguard.” For <a href="https://cztdhwzvmmioaqaeewpz.supabase.co/storage/v1/object/public/essays/submissions/7c67e44e-4b67-4f72-8107-4dcbeecb2ba9/science%20&amp;%20technology-3-1780201877477.pdf">the science and technology essay</a> (PDF), on whether we should be polite to ChatGPT, I ran a blinded study with 43 student raters. Results come out on 3 October.</p>
 </section>
 
 <section>
   <h2>Orchestral music</h2>
-  <p>I write for orchestra, sometimes with synths and never with lyrics. My MYP Personal Project was a single-movement symphony, rated Excellent. My largest piece runs about ten minutes over 49 tracks, six of them horns. Next is a multi-movement symphony I want to hear played live. <a href="https://soundcloud.com/radekgreen">Recordings are on SoundCloud.</a></p>
+  <p>I compose in MuseScore and produce in Logic Pro, mostly for orchestra, occasionally with synths. My MYP Personal Project was a symphony in one movement, rated Excellent. The biggest thing I’ve written is about ten minutes long and runs to 49 tracks: eleven woodwind parts including bass oboe and bass clarinet, sixteen brass including six horns, strings, percussion, harp, piano and synth. I’m working towards a multi-movement symphony that can be played live. Recordings are on <a href="https://soundcloud.com/radekgreen">SoundCloud</a>.</p>
 </section>
 
 <section>
   <h2><a href="https://gvhackathon.com">gvhackathon.com</a></h2>
-  <p>Our school’s AI and computer science hackathon runs from 19 November to 9 December, with two divisions and US$3,000 in prizes. I co-lead it with our CS teacher and wrote the competition platform on my own. Getting the event a week to itself took some negotiating with school leadership and an outside vendor.</p>
+  <p>I wrote the competition platform for our school’s AI and computer science hackathon and co-lead the event with our CS teacher. It opens on 19 November with two divisions and US$3,000 in prizes; the closing ceremony is on 9 December. I also negotiated with school leadership and an outside vendor so the event got its own week.</p>
 </section>
 
 <section>
   <h2>CIS-MAP</h2>
-  <p>New English-language learners get lost on our campus, where the signs are only in English. CIS-MAP lets them search for a room in English or Chinese and draws the route on the floor plan. A C++ program works out the routes between 53 locations ahead of time. It’s still a prototype (<a href="https://github.com/worldwiderad/CIS-MAP-V2">code</a>).</p>
+  <p>A room finder for students new to English, whose signs are only in English: search in English or Chinese and the route appears on the floor plan, precomputed in C++ for 53 locations. It’s a prototype (<a href="https://github.com/worldwiderad/CIS-MAP-V2">code</a>).</p>
 </section>
 
 <figure>
@@ -105,7 +103,7 @@ figcaption { margin-top: 0.7rem; color: #333; }
 <tr style="--v:10"><th scope="row">Missed deadline</th><td>+10</td><td class="bar"><i></i></td></tr>
 <tr style="--v:9"><th scope="row">Apology</th><td>+9</td><td class="bar"><i></i></td></tr>
 <tr style="--v:9"><th scope="row">Diet plan</th><td>+9</td><td class="bar"><i></i></td></tr>
-<tr style="--v:6"><th scope="row">Child's explanation</th><td>+6</td><td class="bar"><i></i></td></tr>
+<tr style="--v:6"><th scope="row">Child’s explanation</th><td>+6</td><td class="bar"><i></i></td></tr>
 <tr style="--v:6"><th scope="row">Tech support</th><td>+6</td><td class="bar"><i></i></td></tr>
 <tr style="--v:6"><th scope="row">LinkedIn bio</th><td>+6</td><td class="bar"><i></i></td></tr>
 <tr style="--v:6"><th scope="row">Scientific analogy</th><td>+6</td><td class="bar"><i></i></td></tr>
@@ -129,7 +127,7 @@ figcaption { margin-top: 0.7rem; color: #333; }
 <tr class="neg" style="--v:8"><th scope="row">Psychology breakdown</th><td>−8</td><td class="bar"><i></i></td></tr>
     </tbody>
   </table>
-  <figcaption>From the politeness essay. Each bar is the number of raters who preferred the answer to the polite prompt, minus those who preferred the answer to the bare one. I grouped the tasks only after seeing the results: the polite prompt did best on interpersonal tasks like the missed-deadline email, and the bare one on structured tasks like the grading rubric. The hollow bar is medical diagnosis, left out because its two prompts also changed who the user was.</figcaption>
+  <figcaption>For each task in the politeness essay: raters who preferred the answer to the polite prompt, minus those who preferred the answer to the bare one. The hollow bar is a task I set aside, because its two prompts also changed the user’s role.</figcaption>
 </figure>
 </main>
 </div>

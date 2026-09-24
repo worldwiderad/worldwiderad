@@ -189,6 +189,31 @@ This list is also `_planning/tools/banned-words.txt`, which `copycheck.py` reads
 
 additionally (opening a sentence), align with, arguably, at the end of the day, at the intersection of, authored, best-in-class, boasts, bolster, commendable, commitment to, comprehensive, core (as an adjective), craft/crafted/crafting, crucial, cultivate, curated, cutting-edge, deep dive, deeply, delve **B**, despite these challenges, dive into, diverse array, driven by, earns its keep, ecosystem, effortless, elevate, embark, embrace, empower, encompass, enduring, enhance, ensure, ever-evolving, evolving landscape, exemplify, experts say, featured in, feel free to, foster, fundamentally, game-changing, garner, genuinely, groundbreaking, harness, here's the thing, highlight (as a verb), holistic, honest caveat, I hope this helps, imagine, importantly **B**, in conclusion, in summary, in the heart of, in today's world, indelible, innovative, interplay, intricate, it's important to note, it's worth noting, journey, key (as an adjective), landscape (abstract), leverage **B**, lifelong, liminal, load-bearing, meaningful, meticulous, modern, multifaceted, myriad, navigate, nestled, notably **B**, nuanced **B**, paradigm, passionate, paving the way, pivotal, plethora, profound, quietly, realm, remarkable, renowned, resonate, revolutionise, rich (abstract), robust **B**, seamless, seam, serves as, showcase, spearhead, stands as, streamline, supercharge, synergy, tapestry **B**, testament, thrilled, transformative, truly, underscore, unleash, unlock, unparalleled, utilise, valuable insights, vibrant, vital, whether you're, world-class.
 
+## R. Found by fresh reviewers on this site's own mockup
+
+None of these came from the literature. Two rounds of blind reviewers found them on the mockup, and they are part of the standard from here on.
+
+- **R1** Every entry built the same way (context, then a number, then who did what, then status), however unrelated the projects. Both reviewers in round 0a rated this the strongest tell.
+- **R2** Entries of near-identical length (four of five within 50–57 words).
+- **R3** A hard number in every single entry, which reads as a rule being followed.
+- **R4** Credit scoped precisely in every entry ("alone", "on my own", "sole").
+- **R5** Clipped declarative beats as openers or closers ("A pilot has run." "It's still a prototype."). Also agentless passives ("is under review").
+- **R6** Compressed, writerly syntax such as fronted participles ("Told the name of a peer model, does it…").
+- **R7** Captions that pre-empt every objection. Careful self-caveating is read as a Claude habit, even when it is honest.
+- **R8** A meta description that sums up the page from outside, in the third person.
+- **R9** Symmetric lines are flagged even inside quotations ("can still… / can no longer…").
+- **R10** Mixed quote styles (one straight apostrophe among curly ones).
+- **R11** Polished prose with no dashes at all can read as deliberate avoidance. The brief's no-em-dash rule stands; the answer is ordinary punctuation used naturally, not a substitute tic.
+
+The positive standard the reviewers agreed on:
+
+- Real URLs and handles, specific numbers, and IB terms used correctly.
+- Headings that don't match each other.
+- The hollow bar for the task that was set aside.
+- Untidy real data.
+
+The unresolved point: both reviewers said the page has facts but no voice. That can only come from Radek.
+
 ## Risks specific to this project
 
 These came from the material itself, not from the literature.

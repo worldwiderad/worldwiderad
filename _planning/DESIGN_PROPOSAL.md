@@ -10,8 +10,8 @@ The site should read like one of Radek's essays, not like a portfolio. It is set
 
 | Decision | Taken from | Why not the usual choice |
 |---|---|---|
-| **Petrona** for everything, one family | Both John Locke essays are set in Petrona (I read the PDFs' font tables) | Readers move from the homepage into the PDFs without a change of voice. Petrona is not on any list of AI-default or "tasteful default" faces (Inter, Geist, Space Grotesk, Instrument Serif, Fraunces, Playfair). It has true old-style figures, which suit running text, and tabular figures for the table |
-| **Black `#000` on white `#fff`**, grey `#555` for status lines, no accent colour | The essays, the result tables and an orchestral score are all black on white. The page also prints as it looks | Avoids cream/terracotta (P1), near-black with an acid accent (P2), tinted `#111` (P5) and every gradient (V1–V3). Pure black is a stated choice (V8) |
+| **Petrona** for everything, one family | Both John Locke essays are set in Petrona (I read the PDFs' font tables) | Readers move from the homepage into the PDFs without a change of voice. Petrona is not on any list of AI-default or "tasteful default" faces (Inter, Geist, Space Grotesk, Instrument Serif, Fraunces, Playfair). Running text keeps Petrona's default figures, as the PDFs do; the table uses its tabular figures so the numbers line up |
+| **Black `#000` on white `#fff`**, grey `#555` only for the location line and the set-aside row, no accent colour | The essays, the result tables and an orchestral score are all black on white. The page also prints as it looks | Avoids cream/terracotta (P1), near-black with an acid accent (P2), tinted `#111` (P5) and every gradient (V1–V3). Pure black is a stated choice (V8) |
 | **One real figure** in place of decoration | Figure 3 of the politeness essay, transcribed exactly: 25 tasks, leads +10 to −8, with the task set aside drawn as a hollow bar. It sits beside the essay entry, not at the top of the page | His data, showing the essay's actual finding (the effect reverses by task type), captioned in the essay's own terms: the groups were assigned after the results. A chart made to decorate would be V21; this one is the evidence itself |
 | **Status written into the prose**, only where there is a real state or date ("A pilot has run. The design is now under review", "Results are announced on 3 October", "It's still a prototype") | The essays qualify every claim ("an illustrative pilot, not a confirmatory test") | The brief requires unfinished work to be labelled unfinished. A sentence does it without pills, badges or dots (L2, M7). The first mockup had a grey status line under every entry, and both fresh reviewers named that identical shape as the strongest tell, so entries now vary in shape and length |
 | **Evidence linked from the words themselves** ("what would happen to criminal sentencing if judges and legislators accepted determinism (PDF)") | The brief: every entry links to its evidence | No "View project →" buttons, no arrows (P5), no icons. Link text says where it goes |
@@ -26,25 +26,25 @@ The site should read like one of Radek's essays, not like a portfolio. It is set
 DESKTOP (≥1080 px)                           PHONE (360 px)
 
 Radek Green                   CV GitHub SoundCloud   Radek Green
-I'm an IB Diploma student …   Singapore, and Toronto I'm an IB Diploma student …
-                              in the summer          CV  GitHub  SoundCloud
-                              ┌ score page, if ┐     Singapore, and Toronto …
+I'm an IB Diploma student …                          I'm an IB Diploma student …
+                              ┌ score page, if ┐     CV  GitHub  SoundCloud
 Modelling the Other           │ Radek sends one│     Modelling the Other
-The question, June 2026.      └────────────────┘     …
-Pilot run; under review.                             Essays for the John Locke …
-                              ┌ figure: lead  ┐      <- first screen ends
-Essays for the John Locke …   │ by task, +10  │      Orchestral music
-The law essay argues … "quote" │ … −8          │      gvhackathon.com
-The other one … 43 raters.    └───────────────┘      CIS-MAP  <- second screen ends
-Orchestral music                                     figure
+The question, June 2026.      └────────────────┘     … (the longest entry)
+Pilot run; blind review of                           Essays for the John Locke …
+the design, then TMLR.        ┌ figure: lead  ┐      <- first screen ends
+                              │ by task, +10  │      Orchestral music
+Essays for the John Locke …   │ … −8          │      gvhackathon.com   <- second screen ends
+"irrationality is also a      └───────────────┘      CIS-MAP (the shortest)
+safeguard." 43 raters.                               figure
+Orchestral music (longer, with instrumentation)
 gvhackathon.com
-CIS-MAP
+CIS-MAP (two lines)
 ```
 
 Below the first screen, still on the homepage (depth for anyone who scrolls, and none of it hidden in accordions):
 
 1. **Modelling the Other** in full: the question as first posed in June 2026; the two builds; the review method (rounds of blind adversarial review by up to 21 model instances, every claimed flaw checked by simulation); what is built (collection harness with spend limits, dual-judge labelling, prediction runner, analysis). Status and dates. Pilot numbers only if you approve them.
-2. **The two essays.** For each: the prompt as printed on its cover, the argument in a few sentences, and one quoted line. Law: "A court that accepts determinism can still decide who to sentence. It can no longer say by how much." Politeness: the study (25 task pairs, 43 raters aged 15 to 19, 62.2% of non-tie votes, 95% CI 55.5 to 68.9%, the length check), all with the PDF's own numbers. Then the process line about the sixteen reviewers. The slot for the result sits here.
+2. **The two essays.** For each: the prompt as printed on its cover, the argument in a few sentences, and one quoted line. Law: "A court that accepts determinism can still decide who to sentence. It can no longer say by how much." (the first screen quotes "irrationality is also a safeguard" instead, because one reviewer found the symmetry of this line LLM-like even as a quotation). Politeness: the study (25 task pairs, 43 raters aged 15 to 19, 62.2% of non-tie votes, 95% CI 55.5 to 68.9%, the length check), all with the PDF's own numbers. Then the process line about the sixteen reviewers. The slot for the result sits here.
 3. **Software.** gvhackathon.com (role, dates, the scheduling negotiation); CIS-MAP (the problem, how the path baker works in two sentences, status); VPS Veritas (only what you confirm); then the smaller builds as a short plain list: the security node, the synthesiser, the vocabulary app, the Claude skills.
 4. **Music** as a composer's works list: title, forces, length, year, status, and a listen control for each. The 49-track piece gets its instrumentation written the way a concert programme would give it, if you send me the parts list.
 5. **Competitions**: World Scholar's Cup results as a small three-row table (year, round, result); club co-lead and the 2026 delegation; the other contests.
