@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" style="--now:83.07%">
+<html lang="en" style="--now:69.02%">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -69,6 +69,7 @@ header p { margin: 0.6rem 0 0; max-width: 40rem; }
 .groups span { position: absolute; right: calc(100% + 0.8rem); width: 8.4rem; display: flex; align-items: center; justify-content: flex-end; text-align: right; font-style: italic; font-size: 0.8rem; line-height: 1.15; border-right: 2px solid #000; padding-right: 0.5rem; box-sizing: border-box; }
 .ruler { height: 1.3rem; font-size: 0.7rem; color: #555; }
 .ruler span { position: absolute; top: 0.2rem; }
+.ruler.months .hide { visibility: hidden; }
 .ruler b { font-weight: 600; color: #000; margin-left: 0.2rem; }
 
 .staff { margin-top: 1.1rem; border-top: 1px solid #000; }
@@ -157,7 +158,6 @@ footer { border-top: 1px solid #000; margin-top: 2rem; padding-top: 1rem; font-s
 @keyframes drain { to { transform: scaleX(0); } }
 @media (max-width: 600px) { .ask { left: 1.1rem; right: 1.1rem; bottom: 1rem; max-width: none; } }
 .evlist { display: none; }
-@media (max-width: 1350px) { .ruler.months span:nth-child(12n+2) { visibility: hidden; } }
 
 @media (prefers-reduced-motion: reduce) {
   .score *, .score .system .base { animation: none !important; }
@@ -226,20 +226,20 @@ footer { border-top: 1px solid #000; margin-top: 2rem; padding-top: 1rem; font-s
   <div class="row ruler" aria-hidden="true"><span style="left:0.00%">0:00</span><span style="left:20.23%">2:00</span><span style="left:40.45%">4:00</span><span style="left:60.68%">6:00</span><span style="left:80.90%">8:00</span></div>
   <div class="row staff">
     <span class="staffname">R. Green,<br>Jan 2025 to Jan 2027</span>
-    <div class="lane"><span class="dot " style="left:15.33%"></span><span class="lab" style="left:15.93%">WSC, Singapore</span><span class="dot " style="left:32.53%"></span><span class="lab" style="left:33.13%">Bangkok</span><span class="dot " style="left:40.67%"></span><span class="lab" style="left:41.27%">Yale</span><span class="dot " style="left:67.87%"></span><span class="tie" style="left:67.87%;width:16.40%"></span><span class="dot open" style="left:84.27%"></span><span class="lab end" style="right:32.73%">Locke essays sent</span><span class="lab plan" style="left:84.87%">results 3 Oct</span></div><div class="lane"><span class="span" style="left:40.00%;width:23.87%"></span><span class="lab" style="left:40.00%">writing 4part</span><span class="dot " style="left:68.00%"></span><span class="tie" style="left:68.00%;width:24.00%"></span><span class="span hatch plan" style="left:92.00%;width:8.00%"></span><span class="lab" style="left:72.10%">research question</span><span class="lab end plan" style="right:0.60%">to TMLR</span></div><div class="lane"><span class="span" style="left:68.00%;width:12.00%"></span><span class="lab end" style="right:32.60%">VPS Veritas</span><span class="dot open" style="left:83.60%"></span><span class="span plan" style="left:90.40%;width:2.67%"></span><span class="lab end plan" style="right:10.20%">hackathon</span></div>
+    <div class="lane"><span class="dot " style="left:9.86%"></span><span class="lab" style="left:10.46%">World Scholar’s Cup</span><span class="dot " style="left:16.63%"></span><span class="dot " style="left:20.04%"></span><span class="dot " style="left:39.64%"></span><span class="tie" style="left:39.64%;width:30.98%"></span><span class="dot open" style="left:70.62%"></span><span class="lab end" style="right:60.96%">Locke essays sent</span><span class="lab plan" style="left:71.22%">results 3 Oct</span></div><div class="lane"><span class="span" style="left:19.57%;width:16.98%"></span><span class="lab" style="left:19.93%">writing 4part</span><span class="dot " style="left:49.30%"></span><span class="tie" style="left:49.30%;width:32.20%"></span><span class="span hatch plan" style="left:81.50%;width:18.50%"></span><span class="lab" style="left:55.63%">research question</span><span class="lab end plan" style="right:0.60%">to TMLR</span></div><div class="lane"><span class="span" style="left:49.30%;width:16.35%"></span><span class="lab end" style="right:51.30%">VPS Veritas</span><span class="dot open" style="left:69.73%"></span><span class="span plan" style="left:78.75%;width:4.58%"></span><span class="lab end plan" style="right:21.85%">hackathon</span></div>
     <div class="today"><span>today</span></div>
   </div>
-  <div class="row ruler months" aria-hidden="true"><span style="left:0.00%">J<b>2025</b></span><span style="left:4.00%">F</span><span style="left:8.00%">M</span><span style="left:12.00%">A</span><span style="left:16.00%">M</span><span style="left:20.00%">J</span><span style="left:24.00%">J</span><span style="left:28.00%">A</span><span style="left:32.00%">S</span><span style="left:36.00%">O</span><span style="left:40.00%">N</span><span style="left:44.00%">D</span><span style="left:48.00%">J<b>2026</b></span><span style="left:52.00%">F</span><span style="left:56.00%">M</span><span style="left:60.00%">A</span><span style="left:64.00%">M</span><span style="left:68.00%">J</span><span style="left:72.00%">J</span><span style="left:76.00%">A</span><span style="left:80.00%">S</span><span style="left:84.00%">O</span><span style="left:88.00%">N</span><span style="left:92.00%">D</span><span style="left:96.00%">J<b>2027</b></span></div>
+  <div class="row ruler months" aria-hidden="true"><span style="left:0.00%">J<b>2025</b></span><span style="left:2.57%" class="hide">F</span><span style="left:5.14%">M</span><span style="left:7.72%">A</span><span style="left:10.12%">M</span><span style="left:11.70%" class="hide">J</span><span style="left:13.27%">J</span><span style="left:14.85%" class="hide">A</span><span style="left:16.42%">S</span><span style="left:17.99%" class="hide">O</span><span style="left:19.57%">N</span><span style="left:22.41%">D</span><span style="left:25.26%">J<b>2026</b></span><span style="left:28.10%" class="hide">F</span><span style="left:30.95%">M</span><span style="left:33.79%">A</span><span style="left:36.64%">M</span><span style="left:49.30%">J</span><span style="left:55.85%">J</span><span style="left:61.25%">A</span><span style="left:65.65%">S</span><span style="left:70.26%">O</span><span style="left:75.57%">N</span><span style="left:81.50%">D</span><span style="left:88.36%">J<b>2027</b></span></div>
   <ol class="evlist"><li><span>26–27 Apr 2025</span> World Scholar’s Cup, Singapore round</li><li><span>5–10 Sep 2025</span> Global round, Bangkok</li><li><span>6–12 Nov 2025</span> Tournament of Champions, Yale</li><li><span>Nov 2025 to Apr 2026</span> writing 4part</li><li><span>end of May 2026</span> Locke essays sent</li><li><span>June 2026</span> research question</li><li><span>Jun to Aug 2026</span> VPS Veritas</li><li class="plan"><span>3 Oct 2026</span> Locke results</li><li class="plan"><span>19 Nov to 9 Dec 2026</span> gvhackathon.com</li><li class="plan"><span>Dec 2026 to Jan 2027</span> paper to TMLR</li></ol>
   <div class="head"></div>
-  <figcaption id="score-cap">4part, for 48 tracks, 9:53. Markings above the notes are from the MIDI file. The line under the basses is my own timeline, January 2025 to January 2027, with what hasn’t happened yet in blue.<br><a class="play" href="/static/audio/4part.m4a">Listen</a></figcaption>
+  <figcaption id="score-cap">4part, for 48 tracks, 9:53. Markings above the notes are from the MIDI file. The line under the basses is my own timeline, January 2025 to January 2027, with what hasn’t happened yet in blue. Its months are stretched and squeezed so that each section below gets about a minute of the music.<br><a class="play" href="/static/audio/4part.m4a">Listen</a></figcaption>
 </figure>
 <div class="pin" role="region" aria-label="Pinned score and timeline">
  <div class="inner">
   <div class="what"><b>Radek Green</b><span id="where">2025</span></div>
   <div class="bar">
    <div class="notes"><img src="/static/score/piece.svg" alt=""></div>
-   <div class="mini"><div class="lane"><span class="dot " style="left:15.33%"></span><span class="lab" style="left:15.93%">WSC, Singapore</span><span class="dot " style="left:32.53%"></span><span class="lab" style="left:33.13%">Bangkok</span><span class="dot " style="left:40.67%"></span><span class="lab" style="left:41.27%">Yale</span><span class="dot " style="left:67.87%"></span><span class="tie" style="left:67.87%;width:16.40%"></span><span class="dot open" style="left:84.27%"></span><span class="lab end" style="right:32.73%">Locke essays sent</span><span class="lab plan" style="left:84.87%">results 3 Oct</span></div><div class="lane"><span class="span" style="left:40.00%;width:23.87%"></span><span class="lab" style="left:40.00%">writing 4part</span><span class="dot " style="left:68.00%"></span><span class="tie" style="left:68.00%;width:24.00%"></span><span class="span hatch plan" style="left:92.00%;width:8.00%"></span><span class="lab" style="left:72.10%">research question</span><span class="lab end plan" style="right:0.60%">to TMLR</span></div><div class="lane"><span class="span" style="left:68.00%;width:12.00%"></span><span class="lab end" style="right:32.60%">VPS Veritas</span><span class="dot open" style="left:83.60%"></span><span class="span plan" style="left:90.40%;width:2.67%"></span><span class="lab end plan" style="right:10.20%">hackathon</span></div><a href="#wsc" style="--l:0;left:calc(15.33% - 8px);width:16px" aria-label="World Scholar’s Cup"></a><a href="#writing" style="--l:1;left:calc(40.00% - 8px);width:16px" aria-label="Writing 4part"></a><a href="#locke" style="--l:0;left:calc(67.87% - 8px);width:16px" aria-label="Two essays for the John Locke prize"></a><a href="#other" style="--l:1;left:calc(68.00% - 8px);width:16px" aria-label="Modelling the Other"></a><a href="#vps" style="--l:2;left:calc(68.00% - 8px);width:16px" aria-label="VPS Veritas"></a><a href="#hack" style="--l:2;left:calc(90.40% - 8px);width:16px" aria-label="gvhackathon.com"></a></div>
+   <div class="mini"><div class="lane"><span class="dot " style="left:9.86%"></span><span class="lab" style="left:10.46%">World Scholar’s Cup</span><span class="dot " style="left:16.63%"></span><span class="dot " style="left:20.04%"></span><span class="dot " style="left:39.64%"></span><span class="tie" style="left:39.64%;width:30.98%"></span><span class="dot open" style="left:70.62%"></span><span class="lab end" style="right:60.96%">Locke essays sent</span><span class="lab plan" style="left:71.22%">results 3 Oct</span></div><div class="lane"><span class="span" style="left:19.57%;width:16.98%"></span><span class="lab" style="left:19.93%">writing 4part</span><span class="dot " style="left:49.30%"></span><span class="tie" style="left:49.30%;width:32.20%"></span><span class="span hatch plan" style="left:81.50%;width:18.50%"></span><span class="lab" style="left:55.63%">research question</span><span class="lab end plan" style="right:0.60%">to TMLR</span></div><div class="lane"><span class="span" style="left:49.30%;width:16.35%"></span><span class="lab end" style="right:51.30%">VPS Veritas</span><span class="dot open" style="left:69.73%"></span><span class="span plan" style="left:78.75%;width:4.58%"></span><span class="lab end plan" style="right:21.85%">hackathon</span></div><a href="#wsc" style="--l:0;left:calc(9.86% - 8px);width:16px" aria-label="World Scholar’s Cup"></a><a href="#writing" style="--l:1;left:calc(19.57% - 8px);width:16px" aria-label="Writing 4part"></a><a href="#locke" style="--l:0;left:calc(39.64% - 8px);width:16px" aria-label="Two essays for the John Locke prize"></a><a href="#other" style="--l:1;left:calc(49.30% - 8px);width:16px" aria-label="Modelling the Other"></a><a href="#vps" style="--l:2;left:calc(49.30% - 8px);width:16px" aria-label="VPS Veritas"></a><a href="#hack" style="--l:2;left:calc(78.75% - 8px);width:16px" aria-label="gvhackathon.com"></a></div>
    <div class="ph"></div><div class="today2"></div>
    <div class="ctl"><button type="button" class="snd" >Sound on scroll: off</button><button type="button" class="lis">Listen</button></div>
   </div>
@@ -247,26 +247,26 @@ footer { border-top: 1px solid #000; margin-top: 2rem; padding-top: 1rem; font-s
 </div>
 
 <div class="journey">
-<section class="station " id="wsc" data-f="0.1533" aria-labelledby="wsc-h">
+<section class="station " id="wsc" data-f="0.0986" aria-labelledby="wsc-h">
   <p class="when">April to November 2025</p>
   <div><h2 id="wsc-h">World Scholar’s Cup</h2>
   <p>Our team came first at the Singapore round in April and first of more than 200 teams at the global round in Bangkok in September, where I placed 16th individually. At the Tournament of Champions at Yale in November we came fifth overall and won the team debate.</p>
   <p>I now co-lead the school’s WSC club. For the 2026 Singapore round I coordinated our delegation of 24 scholars in 8 teams and ran preparation sessions for first-time competitors.</p></div>
 </section>
-<section class="station " id="writing" data-f="0.4000" aria-labelledby="writing-h">
+<section class="station " id="writing" data-f="0.1957" aria-labelledby="writing-h">
   <p class="when">November 2025 to April 2026</p>
   <div><h2 id="writing-h">Writing 4part</h2>
   <p>4part is called that because it has four parts. It’s my take on the hero’s journey. I wrote it in MuseScore and produced it in Logic Pro. There are 48 tracks, eleven of them woodwinds (one is a bass oboe) and six of them horns.</p>
   <p>I named the parts after a training run, since the two stories line up closely. Part III is the local minimum. It comes after the longest silence in the piece and starts with three instruments at 60 beats a minute. The melody the piece ends on first appears after it, in the horns at 6:18.</p></div>
 </section>
-<section class="station " id="cismap" data-f="" aria-labelledby="cismap-h">
+<section class="station " id="cismap" data-f="0.2968" aria-labelledby="cismap-h">
   <p class="when">being built</p>
   <div><h2 id="cismap-h">CIS-MAP</h2>
   <p>New English-language learners get lost on our campus, where the signs are only in English. With CIS-MAP they scan a QR code, type a room in English or Chinese, and get the route on the floor plan.</p>
   <details><summary>How the routes are made</summary><p>A C++ program precomputes the routes between 53 locations with A* search, using a cost that keeps paths away from walls, then smooths and simplifies them. The results go into a JSON table, so the page does no pathfinding while someone is using it. Room search is fuzzy, with a language model as a fallback, and there is a Three.js prototype of the building in 3D. It started as a Service as Action project, and I presented it to senior school leadership.</p></details>
   <p>I’m still building it, moving from the one-floor prototype to the full campus (<a href="https://github.com/worldwiderad/CIS-MAP-V2">code</a>).</p></div>
 </section>
-<section class="station has-side" id="locke" data-f="0.6787" aria-labelledby="locke-h">
+<section class="station has-side" id="locke" data-f="0.3939" aria-labelledby="locke-h">
   <p class="when">end of May 2026<br><span class="plan">results 3 October</span></p>
   <div><h2 id="locke-h">Two essays for the John Locke prize</h2>
   <p><a href="/static/essays/determinism-and-sentencing.pdf">The law essay</a> (PDF) asks what would happen to criminal sentencing if judges and legislators accepted determinism.</p>
@@ -305,7 +305,7 @@ footer { border-top: 1px solid #000; margin-top: 2rem; padding-top: 1rem; font-s
   </table><figcaption>Raters who preferred the answer to the polite prompt, minus those who preferred the answer to the bare one, for each task in the politeness essay. The hollow bar is a task I set aside, because its two prompts also changed the user’s role.</figcaption></figure></div>
 
 </section>
-<section class="station " id="other" data-f="0.6800" aria-labelledby="other-h">
+<section class="station " id="other" data-f="0.4930" aria-labelledby="other-h">
   <p class="when">June 2026<br><span class="plan">TMLR, December or January</span></p>
   <div><h2 id="other-h">Modelling the Other</h2>
   <p>I came to this through folk psychology, the idea that we never know another person directly and only ever build a model of them to predict from. I wanted to know whether language models do the same with each other.</p>
@@ -313,24 +313,24 @@ footer { border-top: 1px solid #000; margin-top: 2rem; padding-top: 1rem; font-s
   <p>I’ve run a pilot. Before pre-registering, I’m putting the design through rounds of blind review by up to 21 model instances and checking every flaw they claim by simulation. I’m the only author; Sungjoo Ha and Min Lin advise.</p>
   <details><summary>Build 1 and Build 2</summary><p>Build 1 measures what models actually do. Sixteen subject models answer, and two judge models label every response independently. Build 2 shows predictor models a varying number of real responses from a peer, together with an identity label, and asks them to predict its behaviour on a case they haven’t seen. The review rounds stop when one finds nothing that would change what is collected or claimed. I wrote the whole pipeline, from collection across several providers with spend limits to the dual-judge labelling, the prediction runner and the analysis.</p></details></div>
 </section>
-<section class="station " id="vps" data-f="0.7387" aria-labelledby="vps-h">
+<section class="station " id="vps" data-f="0.5891" aria-labelledby="vps-h">
   <p class="when">June to August 2026</p>
   <div><h2 id="vps-h">VPS Veritas</h2>
   <p>A paid AI consulting internship with a marine fuel testing company. I spent two weeks in person in Singapore and six working remotely from Toronto, twelve hours behind. I built three things and handed each one over with documentation.</p>
   <p>The biggest is an offline-first app for the company’s bunker quantity surveyors. A surveyor records a whole fuel delivery on board a ship with no connection, the office sees it as soon as the device is back online, and the quantity calculations run as the figures go in. It replaced an Excel workbook that the office used to type out again by hand. It runs on Windows and Android, with a database on each device and a cloud API behind it.</p>
   <details><summary>The other two</summary><p>A sales tool the commercial team uses in client meetings, with seven savings calculators tested against the spreadsheets they came from and a generator that writes the full proposal as a Word document. And an analysis pipeline in Python that costed the bids in a freight tender and produced the recommendation.</p></details></div>
 </section>
-<section class="station here" id="today" data-f="0.8307" aria-labelledby="today-h">
+<section class="station here" id="today" data-f="0.6902" aria-labelledby="today-h">
   <p class="when"></p>
   <div><h2 id="today-h">Today, 24 September 2026</h2></div>
 </section>
-<section class="station ahead" id="hack" data-f="0.9040" aria-labelledby="hack-h">
+<section class="station ahead" id="hack" data-f="0.7875" aria-labelledby="hack-h">
   <p class="when">28 September to 9 December 2026</p>
   <div><h2 id="hack-h"><a href="https://gvhackathon.com">gvhackathon.com</a></h2>
   <p>An international hackathon our school runs online, free for students aged 14 to 18 in teams of two to four, judged in two divisions with US$3,000 in prizes. I co-lead it with Ruchika Dutt, who teaches computer science at CIS, and I built the competition platform on my own.</p>
   <p>Registration opens on 28 September. The challenge stays sealed until the opening ceremony on 19 November, and teams then have seven days to build. Judging runs to 8 December and includes an on-camera interview about each team’s code, then live interviews for finalists. The closing ceremony is on 9 December. I also negotiated with school leadership and an outside vendor so the event got its own week.</p></div>
 </section>
-<section class="station ahead" id="coda" data-f="1.0000" data-t="525.5" aria-labelledby="coda-h">
+<section class="station ahead" id="coda" data-f="0.8836" aria-labelledby="coda-h">
   <p class="when">2027</p>
   <div><h2 id="coda-h">Next</h2>
   <p>At 8:46 the whole orchestra comes back in. The scale run from the opening leads into the melody from 6:18, now in D major at full strength, and the horns take over the piano’s arpeggios. <button hidden class="hear" type="button" data-from="525.5">Hear the ending</button></p>
@@ -471,9 +471,10 @@ function mark(el) { for (var i = 0; i < marks.length; i++) if (marks[i].el === e
 function settle() {
   waitingSince = 0;
   if (!scrollMode || !current || current === lastStation) return;
+  var m = mark(current), from = lastStation ? marks.indexOf(mark(lastStation)) : -1;
   lastStation = current;
-  var m = mark(current), t = state === 'playing' ? active.a.currentTime : -1;
-  if (t >= m.t - 1.5 && t < m.end) return;
+  var t = state === 'playing' ? active.a.currentTime : -1;
+  if (t >= m.t - 1.5 && (marks.indexOf(m) > from || t < m.end)) return;
   go(m.t, state === 'playing' ? 0.6 : 0);
 }
 var current = null, ticking = false;
