@@ -64,4 +64,41 @@ What both reviewers named as clearly human:
 
 ### Round 0b reviewers
 
-(pending)
+A new pair of fresh reviewers looked at the revised mockup (`review1/`: the same four kinds of file, the same instructions).
+
+- Reviewer B (Sonnet, admissions reader): **about 10%** (down from 60% in round 0a).
+  - Human signals it named:
+    - the plain-table chart with its one encoded exception;
+    - the admitted after-the-fact grouping in the caption;
+    - headings that don't match each other (a literary title, a dated event, a bare domain, an acronym);
+    - "US$", the specific numbers and the real URLs;
+    - no framework and no scaffolding.
+  - What it still flagged:
+    - the meta description, the one line written *about* the page rather than *by* its author (weak);
+    - the page has no photo or first-hand visual, only a clean chart (weak);
+    - every paragraph is declarative and polished, with no hedge or aside (weak).
+  - Actions:
+    - Meta description rewritten in the first person: "I’m Radek Green, an IB Diploma student in Singapore. This page lists what I’m working on and links to each piece of work."
+    - The first-hand visual depends on Radek (the score page, Q8).
+    - I have not added invented hedges or "rough edges". Deliberately planting imperfection would be a fabrication of its own, and the honest source of unevenness is Radek's own sentences (Q31).
+- Reviewer A (Opus, informed reader): **45%** (down from 55%).
+  - About 70% would suspect AI *edited* the copy; under 10% would take the page for a template or site-builder output. "The visuals hardly contribute."
+  - What it flagged, and what I did:
+
+| Finding | Strength | Action |
+|---|---|---|
+| Every blurb follows one arc (context, then a number, then who did what, then status) and four are 50–57 words long | strong | Lengths now run from 37 to 90 words. The credit is stated once. Only two entries end on a status. Music is longer and looser (it now gives the instrumentation from the brief), and CIS-MAP is short |
+| An adult editor's voice with no opinion or admission | strong | Needs Radek's own words (Q31). Not faked |
+| Clipped beats ("A pilot has run."); vague passive ("The design is now under review") | moderate | "I've run a pilot. Before pre-registering, I'm putting the design through rounds of blind review by up to 21 model instances…" (the method from the brief, in the active voice) |
+| Fronted participle ("Told the name of a peer model, does it…") | moderate | Rewritten as a plain question |
+| The quoted law line's "can still… / can no longer…" symmetry is what readers now associate with LLM prose, even as a quotation | moderate | The first screen now quotes "irrationality is also a safeguard." The "by how much" line moves to the essay section lower down |
+| "sometimes with synths and never with lyrics"; "took some negotiating…" | moderate | Rewritten plainly |
+| Caption over-caveats (the after-the-fact grouping plus the set-aside note) | moderate | Cut to two sentences: what a bar is, and what the hollow bar is. The grouping note belongs to the essay section |
+| A location line that looks like a template field | weak–moderate | Removed from the header. It will go with the contact details lower down |
+| Straight apostrophe in "Child's explanation" among curly ones | weak–moderate | Fixed |
+| Header links 27px out of line with the figure column; empty block at top right | weak | Header now uses the same column grid. The top-right block is left for the score page (Q8) |
+| A data figure on a homepage reads as a designed flourish; the task labels sound like LLM-generated prompts | moderate | The figure stays, beside its essay. Reviewer B scored the same figure as a *strong human* signal. Labels are the study's own |
+
+The two reviewers disagree most about the figure and about typographic care. The informed reader reads them as signs of a model; the admissions reader reads them as signs of a careful person. Both agree on the copy. The remaining risk is the voice, and only Radek can supply that.
+
+No round 0c was run. This is a direction mockup; the full audit loop runs on the built preview, with Radek's own sentences in place.
