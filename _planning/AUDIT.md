@@ -265,3 +265,16 @@ Radek pointed out that the motif labels were wrong (the "horn call" at 0:50 is n
 The highlight images are regenerated from the matched notes. Checks: axe 0 violations at 360 and 1440; no horizontal scroll; each motif button plays its statement and jumps to its return (tested in Chromium).
 
 Radek confirmed the part boundaries. The 2:51 button is now "horn call′" (the call, varied), and the Part IV theme is "fixed point", matching the ML part names. The finale label sits one line up, right-aligned, so it clears "arpeggio" at every width.
+
+## After launch: sections spaced evenly through the music
+
+Radek found that sound on scroll skipped large parts of the piece and could jump backwards: each section's place in the music came from its date, so the essays and the research (four days apart) shared a spot, "Next" came before the hackathon, and nothing before 1:31 or between 3:57 and 6:43 was reached by a section.
+
+- **The sections are now spaced evenly.** The first minute belongs to the top of the page. After that, each section gets about 58 s, snapped to the nearest bar line: 0:58.5, 1:56, 2:56, 3:54, 4:52.5, 5:49.5, 6:49.5, 7:47, 8:44.
+- **The timeline under the score is warped to match.** Each section's date sits at its place in the music. The months in between stretch or squeeze, and the month ruler shows them unevenly. Month letters that would collide are hidden.
+- **The caption says so.** It now reads: "Its months are stretched and squeezed so that each section below gets about a minute of the music."
+- **The WSC labels are merged.** The three WSC dots are now too close for separate labels, so they share one: "World Scholar's Cup". The phone list still names each round.
+- **The music never jumps backwards on the way down.** If a reader lingers and the music runs ahead, moving down keeps it playing. It jumps only when it is behind the new section, or when the reader scrolls back up past the section's stretch.
+- **Positions come from a tool.** `_planning/tools/timeline.py` gives any date's position, and `UPDATING.md` is revised to use it.
+
+Checks: axe 0 violations; no horizontal scroll at 360, 1201, 1440 and 1920; no overlapping labels on the staff; the lingering test behaves as above.
