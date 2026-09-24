@@ -1,0 +1,125 @@
+# Read by copycheck.py. One word or phrase per line; matching ignores case and
+# also catches suffixes (foster -> fostering). Lines starting with ! are allowed
+# phrases, removed from the text before checking (proper names).
+!The Journey
+!The Departure
+!The Arrival
+!hero’s journey
+additionally
+align with
+arguably
+at the end of the day
+at the intersection of
+authored
+best-in-class
+boast
+bolster
+commendable
+commitment to
+comprehensive
+craft
+crucial
+cultivat
+curated
+cutting-edge
+deep dive
+deeply
+delve
+despite these challenges
+dive into
+diverse array
+driven by
+earns its keep
+ecosystem
+effortless
+elevat
+embark
+embrac
+empower
+encompass
+enduring
+enhanc
+ensur
+ever-evolving
+evolving landscape
+exemplif
+experts say
+featured in
+feel free
+foster
+fundamentally
+game-changing
+garner
+genuine
+groundbreaking
+harness
+here's the thing
+highlight
+holistic
+honest caveat
+hope this helps
+imagine
+importantly
+in conclusion
+in summary
+in the heart of
+in today's
+indelible
+innovat
+interplay
+intricate
+important to note
+worth noting
+journey
+key
+landscape
+leverag
+lifelong
+liminal
+load-bearing
+meaningful
+meticulous
+modern
+multifaceted
+myriad
+navigat
+nestled
+notabl
+nuanced
+paradigm
+passion
+paving the way
+pivotal
+plethora
+profound
+quietly
+realm
+remarkabl
+renowned
+resonat
+revolution
+robust
+seamless
+seam
+serves as
+showcas
+spearhead
+stands as
+streamlin
+supercharg
+synergy
+tapestry
+testament
+thrilled
+transformative
+truly
+underscor
+unleash
+unlock
+unparalleled
+utilis
+utiliz
+valuable insight
+vibrant
+vital
+world-class

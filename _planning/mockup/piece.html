@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Radek Green</title>
+<meta name="description" content="I’m Radek Green, an IB Diploma student in Singapore. This page lists what I’m working on and links to each piece of work.">
+<style>
+@font-face { font-family: Petrona; src: url(fonts/petrona.woff2) format("woff2"); font-weight: 100 900; font-display: swap; }
+@font-face { font-family: Petrona; src: url(fonts/petrona-italic.woff2) format("woff2"); font-weight: 100 900; font-style: italic; font-display: swap; }
+
+html { background: #fff; color: #000; font: 18px/1.55 Petrona, Georgia, serif; }
+body { margin: 0; }
+a, button.play { color: inherit; text-underline-offset: 0.2em; }
+a:hover { text-decoration-thickness: 2px; }
+:focus-visible { outline: 2px solid #2340a8; outline-offset: 3px; }
+.ink { color: #2340a8; font-style: italic; }
+
+.page { max-width: 76rem; padding: 2.5rem 3rem 4rem 5vw; }
+header { display: flex; justify-content: space-between; align-items: flex-end; gap: 2rem; }
+h1 { font-size: 4.2rem; font-weight: 500; line-height: 1; margin: 0; }
+header p { margin: 0.6rem 0 0; }
+.links a { margin-left: 1.1rem; }
+
+/* every note of the piece, instruments in score order */
+.piece { margin: 2.4rem 0 3rem; }
+.system { position: relative; margin-left: 9.5rem; height: 21rem; cursor: pointer; }
+.system img { position: absolute; inset: 0; width: 100%; height: 100%; }
+.system .played { clip-path: inset(0 calc(100% - var(--p, 0%)) 0 0); }
+.head { position: absolute; top: -0.4rem; bottom: -0.4rem; left: var(--p, 0%); border-left: 2px solid #2340a8; display: none; }
+.piece.on .head { display: block; }
+.groups span { position: absolute; right: calc(100% + 0.9rem); width: 8.2rem; text-align: right; font-style: italic; font-size: 0.8rem; line-height: 1.15; display: flex; align-items: center; justify-content: flex-end; border-right: 2px solid #000; padding-right: 0.5rem; box-sizing: border-box; }
+.mins { position: relative; margin-left: 9.5rem; height: 1.2rem; font-size: 0.72rem; color: #555; }
+.mins span { position: absolute; }
+.piece figcaption { margin: 0.9rem 0 0 9.5rem; max-width: 40rem; font-size: 0.95rem; }
+button.play { font: inherit; background: none; border: 0; padding: 0; text-decoration: underline; cursor: pointer; }
+
+.entries { display: grid; grid-template-columns: minmax(0, 35rem) 16rem; column-gap: 3.5rem; row-gap: 2rem; }
+main h2 { font-size: 1.35rem; font-weight: 600; line-height: 1.2; margin: 0 0 0.3rem; }
+main p { margin: 0 0 0.6rem; }
+.note { padding-top: 0.25rem; font-size: 0.95rem; line-height: 1.45; }
+
+@media (max-width: 900px) {
+  .page { padding: 1.5rem 1.1rem 3rem; }
+  header { display: block; }
+  h1 { font-size: 2.9rem; }
+  .links { margin-top: 0.7rem; } .links a { margin: 0 1rem 0 0; }
+  .system, .mins { margin-left: 0; }
+  .system { height: 15rem; }
+  .groups span { right: auto; left: 0; width: auto; border: 0; padding: 0 0.3rem; font-size: 0.66rem; background: rgba(255,255,255,0.85); justify-content: flex-start; height: auto !important; }
+  .piece figcaption { margin-left: 0; }
+  .entries { display: block; }
+  main section { margin-bottom: 1.8rem; }
+  .note { padding: 0; margin: -0.3rem 0 1.8rem; }
+}
+</style>
+</head>
+<body>
+<div class="page">
+<header>
+  <div>
+    <h1>Radek Green</h1>
+    <p>IB Diploma student at Canadian International School, Singapore. Class of 2028.</p>
+  </div>
+  <p class="links"><a href="/cv/">CV</a><a href="https://github.com/worldwiderad">GitHub</a><a href="https://soundcloud.com/radekgreen">SoundCloud</a></p>
+</header>
+
+<main>
+<figure class="piece">
+  <div class="system" role="img" aria-label="Every note of a ten-minute orchestral piece, drawn instrument by instrument in score order">
+    <img src="piece.svg" alt="">
+    <img class="played" alt="">
+    <div class="groups" aria-hidden="true"><span style="top:0.0%;height:20.2%">Woodwinds</span><span style="top:22.6%;height:11.0%">Horns</span><span style="top:36.0%;height:18.3%">Trumpets, trombones, tubas</span><span style="top:56.7%;height:18.3%">Percussion</span><span style="top:77.4%;height:11.0%">Harp, synth, piano</span><span style="top:90.8%;height:9.2%">Strings</span></div>
+    <div class="head"></div>
+  </div>
+  <div class="mins" aria-hidden="true"><span style="left:0.00%">0:00</span><span style="left:20.23%">2:00</span><span style="left:40.45%">4:00</span><span style="left:60.68%">6:00</span><span style="left:80.90%">8:00</span></div>
+  <figcaption>Every note of the piece I wrote for 48 tracks, about ten minutes long, with the instruments stacked the way they are in the score. Play the recording and the notes turn blue as it passes them; click anywhere in the drawing to jump there.<br><a class="play" href="audio/piece.m4a">Listen (9 min 53 s)</a></figcaption>
+</figure>
+
+<div class="entries">
+<section>
+  <h2>Modelling the Other</h2>
+  <p>This started in June 2026 with a question about language models. When one model predicts how a named peer will behave, is it using evidence about that peer, or a prior about where the peer was built, such as the US or China? I’m the only author.</p>
+  <p>I’ve run a pilot. Before pre-registering, I’m putting the design through rounds of blind review by up to 21 model instances and checking every flaw they claim by simulation.</p>
+</section>
+<p class="note ink">Pre-registration next, then TMLR in December or January.</p>
+
+<section>
+  <h2>Essays for the John Locke prize</h2>
+  <p>I entered two. <a href="https://cztdhwzvmmioaqaeewpz.supabase.co/storage/v1/object/public/essays/submissions/7c67e44e-4b67-4f72-8107-4dcbeecb2ba9/law-1-1780137234064.pdf">The law essay</a> (PDF) asks what would happen to criminal sentencing if judges accepted determinism, and part of its answer is that “irrationality is also a safeguard.” For <a href="https://cztdhwzvmmioaqaeewpz.supabase.co/storage/v1/object/public/essays/submissions/7c67e44e-4b67-4f72-8107-4dcbeecb2ba9/science%20&amp;%20technology-3-1780201877477.pdf">the science and technology essay</a> (PDF), on whether we should be polite to ChatGPT, I ran a blinded study with 43 student raters.</p>
+</section>
+<p class="note ink">Results on 3 October.</p>
+
+<section>
+  <h2>Orchestral music</h2>
+  <p>I compose in MuseScore and produce in Logic Pro, mostly for orchestra, occasionally with synths. My MYP Personal Project was a symphony in one movement, rated Excellent. The biggest thing I’ve written is about ten minutes long and runs to 49 tracks: eleven woodwind parts including bass oboe and bass clarinet, sixteen brass including six horns, strings, percussion, harp, piano and synth. Recordings are on <a href="https://soundcloud.com/radekgreen">SoundCloud</a>.</p>
+</section>
+<p class="note ink">Working towards a multi-movement symphony that can be played live.</p>
+
+<section>
+  <h2><a href="https://gvhackathon.com">gvhackathon.com</a></h2>
+  <p>I wrote the competition platform for our school’s AI and computer science hackathon and co-lead the event with our CS teacher. Two divisions, US$3,000 in prizes. I also negotiated with school leadership and an outside vendor so the event got its own week.</p>
+</section>
+<p class="note ink">Opens 19 November; closing ceremony 9 December.</p>
+
+<section>
+  <h2>CIS-MAP</h2>
+  <p>A room finder for students new to English on a campus whose signs are only in English: search in English or Chinese and the route appears on the floor plan, precomputed in C++ for 53 locations (<a href="https://github.com/worldwiderad/CIS-MAP-V2">code</a>).</p>
+</section>
+<p class="note ink">Still a prototype.</p>
+</div>
+</main>
+</div>
+<script>
+// The recording loads only when asked for. Played notes turn blue.
+var fig = document.querySelector('.piece'), sys = fig.querySelector('.system'),
+    link = fig.querySelector('a.play'), audio;
+var btn = document.createElement('button');
+btn.className = 'play'; btn.type = 'button'; btn.textContent = link.textContent;
+link.replaceWith(btn);
+
+function start(at) {
+  if (!audio) {
+    var m4a = link.getAttribute('href');
+    audio = new Audio(new Audio().canPlayType('audio/mp4; codecs="mp4a.40.2"') ? m4a : m4a.replace('.m4a', '.webm'));
+    audio.addEventListener('error', function () { btn.textContent = 'The recording didn’t load'; });
+    sys.querySelector('.played').src = 'piece-played.svg';
+    audio.addEventListener('timeupdate', function () {
+      sys.style.setProperty('--p', (audio.currentTime / audio.duration * 100) + '%');
+    });
+    audio.addEventListener('pause', function () { btn.textContent = 'Resume'; });
+    audio.addEventListener('play', function () { btn.textContent = 'Pause'; });
+    fig.classList.add('on');
+  }
+  if (at !== undefined) audio.currentTime = at * (audio.duration || 593.3);
+  audio.play();
+}
+btn.addEventListener('click', function () {
+  if (audio && !audio.paused) audio.pause(); else start();
+});
+sys.addEventListener('click', function (e) {
+  var r = sys.getBoundingClientRect();
+  start((e.clientX - r.left) / r.width);
+});
+</script>
+</body>
+</html>
