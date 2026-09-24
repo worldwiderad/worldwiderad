@@ -220,6 +220,6 @@ One fresh QA reviewer (Opus) drove the rebuilt site in Playwright at 360 to 1920
 | The playhead line caught clicks meant for the pinned links | `pointer-events: none` on the playhead and the today line |
 | Stray `}` in the stylesheet; pointer cursor on the score without JS | Removed; the cursor is set by the script |
 
-Raised for Radek, not changed: "working remotely from Toronto" (a city, within the brief, but it says where he spends summers), and whether Ruchika Dutt, Sungjoo Ha and Min Lin are happy to be named.
+Raised for Radek: "working remotely from Toronto" (a city, within the brief, but it says where he spends summers), and whether Ruchika Dutt, Sungjoo Ha and Min Lin are happy to be named. Radek confirmed both stay as they are.
 
 Result: the rounds found no blockers after round 3, and every should-fix found in round 4 is fixed and retested above. Reviewer A's remaining case (55%) is about voice, which Radek will add next.
