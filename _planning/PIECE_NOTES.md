@@ -103,8 +103,8 @@ The ♩=80 at 5:52.5 (bar 142) sits inside Part III. There, harp chords and a ri
   - The 4part paragraph no longer calls Part III the quietest stretch. Part IV is often thinner. It also no longer says the motifs only return after Part III, since the horn call returns in Part II.
   - The finale paragraph now says what actually comes back.
 
-## Unsure, for Radek
+## Confirmed by Radek
 
-- Are the part boundaries at 1:39.3, 4:22.5 and 6:12.8 the ones in the score?
-- Is "theme" what you'd call the Part IV melody, or does it have a name?
-- Is the 2:51 brass tune meant as the horn call in major, or is it new material that happens to share its opening rhythm?
+- The part boundaries (1:39.3, 4:22.5, 6:12.8) are the score's.
+- The 2:51 brass tune is the horn call, varied: labelled "horn call′".
+- The Part IV melody is labelled "fixed point": the value an iteration converges to, which fits Part IV (Convergence) and a melody that starts chromatic at 6:18 and settles in D major at 8:47.

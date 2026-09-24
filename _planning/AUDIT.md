@@ -263,3 +263,5 @@ Radek pointed out that the motif labels were wrong (the "horn call" at 0:50 is n
 | "From 8:45 … the scale run, the horn call and the arpeggio return together" | "At 8:46 the whole orchestra comes back in. The scale run from the opening leads into the melody from 6:18, now in D major at full strength, and the horns take over the piano's arpeggios." |
 
 The highlight images are regenerated from the matched notes. Checks: axe 0 violations at 360 and 1440; no horizontal scroll; each motif button plays its statement and jumps to its return (tested in Chromium).
+
+Radek confirmed the part boundaries. The 2:51 button is now "horn call′" (the call, varied), and the Part IV theme is "fixed point", matching the ML part names. The finale label sits one line up, right-aligned, so it clears "arpeggio" at every width.
