@@ -440,7 +440,7 @@ function tick() {
   setF(still || Math.abs(d) < 0.002 ? t / LEN : shownF + d * 0.15);
   if (plan && active.began && t >= plan.at) {
     var p = plan; plan = null;
-    if (p.to !== null) { go(p.to, 1.2); plan = { at: p.to + 9, to: null }; } else stop(1.5);
+    if (p.to !== null) { go(p.to, 0.6); plan = { at: p.to + 9, to: null }; } else stop(1.5);
   }
   raf = requestAnimationFrame(tick);
 }
@@ -472,15 +472,14 @@ function settle() {
   lastStation = current;
   var m = mark(current), t = state === 'playing' ? active.a.currentTime : -1;
   if (t >= m.t - 1.5 && t < m.end) return;
-  go(m.t, state === 'playing' ? 1.6 : 0);
+  go(m.t, state === 'playing' ? 0.6 : 0);
 }
 var current = null, ticking = false;
 function onScroll() {
   ticking = false;
   var heroGone = fig.getBoundingClientRect().bottom < 0;
   pin.classList.toggle('show', heroGone);
-  var cover = heroGone ? pin.getBoundingClientRect().bottom : 0;
-  var line = cover + (innerHeight - cover) * 0.6, prev = null, next = null, f = 0, last = 0;
+  var line = innerHeight * 0.25, prev = null, next = null, f = 0, last = 0;
   stations.forEach(function (s) {
     var top = s.firstElementChild.getBoundingClientRect().top, sf = s.dataset.f === '' ? null : +s.dataset.f;
     if (sf === null) sf = last; else last = sf;
@@ -499,7 +498,7 @@ function onScroll() {
   if (scrollMode && current && current !== lastStation) {
     if (!waitingSince) waitingSince = Date.now();
     clearTimeout(settleTimer);
-    if (Date.now() - waitingSince > 400) settle(); else settleTimer = setTimeout(settle, 200);
+    if (Date.now() - waitingSince > 250) settle(); else settleTimer = setTimeout(settle, 120);
   } else waitingSince = 0;
 }
 addEventListener('scroll', function () { if (!ticking) { ticking = true; requestAnimationFrame(onScroll); } }, { passive: true });
@@ -519,7 +518,7 @@ snd.addEventListener('click', function () {
     if (scrollStarted) { plan = null; go(current ? mark(current).t : shownF * LEN, 0); }
   } else if (scrollStarted) stop(1.2);
 });
-function listenAt(t, p) { setScrollMode(false); plan = p || null; go(t, 0.9); }
+function listenAt(t, p) { setScrollMode(false); plan = p || null; go(t, 0.6); }
 sys.style.cursor = 'pointer';
 sys.addEventListener('click', function (e) {
   var r = sys.getBoundingClientRect(); clearMotif(); listenAt((e.clientX - r.left) / r.width * LEN);
