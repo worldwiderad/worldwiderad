@@ -4,7 +4,7 @@ For Radek to react to before anything is built. The mockup of the first screen i
 
 ## The idea in one paragraph
 
-The site should read like one of Radek's essays, not like a portfolio. It is set in the typeface he chose for his essays, black on white, as a single column of plain first-person entries, each saying what the work is, what number stands behind it, where the evidence is, and whether it is finished. Only one element on the page is visually bold: a figure made from his own data, the per-task results table from *Should we be polite to ChatGPT?*. Nothing on the page is there for decoration.
+The site should read like one of Radek's essays, not like a portfolio. It is set in the typeface he chose for his essays, black on white, as a single column of plain first-person entries of different lengths, each giving what the work is, the number behind it, where the evidence is, and whether it is finished. Only one element on the page is visually bold. For now that is a figure made from his own data, the per-task results table from *Should we be polite to ChatGPT?*, set beside the essay it comes from. If Radek sends a page of his score, that takes the top of the right-hand column instead. Nothing on the page is there for decoration.
 
 ## Where each decision comes from
 
@@ -12,11 +12,11 @@ The site should read like one of Radek's essays, not like a portfolio. It is set
 |---|---|---|
 | **Petrona** for everything, one family | Both John Locke essays are set in Petrona (I read the PDFs' font tables) | Readers move from the homepage into the PDFs without a change of voice. Petrona is not on any list of AI-default or "tasteful default" faces (Inter, Geist, Space Grotesk, Instrument Serif, Fraunces, Playfair). It has true old-style figures, which suit running text, and tabular figures for the table |
 | **Black `#000` on white `#fff`**, grey `#555` for status lines, no accent colour | The essays, the result tables and an orchestral score are all black on white. The page also prints as it looks | Avoids cream/terracotta (P1), near-black with an acid accent (P2), tinted `#111` (P5) and every gradient (V1–V3). Pure black is a stated choice (V8) |
-| **One real figure** in place of decoration | Figure 3 of the politeness essay, transcribed exactly: 25 tasks, leads +10 to −8, with the task set aside drawn as a hollow bar | The skill's advice is to lead with "the most characteristic thing in the subject's world". Here that is his data, and it shows the essay's actual finding (the effect reverses by task type). A chart made to decorate would be V21; this one is the evidence itself |
-| **Status as a plain line** under each entry ("Pilot done. The design is under review", "Results announced 3 October", "Prototype") | The essays qualify every claim ("an illustrative pilot, not a confirmatory test") | The brief requires unfinished work to be labelled unfinished. A plain sentence does it without pills, badges or dots (L2, M7) |
+| **One real figure** in place of decoration | Figure 3 of the politeness essay, transcribed exactly: 25 tasks, leads +10 to −8, with the task set aside drawn as a hollow bar. It sits beside the essay entry, not at the top of the page | His data, showing the essay's actual finding (the effect reverses by task type), captioned in the essay's own terms: the groups were assigned after the results. A chart made to decorate would be V21; this one is the evidence itself |
+| **Status written into the prose**, only where there is a real state or date ("A pilot has run. The design is now under review", "Results are announced on 3 October", "It's still a prototype") | The essays qualify every claim ("an illustrative pilot, not a confirmatory test") | The brief requires unfinished work to be labelled unfinished. A sentence does it without pills, badges or dots (L2, M7). The first mockup had a grey status line under every entry, and both fresh reviewers named that identical shape as the strongest tell, so entries now vary in shape and length |
 | **Evidence linked from the words themselves** ("what would happen to criminal sentencing if judges and legislators accepted determinism (PDF)") | The brief: every entry links to its evidence | No "View project →" buttons, no arrows (P5), no icons. Link text says where it goes |
 | **No labels, rules or numbering** | Nothing in the content is a sequence. The field is obvious from each entry | These are exactly the "broadsheet" and "template chrome" defaults (P3, P5, P7, P8) |
-| **Asymmetric grid on desktop**: a text column set in from the left, with the figure in a column beside it | A figure placed beside the text it belongs to, as on an essay page | Not a centred hero (L1), not a centred single column (L10). Below 1080 px it becomes one column and the figure follows the list |
+| **Asymmetric grid on desktop**: a text column set in from the left, with a narrower column to its right for contact details and for artefacts placed beside the entry they belong to | A figure placed beside the text it refers to, as on an essay page | Not a centred hero (L1), not a centred single column (L10). Below 1080 px it becomes one column and the figure follows the entries |
 | **No motion.** Links thicken their underline on hover; visited links get a grey underline | Nothing on a document needs to move | M1–M10 cannot occur. Reduced motion is respected trivially. The visited state helps anyone checking evidence see which PDFs they have already opened |
 | **No JavaScript needed to read anything** | – | SoundCloud players load only when the reader clicks. Without JS the same control is a plain link to SoundCloud (K12, M2) |
 
@@ -25,23 +25,20 @@ The site should read like one of Radek's essays, not like a portfolio. It is set
 ```
 DESKTOP (≥1080 px)                           PHONE (360 px)
 
-Radek Green                   CV             Radek Green
-I'm in the IB Diploma …       GitHub         I'm in the IB Diploma …
-                              SoundCloud     CV  GitHub  SoundCloud
-                              (email)
-Modelling the Other           ┌ figure ┐     Modelling the Other
-Question. Sole author, TMLR.  │ lead   │     …
-Pilot done. Under review.     │ by     │     Two essays …          <- first screen ends
-                              │ task   │     gvhackathon.com
-Two essays for the John …     │        │     Orchestral music
-…PDF …PDF, 43 students.       │ +10    │     CIS-MAP               <- second screen ends
-Results announced 3 October.  │  …     │     figure
-                              │ −8     │
-gvhackathon.com               └────────┘
-…
-Orchestral music
+Radek Green                   CV GitHub SoundCloud   Radek Green
+I'm an IB Diploma student …   Singapore, and Toronto I'm an IB Diploma student …
+                              in the summer          CV  GitHub  SoundCloud
+                              ┌ score page, if ┐     Singapore, and Toronto …
+Modelling the Other           │ Radek sends one│     Modelling the Other
+The question, June 2026.      └────────────────┘     …
+Pilot run; under review.                             Essays for the John Locke …
+                              ┌ figure: lead  ┐      <- first screen ends
+Essays for the John Locke …   │ by task, +10  │      Orchestral music
+The law essay argues … "quote" │ … −8          │      gvhackathon.com
+The other one … 43 raters.    └───────────────┘      CIS-MAP  <- second screen ends
+Orchestral music                                     figure
+gvhackathon.com
 CIS-MAP
-─ first screen ends ─
 ```
 
 Below the first screen, still on the homepage (depth for anyone who scrolls, and none of it hidden in accordions):
@@ -68,7 +65,9 @@ My first draft (kept in the git history) had a black hairline rule under the hea
 |---|---|---|
 | **P3** broadsheet (hairline rules, zero radius, dense columns) | A serif document on white is one step from a newspaper | No rules except the figure's zero axis, which is data. One text column. Generous spacing between entries |
 | **P5 / P7** eyebrow labels, all-caps labels, middle-dot meta strings, "→" | The first draft had field labels | Removed. The links are separated by space, not dots. No arrows anywhere |
-| **P6** one phrase of a headline in italic | The status line started out inside the heading | Status is now its own line, in roman type |
+| **P6** one phrase of a headline in italic | The status line started out inside the heading | Status is written into the prose, in roman type |
+| **"Editorial minimalism" as the next AI default** (raised by both fresh reviewers in round 0a, not yet in the literature) | Restrained serif, monochrome, no personal visual choice | This is the risk still open. What lowers it is real material and Radek's own voice: a score page (Q8), his own sentences (Q31), perhaps a colour he chooses himself (Q30). Decoration would not help. The entries now also differ in shape, which was the reviewers' strongest point |
+| **Uniform entry template** (raised by both reviewers) | Five entries of heading, paragraph and grey status line | Entries now vary in length and shape; status appears only where there is a real date |
 | **P1 / P12** the Claude look, and over-correcting into the "anti-slop" look | Serif type plus restraint is what anti-slop prompts produce | White, not cream. No accent colour, grain, italic display type or terracotta. The serif is chosen because the essays use it, and the colophon line can say so |
 | **V8** pure black and white without a reason | – | The reason is written down: the essays are black on white, and the page should print like them |
 | **V21** decorative charts | The figure is the page's one bold element | It is the essay's published table, transcribed exactly, captioned with where it comes from and what it shows, including the task that was set aside |
