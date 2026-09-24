@@ -102,3 +102,36 @@ A new pair of fresh reviewers looked at the revised mockup (`review1/`: the same
 The two reviewers disagree most about the figure and about typographic care. The informed reader reads them as signs of a model; the admissions reader reads them as signs of a careful person. Both agree on the copy. The remaining risk is the voice, and only Radek can supply that.
 
 No round 0c was run. This is a direction mockup; the full audit loop runs on the built preview, with Radek's own sentences in place.
+
+## Round 1: the journey page (`_planning/mockup/journey.html`), 24 September 2026
+
+This round covered the full interactive page: the score engraved on load, the pinned score, scroll-driven stations, and the 49th staff. Two fresh reviewers saw only `review2/`: README, three screenshots per width (first screen, scrolled with the pinned bar, full page), the page text and the HTML.
+
+| Reviewer | Framing | Probability |
+|---|---|---|
+| A (Opus) | informed reader | 60% |
+| B (Sonnet) | admissions reader | 55% |
+
+Both said the facts, the music and the data are clearly the owner's. B called the 49th staff "a genuinely original idea… I have not seen this move in any template portfolio". The suspicion was about packaging.
+
+| Finding | Raised by | Action |
+|---|---|---|
+| Literary, first-person code comments ("The forty-ninth staff: my own two years…") | both, strong | All comments removed |
+| The page explains its own design: caption how-to-read text, the Today paragraph, "The page ends where the piece does", the typeface colophon, a layout-describing meta description | A strong, B weak–moderate | All cut. The caption is now facts only; Today is a barline with a date; the meta description says who and what |
+| Four parallel "The call is… The trials are…" sentences | both | Replaced by one sentence and one concrete example (Part III) |
+| Stock phrasing: "the pattern that matters", "helps us, not the machine" | A, strong | Rewritten |
+| The quote repeated by the sentence before it | A | Paraphrase removed; the quote stands alone |
+| The header's run of short sentences ending in a verb list | B | Identity line only |
+| Colons everywhere, no dashes ("scrubbed" punctuation) | A | Numeric ranges now use en dashes (15–19, 55.5–68.9%) |
+| Generic `<details>` labels | both | Renamed to what they contain |
+| A rigid three-column grid with an empty third column, and 55vh of dead space per station | both | Two columns unless a figure exists; min-height removed; hairlines between stations removed |
+| Key signatures floating with no staff (notation vocabulary used as decoration) | A | Drawn on a real five-line staff with a Bravura treble clef; accidentals and time signatures sit on their lines |
+| Part names overlapping on the phone | both | Only the numerals show on the phone |
+| Playhead drawn through the caption; the tie through a label; the month ruler overprinting the years; "today" colliding | A | Caption sits above the playhead; staff labels moved above the marks; the phone ruler shows years only; the today label is hidden on the phone |
+| Dead and duplicate CSS, a hard-coded position repeated, a curly apostrophe in a JS string | A | Stylesheet rewritten; `--now` set once; straight quotes in code |
+| "Precious" clock wording | A | "May 2026, 6:43" |
+
+Disputed or left as is:
+
+- **The feature stack** (engrave-in animation, pinned score, sound on scroll, motif playback). Radek asked for this directly.
+- **The polish of the visual system.** Both reviewers read the restrained serif-and-one-accent look as a 2026 AI default, while also calling the concept itself original. The part that reads as most human is the part that is Radek's own: the music, the data, the dates.
