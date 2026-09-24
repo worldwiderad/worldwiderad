@@ -144,12 +144,22 @@ figure.lead figcaption { margin-top: 0.7rem; color: #333; }
 
 footer { border-top: 1px solid #000; margin-top: 2rem; padding-top: 1rem; font-size: 0.9rem; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 1rem; }
 
+.ask { position: fixed; left: 4vw; bottom: 1.5rem; z-index: 6; max-width: 23rem; background: #fff; border: 1px solid #000; padding: 0.9rem 1rem 1.05rem; font-size: 0.95rem; line-height: 1.4; opacity: 0; transform: translateY(0.6rem); visibility: hidden; transition: opacity .5s, transform .5s, visibility 0s .5s; }
+.ask.show { opacity: 1; transform: none; visibility: visible; transition: opacity .5s, transform .5s; }
+.ask p { margin: 0 0 0.75rem; }
+.ask button { font: inherit; cursor: pointer; padding: 0.3rem 0.9rem; margin-right: 0.6rem; border: 1px solid #000; background: #fff; color: #000; }
+.ask .yes { background: #000; color: #fff; }
+.ask .timer { position: absolute; left: 0; right: 0; bottom: 0; height: 3px; background: #2340a8; transform-origin: left; animation: drain 5s linear forwards paused; }
+.ask.show .timer { animation-play-state: running; }
+.ask.show:hover .timer, .ask.show:focus-within .timer { animation-play-state: paused; }
+@keyframes drain { to { transform: scaleX(0); } }
+@media (max-width: 600px) { .ask { left: 1.1rem; right: 1.1rem; bottom: 1rem; max-width: none; } }
 .evlist { display: none; }
 @media (max-width: 1350px) { .ruler.months span:nth-child(12n+2) { visibility: hidden; } }
 
 @media (prefers-reduced-motion: reduce) {
   .score *, .score .system .base { animation: none !important; }
-  .pin { transition: none; }
+  .pin, .ask { transition: none; }
 }
 
 @media (max-width: 1200px) {
@@ -541,6 +551,30 @@ fig.querySelectorAll('.motif').forEach(function (b) {
     listenAt(from, to ? { at: from + 7, to: +to } : { at: from + 22, to: null });
   });
 });
+var asked = false;
+try { asked = sessionStorage.getItem('asked') === '1'; } catch (e) {}
+if (!asked) {
+  var ask = document.createElement('aside');
+  ask.className = 'ask'; ask.setAttribute('aria-label', 'Sound');
+  ask.innerHTML = '<p role="status">This page is set to 4part, a piece I wrote. With the sound on, it plays along as you scroll.</p><button type="button" class="yes">Sound on</button><button type="button" class="no">No sound</button><span class="timer"></span>';
+  document.body.insertBefore(ask, document.body.firstChild);
+  var closeAsk = function () {
+    try { sessionStorage.setItem('asked', '1'); } catch (e) {}
+    removeEventListener('keydown', onKey);
+    ask.classList.remove('show');
+    setTimeout(function () { ask.remove(); }, still ? 0 : 600);
+  };
+  var onKey = function (e) { if (e.key === 'Escape') closeAsk(); };
+  addEventListener('keydown', onKey);
+  ask.querySelector('.timer').addEventListener('animationend', closeAsk);
+  ask.querySelector('.no').addEventListener('click', closeAsk);
+  ask.querySelector('.yes').addEventListener('click', function () {
+    closeAsk();
+    setScrollMode(true); scrollStarted = true; lastStation = current; plan = null;
+    go(current ? mark(current).t : 0, 0);
+  });
+  setTimeout(function () { ask.classList.add('show'); }, 1000);
+}
 </script>
 </body>
 </html>
