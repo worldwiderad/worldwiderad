@@ -84,7 +84,7 @@ header p { margin: 0.6rem 0 0; max-width: 40rem; }
 .today { position: absolute; top: -0.2rem; bottom: -1.5rem; left: var(--now); border-left: 2px solid #2340a8; }
 .today span { position: absolute; top: -1.1rem; left: 0.3rem; font-size: 0.72rem; font-style: italic; color: #2340a8; white-space: nowrap; }
 .head { position: absolute; top: 0; bottom: 0; left: calc(var(--m) + (100% - var(--m)) * var(--f, 0)); border-left: 2px solid #2340a8; display: none; pointer-events: none; }
-.score.on .head, .score.moved .head { display: block; }
+.score.moved .head { display: block; }
 .score figcaption { position: relative; z-index: 1; background: #fff; padding-top: 1.4rem; margin-left: var(--m); max-width: 44rem; font-size: 0.95rem; }
 .play { font: inherit; background: none; border: 0; padding: 0; text-decoration: underline; cursor: pointer; }
 
@@ -108,7 +108,7 @@ header p { margin: 0.6rem 0 0; max-width: 40rem; }
 .pin .mini .lab, .pin .mini .tie { display: none; }
 .pin .mini .span { bottom: 0.1rem; height: 3px; }
 .pin .mini .dot { bottom: 0; width: 7px; height: 6px; margin-left: -3px; }
-.pin .mini a { position: absolute; top: 0; bottom: 0; }
+.pin .mini a { position: absolute; top: calc(var(--l) * 33.33%); height: 33.33%; }
 .pin .ph { position: absolute; top: -0.2rem; bottom: 0; left: calc(var(--f, 0) * 100%); border-left: 2px solid #2340a8; }
 .pin .today2 { position: absolute; top: 3.3rem; bottom: 1.5rem; left: var(--now); border-left: 1px dashed #2340a8; }
 .pin .ctl { font-size: 0.78rem; margin-top: 0.3rem; display: flex; gap: 1.2rem; }
@@ -143,6 +143,8 @@ figure.lead figcaption { margin-top: 0.7rem; color: #333; }
 
 footer { border-top: 1px solid #000; margin-top: 2rem; padding-top: 1rem; font-size: 0.9rem; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 1rem; }
 
+.evlist { display: none; }
+
 @media (prefers-reduced-motion: reduce) {
   .score *, .score .system .base { animation: none !important; }
   .pin { transition: none; }
@@ -164,10 +166,10 @@ footer { border-top: 1px solid #000; margin-top: 2rem; padding-top: 1rem; font-s
   .motif span { position: static; font-size: 0.85rem; }
   .motif[data-m="all"] { display: none; }
   .system { height: 10.5rem; }
-  .groups span { right: auto; left: 0; width: auto; border: 0; padding: 0 0.3rem; font-size: 0.64rem; background: rgba(255,255,255,0.85); justify-content: flex-start; height: auto !important; }
+  .groups span { right: auto; left: 0; width: auto; border: 0; padding: 0 0.3rem; font-size: 0.64rem; text-shadow: 0 0 2px #fff, 0 0 2px #fff; justify-content: flex-start; height: auto !important; }
   .staffname { position: static; width: auto; height: auto; border: 0; text-align: left; padding: 0.3rem 0 0.2rem; display: block; }
-  .lane { font-size: 0.7rem; height: auto; min-height: 1.9rem; padding: 0.15rem 0 1.1rem; box-sizing: border-box; }
-  .lab { position: static !important; display: inline-block; margin-right: 0.7rem; }
+  .lane { height: 1.1rem; }
+  .score .lab { display: none; }
   .today span { display: none; }
   .ruler { font-size: 0.62rem; }
   .ruler.months span:not(:nth-child(12n+1)) { visibility: hidden; }
@@ -182,16 +184,11 @@ footer { border-top: 1px solid #000; margin-top: 2rem; padding-top: 1rem; font-s
   .station, .station.has-side { display: block; padding: 2.2rem 0 2.4rem; }
   .station .when { text-align: left; margin-bottom: 0.3rem; }
   .station .side { margin-top: 1.2rem; }
-}
-.evlist { display: none; }
-@media (max-width: 900px) {
-  .score .lab { display: none; }
-  .lane { min-height: 0; height: 1.1rem; padding: 0; }
-  .evlist { display: grid; grid-template-columns: 8.4rem 1fr; column-gap: 0.6rem; order: 5; position: relative; z-index: 1; background: #fff; list-style: none; margin: 0; padding: 0.8rem 0 0; font-size: 0.8rem; line-height: 1.35; }
+  .evlist { display: grid; grid-template-columns: 8.4rem 1fr; column-gap: 0.6rem; position: relative; z-index: 1; background: #fff; list-style: none; margin: 0; padding: 0.8rem 0 0; font-size: 0.8rem; line-height: 1.35; }
   .evlist li { display: contents; }
   .evlist span { font-style: italic; color: #555; padding-bottom: 0.35rem; }
   .evlist .plan span { color: #2340a8; }
-  .groups span { background: none; text-shadow: 0 0 2px #fff, 0 0 2px #fff; }
+}
 }
 </style>
 </head>
@@ -201,7 +198,7 @@ footer { border-top: 1px solid #000; margin-top: 2rem; padding-top: 1rem; font-s
   <div class="what"><b>Radek Green</b><span id="where">2025</span></div>
   <div class="bar">
    <div class="notes"><img src="/static/score/piece.svg" alt=""><img class="played" alt=""></div>
-   <div class="mini"><div class="lane"><span class="dot " style="left:15.33%"></span><span class="lab" style="left:15.93%">World Scholar’s Cup, Singapore</span><span class="dot " style="left:32.53%"></span><span class="lab" style="left:33.13%">Bangkok</span><span class="dot " style="left:40.67%"></span><span class="lab" style="left:41.27%">Yale</span><span class="dot " style="left:67.87%"></span><span class="tie" style="left:67.87%;width:16.40%"></span><span class="dot open" style="left:84.27%"></span><span class="lab end" style="right:32.73%">Locke essays sent</span><span class="lab plan" style="left:84.87%">results 3 Oct</span></div><div class="lane"><span class="span" style="left:40.00%;width:23.87%"></span><span class="lab end" style="right:60.60%">writing 4part</span><span class="dot " style="left:68.00%"></span><span class="tie" style="left:68.00%;width:24.00%"></span><span class="span hatch plan" style="left:92.00%;width:8.00%"></span><span class="lab" style="left:72.10%">research question</span><span class="lab end plan" style="right:0.60%">to TMLR</span></div><div class="lane"><span class="span" style="left:68.00%;width:12.00%"></span><span class="lab end" style="right:32.60%">VPS Veritas</span><span class="dot open" style="left:83.60%"></span><span class="span plan" style="left:90.40%;width:2.67%"></span><span class="lab end plan" style="right:10.20%">hackathon</span></div><a href="#wsc" style="left:calc(15.33% - 6px);width:12px" aria-label="World Scholar’s Cup"></a><a href="#writing" style="left:calc(40.00% - 6px);width:12px" aria-label="Writing 4part"></a><a href="#locke" style="left:calc(67.87% - 6px);width:12px" aria-label="Two essays for the John Locke prize"></a><a href="#other" style="left:calc(68.00% - 6px);width:12px" aria-label="Modelling the Other"></a><a href="#vps" style="left:calc(73.87% - 6px);width:12px" aria-label="VPS Veritas"></a><a href="#hack" style="left:calc(90.40% - 6px);width:12px" aria-label="gvhackathon.com"></a></div>
+   <div class="mini"><div class="lane"><span class="dot " style="left:15.33%"></span><span class="lab" style="left:15.93%">World Scholar’s Cup, Singapore</span><span class="dot " style="left:32.53%"></span><span class="lab" style="left:33.13%">Bangkok</span><span class="dot " style="left:40.67%"></span><span class="lab" style="left:41.27%">Yale</span><span class="dot " style="left:67.87%"></span><span class="tie" style="left:67.87%;width:16.40%"></span><span class="dot open" style="left:84.27%"></span><span class="lab end" style="right:32.73%">Locke essays sent</span><span class="lab plan" style="left:84.87%">results 3 Oct</span></div><div class="lane"><span class="span" style="left:40.00%;width:23.87%"></span><span class="lab" style="left:40.00%">writing 4part</span><span class="dot " style="left:68.00%"></span><span class="tie" style="left:68.00%;width:24.00%"></span><span class="span hatch plan" style="left:92.00%;width:8.00%"></span><span class="lab" style="left:72.10%">research question</span><span class="lab end plan" style="right:0.60%">to TMLR</span></div><div class="lane"><span class="span" style="left:68.00%;width:12.00%"></span><span class="lab end" style="right:32.60%">VPS Veritas</span><span class="dot open" style="left:83.60%"></span><span class="span plan" style="left:90.40%;width:2.67%"></span><span class="lab end plan" style="right:10.20%">hackathon</span></div><a href="#wsc" style="--l:0;left:calc(15.33% - 8px);width:16px" aria-label="World Scholar’s Cup"></a><a href="#writing" style="--l:1;left:calc(40.00% - 8px);width:16px" aria-label="Writing 4part"></a><a href="#locke" style="--l:0;left:calc(67.87% - 8px);width:16px" aria-label="Two essays for the John Locke prize"></a><a href="#other" style="--l:1;left:calc(68.00% - 8px);width:16px" aria-label="Modelling the Other"></a><a href="#vps" style="--l:2;left:calc(68.00% - 8px);width:16px" aria-label="VPS Veritas"></a><a href="#hack" style="--l:2;left:calc(90.40% - 8px);width:16px" aria-label="gvhackathon.com"></a></div>
    <div class="ph"></div><div class="today2"></div>
    <div class="ctl"><button type="button" class="snd" >Sound on scroll: off</button><button type="button" class="lis">Listen</button></div>
   </div>
@@ -229,13 +226,13 @@ footer { border-top: 1px solid #000; margin-top: 2rem; padding-top: 1rem; font-s
   <div class="row ruler" aria-hidden="true"><span style="left:0.00%">0:00</span><span style="left:20.23%">2:00</span><span style="left:40.45%">4:00</span><span style="left:60.68%">6:00</span><span style="left:80.90%">8:00</span></div>
   <div class="row staff">
     <span class="staffname">R. Green,<br>Jan 2025 to Jan 2027</span>
-    <div class="lane"><span class="dot " style="left:15.33%"></span><span class="lab" style="left:15.93%">World Scholar’s Cup, Singapore</span><span class="dot " style="left:32.53%"></span><span class="lab" style="left:33.13%">Bangkok</span><span class="dot " style="left:40.67%"></span><span class="lab" style="left:41.27%">Yale</span><span class="dot " style="left:67.87%"></span><span class="tie" style="left:67.87%;width:16.40%"></span><span class="dot open" style="left:84.27%"></span><span class="lab end" style="right:32.73%">Locke essays sent</span><span class="lab plan" style="left:84.87%">results 3 Oct</span></div><div class="lane"><span class="span" style="left:40.00%;width:23.87%"></span><span class="lab end" style="right:60.60%">writing 4part</span><span class="dot " style="left:68.00%"></span><span class="tie" style="left:68.00%;width:24.00%"></span><span class="span hatch plan" style="left:92.00%;width:8.00%"></span><span class="lab" style="left:72.10%">research question</span><span class="lab end plan" style="right:0.60%">to TMLR</span></div><div class="lane"><span class="span" style="left:68.00%;width:12.00%"></span><span class="lab end" style="right:32.60%">VPS Veritas</span><span class="dot open" style="left:83.60%"></span><span class="span plan" style="left:90.40%;width:2.67%"></span><span class="lab end plan" style="right:10.20%">hackathon</span></div>
+    <div class="lane"><span class="dot " style="left:15.33%"></span><span class="lab" style="left:15.93%">World Scholar’s Cup, Singapore</span><span class="dot " style="left:32.53%"></span><span class="lab" style="left:33.13%">Bangkok</span><span class="dot " style="left:40.67%"></span><span class="lab" style="left:41.27%">Yale</span><span class="dot " style="left:67.87%"></span><span class="tie" style="left:67.87%;width:16.40%"></span><span class="dot open" style="left:84.27%"></span><span class="lab end" style="right:32.73%">Locke essays sent</span><span class="lab plan" style="left:84.87%">results 3 Oct</span></div><div class="lane"><span class="span" style="left:40.00%;width:23.87%"></span><span class="lab" style="left:40.00%">writing 4part</span><span class="dot " style="left:68.00%"></span><span class="tie" style="left:68.00%;width:24.00%"></span><span class="span hatch plan" style="left:92.00%;width:8.00%"></span><span class="lab" style="left:72.10%">research question</span><span class="lab end plan" style="right:0.60%">to TMLR</span></div><div class="lane"><span class="span" style="left:68.00%;width:12.00%"></span><span class="lab end" style="right:32.60%">VPS Veritas</span><span class="dot open" style="left:83.60%"></span><span class="span plan" style="left:90.40%;width:2.67%"></span><span class="lab end plan" style="right:10.20%">hackathon</span></div>
     <div class="today"><span>today</span></div>
   </div>
   <div class="row ruler months" aria-hidden="true"><span style="left:0.00%">J<b>2025</b></span><span style="left:4.00%">F</span><span style="left:8.00%">M</span><span style="left:12.00%">A</span><span style="left:16.00%">M</span><span style="left:20.00%">J</span><span style="left:24.00%">J</span><span style="left:28.00%">A</span><span style="left:32.00%">S</span><span style="left:36.00%">O</span><span style="left:40.00%">N</span><span style="left:44.00%">D</span><span style="left:48.00%">J<b>2026</b></span><span style="left:52.00%">F</span><span style="left:56.00%">M</span><span style="left:60.00%">A</span><span style="left:64.00%">M</span><span style="left:68.00%">J</span><span style="left:72.00%">J</span><span style="left:76.00%">A</span><span style="left:80.00%">S</span><span style="left:84.00%">O</span><span style="left:88.00%">N</span><span style="left:92.00%">D</span><span style="left:96.00%">J<b>2027</b></span></div>
   <ol class="evlist"><li><span>26–27 Apr 2025</span> World Scholar’s Cup, Singapore round</li><li><span>5–10 Sep 2025</span> Global round, Bangkok</li><li><span>6–12 Nov 2025</span> Tournament of Champions, Yale</li><li><span>Nov 2025 to Apr 2026</span> writing 4part</li><li><span>end of May 2026</span> Locke essays sent</li><li><span>June 2026</span> research question</li><li><span>Jun to Aug 2026</span> VPS Veritas</li><li class="plan"><span>3 Oct 2026</span> Locke results</li><li class="plan"><span>19 Nov to 9 Dec 2026</span> gvhackathon.com</li><li class="plan"><span>Dec 2026 to Jan 2027</span> paper to TMLR</li></ol>
   <div class="head"></div>
-  <figcaption id="score-cap">4part, for 48 tracks, 9:53. Markings above the notes are from the MIDI file. The line under the basses is my own timeline, January 2025 to January 2027.<br><a class="play" href="/static/audio/4part.m4a">Listen</a></figcaption>
+  <figcaption id="score-cap">4part, for 48 tracks, 9:53. Markings above the notes are from the MIDI file. The line under the basses is my own timeline, January 2025 to January 2027, with what hasn’t happened yet in blue.<br><a class="play" href="/static/audio/4part.m4a">Listen</a></figcaption>
 </figure>
 
 <div class="journey">
@@ -248,7 +245,7 @@ footer { border-top: 1px solid #000; margin-top: 2rem; padding-top: 1rem; font-s
 <section class="station " id="writing" data-f="0.4000" aria-labelledby="writing-h">
   <p class="when">November 2025 to April 2026</p>
   <div><h2 id="writing-h">Writing 4part</h2>
-  <p>4part is called that because it has four parts. It’s my take on the hero’s journey. I wrote it from late last year to this spring in MuseScore and produced it in Logic Pro. There are 48 tracks, eleven of them woodwinds (one is a bass oboe) and six of them horns.</p>
+  <p>4part is called that because it has four parts. It’s my take on the hero’s journey. I wrote it in MuseScore and produced it in Logic Pro. There are 48 tracks, eleven of them woodwinds (one is a bass oboe) and six of them horns.</p>
   <p>I named the parts after a training run, since the two stories line up closely. Part III is the local minimum. It’s the quietest stretch of the piece, three instruments at 60 beats a minute, and the earlier motifs only come back after it.</p></div>
 </section>
 <section class="station " id="cismap" data-f="" aria-labelledby="cismap-h">
@@ -308,7 +305,7 @@ footer { border-top: 1px solid #000; margin-top: 2rem; padding-top: 1rem; font-s
 <section class="station " id="vps" data-f="0.7387" aria-labelledby="vps-h">
   <p class="when">June to August 2026</p>
   <div><h2 id="vps-h">VPS Veritas</h2>
-  <p>A paid AI consulting internship with a marine fuel testing company. I spent two weeks in person in Singapore and six working remotely from Toronto, twelve hours behind. I built three things and handed each over with its own documentation.</p>
+  <p>A paid AI consulting internship with a marine fuel testing company. I spent two weeks in person in Singapore and six working remotely from Toronto, twelve hours behind. I built three things and handed each one over with documentation.</p>
   <p>The biggest is an offline-first app for the company’s bunker quantity surveyors. A surveyor records a whole fuel delivery on board a ship with no connection, the office sees it as soon as the device is back online, and the quantity calculations run as the figures go in. It replaced an Excel workbook that the office used to type out again by hand. It runs on Windows and Android, with a database on each device and a cloud API behind it.</p>
   <details><summary>The other two</summary><p>A sales tool the commercial team uses in client meetings, with seven savings calculators tested against the spreadsheets they came from and a generator that writes the full proposal as a Word document. And an analysis pipeline in Python that costed the bids in a freight tender and produced the recommendation.</p></details></div>
 </section>
@@ -320,7 +317,7 @@ footer { border-top: 1px solid #000; margin-top: 2rem; padding-top: 1rem; font-s
   <p class="when">28 September to 9 December 2026</p>
   <div><h2 id="hack-h"><a href="https://gvhackathon.com">gvhackathon.com</a></h2>
   <p>An international hackathon our school runs online, free for students aged 14 to 18 in teams of two to four, judged in two divisions with US$3,000 in prizes. I co-lead it with Ruchika Dutt, who teaches computer science at CIS, and I built the competition platform on my own.</p>
-  <p>Registration opens on 28 September. The challenge stays sealed until the opening ceremony on 19 November, and teams then have seven days to build. Judging runs to 8 December and includes an on-camera interview built from each team’s own code, then live interviews for finalists. The closing ceremony is on 9 December. I also negotiated with school leadership and an outside vendor so the event got its own week.</p></div>
+  <p>Registration opens on 28 September. The challenge stays sealed until the opening ceremony on 19 November, and teams then have seven days to build. Judging runs to 8 December and includes an on-camera interview about each team’s code, then live interviews for finalists. The closing ceremony is on 9 December. I also negotiated with school leadership and an outside vendor so the event got its own week.</p></div>
 </section>
 <section class="station ahead" id="coda" data-f="1.0000" aria-labelledby="coda-h">
   <p class="when">2027</p>
@@ -352,7 +349,7 @@ function load() {
     }
   });
   audio.addEventListener('play', function () { btn.textContent = 'Pause'; pin.querySelector('.lis').textContent = 'Pause'; });
-  audio.addEventListener('pause', function () { btn.textContent = 'Resume'; pin.querySelector('.lis').textContent = 'Listen'; following = false; });
+  audio.addEventListener('pause', function () { btn.textContent = 'Resume'; pin.querySelector('.lis').textContent = 'Resume'; following = false; });
   audio.addEventListener('error', function () { btn.textContent = "The recording didn't load"; });
 }
 var fadeTimer;
@@ -380,7 +377,7 @@ function onScroll() {
   var heroGone = fig.getBoundingClientRect().bottom < 0;
   pin.classList.toggle('show', heroGone);
   if (following) return;
-  var line = innerHeight * 0.45, prev = null, next = null, f = 0, last = 0;
+  var line = innerHeight * 0.38, prev = null, next = null, f = 0, last = 0;
   stations.forEach(function (s) {
     var top = s.getBoundingClientRect().top, sf = s.dataset.f === '' ? null : +s.dataset.f;
     if (sf === null) sf = last; else last = sf;
@@ -393,8 +390,7 @@ function onScroll() {
   var here = prev ? prev.el : null;
   if (here !== current) {
     current = here;
-    stations.forEach(function (s) { s.classList.toggle('now', s === here); });
-    pin.querySelector('#where').textContent = here ? here.querySelector('h2').textContent : '';
+      pin.querySelector('#where').textContent = here ? here.querySelector('h2').textContent : '';
     if (soundOnScroll && here) play(f * LEN, 8);
   }
 }
