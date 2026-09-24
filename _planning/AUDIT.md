@@ -182,7 +182,7 @@ Fixed:
 | Hidden pinned bar is still in the tab order, focused off-screen | B | `visibility: hidden` while it is out of view |
 | A motif highlight can't be turned off | B | A second click turns it off and fades the clip. The highlight clears on pause. `aria-pressed` added |
 | A jump from the pinned bar hides the heading under the bar | B | `scroll-margin-top` on stations |
-| Labels overlap between 901 and ~1150 px | B | Phone layout up to 1150 px |
+| Labels overlap between 901 and ~1150 px | B | Phone layout up to 1200 px (round 4) |
 | Essay PDFs hosted in a third-party storage bucket | B | Copied byte for byte to `/static/essays/` (checked: the covers carry only the prompt) |
 | Motif and "Hear the ending" buttons do nothing without JS | B | `hidden` in the HTML, shown by the script |
 | Fade could pause a new playback; sound-on-scroll cut a full listen to 8 s; unhandled `play()` promise | B | Fade cleared on Listen; sound-on-scroll leaves a playing track alone; `.catch` added |
@@ -204,3 +204,22 @@ Left as is:
 - **Scrolling while paused moves the playhead.** Scroll drives the playhead whenever the piece isn't playing; that is the design.
 - **The fixed "today".** `_planning/UPDATING.md` covers how to move it.
 - **"working remotely from Toronto".** A city, not a neighbourhood, so it is within the brief. Flagged to Radek.
+
+## Round 4: regression check after the round 3 fixes
+
+One fresh QA reviewer (Opus) drove the rebuilt site in Playwright at 360 to 1920 px, with and without JS and with reduced motion. It found no blockers. Everything round 3 fixed held: no focusable hidden bar, motif toggle and `aria-pressed`, both Listen buttons in sync, each pinned link landing below the bar, no dead controls without JS, one-page CV, no requests to any other host.
+
+| Finding | Change |
+|---|---|
+| Turning "Sound on scroll" off during a full listen stopped the piece | Fades only a scroll snippet |
+| The pinned label froze while the piece played (`onScroll` returned early) | The current section is tracked while playing; only the playhead waits for the audio |
+| The pinned bar came first in the DOM, so Tab from the content never reached it | Moved to just after the score (still fixed at the top) |
+| Focus could land under the pinned bar | `scroll-padding-top` on the page, in place of `scroll-margin-top` on stations |
+| Hovering another motif cleared the highlight of the one playing | Hover and blur return to the active motif |
+| Timeline labels touched from 1151 to ~1300 px | Phone layout up to 1200 px; the first label is "WSC, Singapore"; the month letter after a year is hidden below 1350 px |
+| The playhead line caught clicks meant for the pinned links | `pointer-events: none` on the playhead and the today line |
+| Stray `}` in the stylesheet; pointer cursor on the score without JS | Removed; the cursor is set by the script |
+
+Raised for Radek, not changed: "working remotely from Toronto" (a city, within the brief, but it says where he spends summers), and whether Ruchika Dutt, Sungjoo Ha and Min Lin are happy to be named.
+
+Result: the rounds found no blockers after round 3, and every should-fix found in round 4 is fixed and retested above. Reviewer A's remaining case (55%) is about voice, which Radek will add next.
