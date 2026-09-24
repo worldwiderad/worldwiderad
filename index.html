@@ -352,7 +352,7 @@ fig.querySelectorAll('.motif').forEach(function (b) { b.setAttribute('aria-press
 var SRC = link.getAttribute('href');
 if (!new Audio().canPlayType('audio/mp4; codecs="mp4a.40.2"')) SRC = SRC.replace('.m4a', '.webm');
 var ctx = null, voices = [], active = null, state = 'idle', pos = 0, plan = null, raf = 0;
-var scrollMode = false, scrollStarted = false, lastStation = null, settleTimer = 0, shownF = 0;
+var scrollMode = false, scrollStarted = false, lastStation = null, settleTimer = 0, waitingSince = 0, shownF = 0;
 
 function makeVoice() {
   var v = { a: new Audio(SRC), g: null, timer: 0, onStart: null, began: false };
@@ -467,6 +467,7 @@ marks.forEach(function (m, i) {
 });
 function mark(el) { for (var i = 0; i < marks.length; i++) if (marks[i].el === el) return marks[i]; }
 function settle() {
+  waitingSince = 0;
   if (!scrollMode || !current || current === lastStation) return;
   lastStation = current;
   var m = mark(current), t = state === 'playing' ? active.a.currentTime : -1;
@@ -478,9 +479,10 @@ function onScroll() {
   ticking = false;
   var heroGone = fig.getBoundingClientRect().bottom < 0;
   pin.classList.toggle('show', heroGone);
-  var line = innerHeight * 0.38, prev = null, next = null, f = 0, last = 0;
+  var cover = heroGone ? pin.getBoundingClientRect().bottom : 0;
+  var line = cover + (innerHeight - cover) * 0.6, prev = null, next = null, f = 0, last = 0;
   stations.forEach(function (s) {
-    var top = s.getBoundingClientRect().top, sf = s.dataset.f === '' ? null : +s.dataset.f;
+    var top = s.firstElementChild.getBoundingClientRect().top, sf = s.dataset.f === '' ? null : +s.dataset.f;
     if (sf === null) sf = last; else last = sf;
     if (top <= line) prev = { el: s, top: top, f: sf };
     else if (!next) next = { el: s, top: top, f: sf };
@@ -494,7 +496,11 @@ function onScroll() {
     current = here;
     pin.querySelector('#where').textContent = here ? here.querySelector('h2').textContent : '';
   }
-  if (scrollMode && current && current !== lastStation) { clearTimeout(settleTimer); settleTimer = setTimeout(settle, 450); }
+  if (scrollMode && current && current !== lastStation) {
+    if (!waitingSince) waitingSince = Date.now();
+    clearTimeout(settleTimer);
+    if (Date.now() - waitingSince > 400) settle(); else settleTimer = setTimeout(settle, 200);
+  } else waitingSince = 0;
 }
 addEventListener('scroll', function () { if (!ticking) { ticking = true; requestAnimationFrame(onScroll); } }, { passive: true });
 onScroll();
