@@ -19,13 +19,15 @@ Do not add anything under `/assets/`: the Pages theme writes `/assets/css/style.
 
 ## Moving "today"
 
-The page is fixed at 24 September 2026. To move it to a new date, change three things in `index.html`:
+The timeline under the score is stretched, not to scale: each section of the page is pinned to its own stretch of the music (its `data-f`, the fraction of the way through the piece), and the dates in between are spaced evenly. `_planning/tools/timeline.py` gives the position of any date, for example `python3 _planning/tools/timeline.py 2026-10-03`.
 
-1. `--now` on the `<html>` tag. It is the date's position on the timeline, which runs from 1 January 2025 to 1 February 2027 (25 months):
-   `((year - 2025) * 12 + (month - 1) + (day - 1) / 30) / 25 * 100`, as a percentage.
-   Example: 3 October 2026 is `((1*12) + 9 + 2/30) / 25 * 100 = 84.27%`.
-2. The `#today` station: its `data-f` (the same number divided by 100, e.g. `0.8427`) and its heading "Today, …". Move the whole `<section>` so it sits between the last past item and the first future one.
-3. The footer's "Last updated …". Also update "Last updated" in `cv/index.html`.
+To move "today" to a new date:
+
+1. Set `--now` on the `<html>` tag to that date's position from the tool.
+2. Update the `#today` heading ("Today, …"). Leave the anchors in the tool and the station's `data-f` alone: the today line moves a little along the staff, and the section keeps its place in the music.
+3. Update "Last updated …" in the footer and in `cv/index.html`.
+
+If the new date passes a future item (the Locke result on 3 October, the hackathon), move the `#today` section below that item's section and swap the two `data-f` values, so the sections stay in order through the music.
 
 ## Turning a future item into a past one
 
@@ -41,7 +43,7 @@ In `index.html`, the `#locke` station has `<span class="plan">results 3 October<
 
 ## Adding a timeline item
 
-Positions on the timeline use the same formula as `--now`. A single event is a `<span class="dot" style="left:X%">` with a label `<span class="lab" style="left:X+0.6%">`; a period is `<span class="span" style="left:START%;width:LENGTH%">`. Put it in the lane where it has room, copy it into the pinned bar's `.mini`, and add a line to the phone `<ol class="evlist">`. A new station needs `data-f` (its position divided by 100) and must sit in date order among the other stations.
+Positions on the timeline come from `_planning/tools/timeline.py`. A single event is a `<span class="dot" style="left:X%">` with a label `<span class="lab" style="left:X+0.6%">`; a period is `<span class="span" style="left:START%;width:LENGTH%">`. Put it in the lane where it has room, copy it into the pinned bar's `.mini`, and add a line to the phone `<ol class="evlist">`. A new station needs `data-f` (its position divided by 100) and must sit in date order among the other stations.
 
 ## Checks before pushing
 
