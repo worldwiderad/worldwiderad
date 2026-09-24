@@ -223,3 +223,16 @@ One fresh QA reviewer (Opus) drove the rebuilt site in Playwright at 360 to 1920
 Raised for Radek: "working remotely from Toronto" (a city, within the brief, but it says where he spends summers), and whether Ruchika Dutt, Sungjoo Ha and Min Lin are happy to be named. Radek confirmed both stay as they are.
 
 Result: the rounds found no blockers after round 3, and every should-fix found in round 4 is fixed and retested above. Reviewer A's remaining case (55%) is about voice, which Radek will add next.
+
+## After launch: sound on scroll reworked
+
+Radek found "Sound on scroll" clunky: each section restarted the music with an 8-second clip, and the clip stopped on its own. The audio code is rewritten.
+
+- Playback is continuous. Reaching a section only moves the music if what is playing is outside that section's stretch of the piece. Sections that share music (CIS-MAP after 4part, the essays and the research, the hackathon and the finale) don't interrupt it.
+- A move waits until scrolling settles (450 ms), so a fast scroll past several sections makes one move, not several.
+- Moves crossfade over about 1.6 s between two audio elements through Web Audio gain nodes. Web Audio is used because iOS ignores `audio.volume`, so the old volume fades never finished there. If a second element can't start, it falls back to a dip on one element.
+- The playhead follows the audio on every frame and eases to a new position after a jump (it snaps with reduced motion).
+- Motif demos crossfade from the statement to the return. "Hear the ending" plays to the end.
+- Pause turns sound on scroll off. Turning it off stops only music it started.
+
+Tested in Chromium over a range-capable server. Safari and iOS still need a manual listen.

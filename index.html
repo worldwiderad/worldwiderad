@@ -318,7 +318,7 @@ footer { border-top: 1px solid #000; margin-top: 2rem; padding-top: 1rem; font-s
   <p>An international hackathon our school runs online, free for students aged 14 to 18 in teams of two to four, judged in two divisions with US$3,000 in prizes. I co-lead it with Ruchika Dutt, who teaches computer science at CIS, and I built the competition platform on my own.</p>
   <p>Registration opens on 28 September. The challenge stays sealed until the opening ceremony on 19 November, and teams then have seven days to build. Judging runs to 8 December and includes an on-camera interview about each team’s code, then live interviews for finalists. The closing ceremony is on 9 December. I also negotiated with school leadership and an outside vendor so the event got its own week.</p></div>
 </section>
-<section class="station ahead" id="coda" data-f="1.0000" aria-labelledby="coda-h">
+<section class="station ahead" id="coda" data-f="1.0000" data-t="525.5" aria-labelledby="coda-h">
   <p class="when">2027</p>
   <div><h2 id="coda-h">Next</h2>
   <p>From 8:45 the whole orchestra comes back in, and the scale run, the horn call and the arpeggio return together. <button hidden class="hear" type="button" data-from="525.5">Hear the ending</button></p>
@@ -331,53 +331,138 @@ footer { border-top: 1px solid #000; margin-top: 2rem; padding-top: 1rem; font-s
 <script>
 var LEN = 593.32;
 var fig = document.querySelector('.score'), sys = fig.querySelector('.system'), pin = document.querySelector('.pin');
-var link = fig.querySelector('a.play'), btn = document.createElement('button');
-var audio, stopAt = null, then = null, soundOnScroll = false, following = false;
+var link = fig.querySelector('a.play'), btn = document.createElement('button'), lis = pin.querySelector('.lis'), snd = pin.querySelector('.snd');
+var still = matchMedia('(prefers-reduced-motion: reduce)').matches;
 btn.className = 'play'; btn.type = 'button'; btn.textContent = 'Listen (9:53)'; link.replaceWith(btn);
 [sys, pin.querySelector('.notes')].forEach(function (el) { var i = new Image(); i.className = 'played'; i.alt = ''; el.insertBefore(i, el.children[1] || null); });
 ['run', 'call', 'rock', 'arp'].forEach(function (m) { var i = new Image(); i.className = 'hl'; i.alt = ''; i.dataset.m = m; sys.insertBefore(i, sys.querySelector('.groups')); });
 document.querySelectorAll('.motif, .hear').forEach(function (b) { b.hidden = false; });
 fig.querySelectorAll('.motif').forEach(function (b) { b.setAttribute('aria-pressed', 'false'); });
 
-function load() {
-  if (audio) return;
-  var m4a = link.getAttribute('href');
-  audio = new Audio(new Audio().canPlayType('audio/mp4; codecs="mp4a.40.2"') ? m4a : m4a.replace('.m4a', '.webm'));
-  document.querySelectorAll('.played').forEach(function (i) { i.src = '/static/score/piece-played.svg'; });
-  audio.addEventListener('timeupdate', function () {
-    if (following) setF(audio.currentTime / LEN);
-    if (stopAt !== null && audio.currentTime >= stopAt) {
-      if (then !== null) { audio.currentTime = then; stopAt = then + 9; then = null; }
-      else fadeOut();
-    }
-  });
-  audio.addEventListener('play', function () { btn.textContent = 'Pause'; pin.querySelector('.lis').textContent = 'Pause'; });
-  audio.addEventListener('pause', function () { btn.textContent = 'Resume'; pin.querySelector('.lis').textContent = 'Resume'; following = false; clearMotif(); });
-  audio.addEventListener('error', function () { btn.textContent = pin.querySelector('.lis').textContent = "The recording didn't load"; });
+var SRC = link.getAttribute('href');
+if (!new Audio().canPlayType('audio/mp4; codecs="mp4a.40.2"')) SRC = SRC.replace('.m4a', '.webm');
+var ctx = null, voices = [], active = null, state = 'idle', pos = 0, plan = null, raf = 0;
+var scrollMode = false, scrollStarted = false, lastStation = null, settleTimer = 0, shownF = 0;
+
+function makeVoice() {
+  var v = { a: new Audio(SRC), g: null, timer: 0, onStart: null, began: false };
+  v.a.preload = 'auto';
+  if (ctx) {
+    v.g = ctx.createGain(); v.g.gain.value = 0;
+    ctx.createMediaElementSource(v.a).connect(v.g); v.g.connect(ctx.destination);
+  } else v.a.volume = 0;
+  v.a.addEventListener('ended', function () { if (v === active) finished(); });
+  v.a.addEventListener('error', function () { if (v === active) failed(); });
+  return v;
 }
-var fadeTimer;
-function play(t, secs) {
-  load(); clearInterval(fadeTimer); audio.volume = 1;
-  audio.currentTime = t; stopAt = secs ? t + secs : null; then = null; start();
+function ensure() {
+  if (!voices.length) {
+    var AC = window.AudioContext || window.webkitAudioContext;
+    try { ctx = AC ? new AC() : null; } catch (e) { ctx = null; }
+    voices = [makeVoice(), makeVoice()];
+    document.querySelectorAll('.played').forEach(function (i) { i.src = '/static/score/piece-played.svg'; });
+    var p = voices[1].a.play();
+    if (p && p.then) p.then(function () { if (voices[1] !== active) voices[1].a.pause(); }, function () {});
+  }
+  if (ctx && ctx.state === 'suspended') ctx.resume();
 }
-function start() {
-  var p = audio.play();
-  if (p && p.catch) p.catch(function () {});
+function level(v, to, secs) {
+  if (!ctx) { v.a.volume = to; return; }
+  var g = v.g.gain, now = ctx.currentTime;
+  g.cancelScheduledValues(now); g.setValueAtTime(g.value, now);
+  g.linearRampToValueAtTime(to, now + Math.max(secs, 0.02));
 }
-function fadeOut() {
-  stopAt = null; clearInterval(fadeTimer);
-  fadeTimer = setInterval(function () {
-    audio.volume = Math.max(0, audio.volume - 0.08);
-    if (audio.volume === 0) { clearInterval(fadeTimer); audio.pause(); audio.volume = 1; }
-  }, 60);
+function fadeAway(v, secs) {
+  level(v, 0, secs); clearTimeout(v.timer);
+  v.timer = setTimeout(function () { v.a.pause(); }, secs * 1000 + 80);
+}
+function other(v) { return v === voices[0] ? voices[1] : voices[0]; }
+function go(t, xf) {
+  ensure();
+  t = Math.max(0, Math.min(LEN - 1, t));
+  var cur = state === 'playing' ? active : null, v, prev;
+  if (cur && !cur.began) { v = cur; prev = other(cur).a.paused ? null : other(cur); }
+  else if (cur) { v = other(cur); prev = cur; }
+  else { v = active || voices[0]; prev = null; }
+  clearTimeout(v.timer);
+  if (v.onStart) { v.a.removeEventListener('playing', v.onStart); v.a.removeEventListener('seeked', v.onStart); }
+  if (prev) clearTimeout(prev.timer);
+  level(v, 0, 0.02); v.began = false; active = v;
+  v.onStart = function () {
+    v.a.removeEventListener('playing', v.onStart); v.a.removeEventListener('seeked', v.onStart);
+    if (active !== v || v.began) return;
+    v.began = true;
+    level(v, 1, prev ? xf : 0.5);
+    if (prev) fadeAway(prev, xf * 1.25);
+  };
+  var wasPaused = v.a.paused;
+  v.a.addEventListener(wasPaused ? 'playing' : 'seeked', v.onStart);
+  try { v.a.currentTime = t; } catch (e) {}
+  setState('playing');
+  if (wasPaused) {
+    var p = v.a.play();
+    if (p && p.catch) p.catch(function () {
+      if (active !== v) return;
+      if (!prev) return failed();
+      active = prev; prev.began = true; level(prev, 0, 0.45);
+      prev.timer = setTimeout(function () { try { prev.a.currentTime = t; } catch (e) {} level(prev, 1, 0.8); }, 480);
+    });
+  }
+}
+function stop(secs) {
+  if (state !== 'playing') return;
+  pos = active.a.currentTime; plan = null;
+  voices.forEach(function (v) { if (!v.a.paused) fadeAway(v, secs); });
+  setState('paused'); clearMotif();
+}
+function finished() { pos = 0; plan = null; setState('idle'); clearMotif(); }
+function failed() { plan = null; setState('idle'); btn.textContent = lis.textContent = "The recording didn't load"; }
+function setState(s) {
+  state = s;
+  btn.textContent = s === 'playing' ? 'Pause' : s === 'paused' ? 'Resume' : 'Listen (9:53)';
+  lis.textContent = s === 'playing' ? 'Pause' : s === 'paused' ? 'Resume' : 'Listen';
+  if (s === 'playing' && !raf) raf = requestAnimationFrame(tick);
+}
+function tick() {
+  raf = 0;
+  if (state !== 'playing') return;
+  var t = active.a.currentTime, d = t / LEN - shownF;
+  setF(still || Math.abs(d) < 0.002 ? t / LEN : shownF + d * 0.15);
+  if (plan && active.began && t >= plan.at) {
+    var p = plan; plan = null;
+    if (p.to !== null) { go(p.to, 1.2); plan = { at: p.to + 9, to: null }; } else stop(1.5);
+  }
+  raf = requestAnimationFrame(tick);
+}
+function setScrollMode(on) {
+  scrollMode = on;
+  snd.textContent = 'Sound on scroll: ' + (on ? 'on' : 'off');
+  snd.setAttribute('aria-pressed', on);
 }
 function setF(f) {
-  f = Math.max(0, Math.min(1, f));
+  f = Math.max(0, Math.min(1, f)); shownF = f;
   document.documentElement.style.setProperty('--f', f);
   sys.style.setProperty('--p', f * 100 + '%');
   fig.style.setProperty('--f', f); fig.classList.add('moved');
 }
-var stations = [].slice.call(document.querySelectorAll('.station'));
+
+var stations = [].slice.call(document.querySelectorAll('.station')), marks = [], lastF = 0;
+stations.forEach(function (s) {
+  var f = s.dataset.f === '' ? lastF : +s.dataset.f; lastF = f;
+  marks.push({ el: s, t: s.dataset.t ? +s.dataset.t : f * LEN });
+});
+marks.forEach(function (m, i) {
+  m.end = LEN;
+  for (var j = i + 1; j < marks.length; j++) if (marks[j].t > m.t + 5) { m.end = marks[j].t; break; }
+});
+function mark(el) { for (var i = 0; i < marks.length; i++) if (marks[i].el === el) return marks[i]; }
+function settle() {
+  if (!scrollMode || !current || current === lastStation) return;
+  lastStation = current;
+  var m = mark(current), t = state === 'playing' ? active.a.currentTime : -1;
+  if (t >= m.t - 1.5 && t < m.end) return;
+  go(m.t, state === 'playing' ? 1.6 : 0);
+}
 var current = null, ticking = false;
 function onScroll() {
   ticking = false;
@@ -393,33 +478,38 @@ function onScroll() {
   if (innerHeight + scrollY >= document.documentElement.scrollHeight - 2) { var end = stations[stations.length - 1]; prev = { el: end, f: +end.dataset.f }; next = null; }
   if (prev && next) f = prev.f + (next.f - prev.f) * Math.max(0, Math.min(1, ((line - prev.top) / (next.top - prev.top) - 0.5) * 2));
   else if (prev) f = prev.f;
-  if (!following && (heroGone || prev)) setF(f);
+  if (state !== 'playing' && (heroGone || prev)) setF(f);
   var here = prev ? prev.el : null;
   if (here !== current) {
     current = here;
     pin.querySelector('#where').textContent = here ? here.querySelector('h2').textContent : '';
-    if (soundOnScroll && here && !following) play(f * LEN, 8);
   }
+  if (scrollMode && current && current !== lastStation) { clearTimeout(settleTimer); settleTimer = setTimeout(settle, 450); }
 }
 addEventListener('scroll', function () { if (!ticking) { ticking = true; requestAnimationFrame(onScroll); } }, { passive: true });
 onScroll();
+
 btn.addEventListener('click', function () {
-  load();
-  if (audio.paused) { clearInterval(fadeTimer); audio.volume = 1; following = true; stopAt = null; start(); } else audio.pause();
+  if (state === 'playing') { setScrollMode(false); stop(0.4); }
+  else { plan = null; go(pos, 0); }
 });
-pin.querySelector('.lis').addEventListener('click', function () { btn.click(); });
-pin.querySelector('.snd').addEventListener('click', function () {
-  soundOnScroll = !soundOnScroll;
-  this.textContent = 'Sound on scroll: ' + (soundOnScroll ? 'on' : 'off');
-  if (soundOnScroll) { load(); if (current && audio.paused) play(+getComputedStyle(document.documentElement).getPropertyValue('--f') * LEN, 8); }
-  else if (audio && !following) fadeOut();
+lis.addEventListener('click', function () { btn.click(); });
+snd.setAttribute('aria-pressed', 'false');
+snd.addEventListener('click', function () {
+  setScrollMode(!scrollMode);
+  if (scrollMode) {
+    lastStation = current;
+    scrollStarted = state !== 'playing';
+    if (scrollStarted) { plan = null; go(current ? mark(current).t : shownF * LEN, 0); }
+  } else if (scrollStarted) stop(1.2);
 });
+function listenAt(t, p) { setScrollMode(false); plan = p || null; go(t, 0.9); }
 sys.style.cursor = 'pointer';
 sys.addEventListener('click', function (e) {
-  var r = sys.getBoundingClientRect(); following = true; play((e.clientX - r.left) / r.width * LEN);
+  var r = sys.getBoundingClientRect(); clearMotif(); listenAt((e.clientX - r.left) / r.width * LEN);
 });
 document.querySelectorAll('.hear').forEach(function (b) {
-  b.addEventListener('click', function () { following = true; play(+b.dataset.from, 30); });
+  b.addEventListener('click', function () { listenAt(+b.dataset.from); });
 });
 fig.querySelectorAll('.hl').forEach(function (img) { img.dataset.src = '/static/score/motif-' + img.dataset.m + '.svg'; });
 function clearMotif() {
@@ -444,11 +534,11 @@ fig.querySelectorAll('.motif').forEach(function (b) {
   b.addEventListener('mouseleave', restore);
   b.addEventListener('blur', restore);
   b.addEventListener('click', function () {
-    if (b.classList.contains('on')) { clearMotif(); if (audio) fadeOut(); return; }
+    if (b.classList.contains('on')) { stop(1.2); return; }
     fig.querySelectorAll('.motif').forEach(function (o) { o.classList.toggle('on', o === b); o.setAttribute('aria-pressed', o === b); });
-    show(b.dataset.m); following = true;
+    show(b.dataset.m);
     var from = +b.dataset.from, to = b.dataset.to;
-    play(from, to ? 7 : 22); then = to ? +to : null;
+    listenAt(from, to ? { at: from + 7, to: +to } : { at: from + 22, to: null });
   });
 });
 </script>
