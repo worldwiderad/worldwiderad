@@ -27,7 +27,7 @@ What Jekyll processing means for the rebuild:
 - Any page *with* front matter gets the default theme's layout (Primer) and SEO tags injected, unless it sets `layout: null`. Every templated page has to set that.
 - A `.md` file at the root without front matter gets published as a themed HTML page. That is why these notes live in `_planning/`.
 - Any new folder that must be published cannot start with `_`.
-- Jekyll can already build the site from data files (`_data/*.yml`) with no new tooling, because Pages runs it anyway. Question 11 in section 6 asks whether to use this.
+- Jekyll can already build the site from data files (`_data/*.yml`) with no new tooling, because Pages runs it anyway. Question 11 in `QUESTIONS.md` asks whether to use this.
 - To build locally: `bundle exec jekyll build --safe` with the `github-pages` gem, `API_URL=http://127.0.0.1:9/` (so the metadata plugin doesn't call the GitHub API), `PAGES_REPO_NWO=worldwiderad/worldwiderad` and a UTF-8 locale.
 
 ## 2. Every path the domain serves
@@ -111,11 +111,11 @@ The same script also checks that `/jlec-form/` (with the trailing slash) and `/h
 
 ## 6. Questions about the repo
 
-These sit alongside the content questions from the brief. My recommendation comes first in each.
+These also appear in `QUESTIONS.md` (numbers 19 to 23 and 11), where every question has a default. My recommendation comes first in each.
 
 1. **Other hosted pages.** Is anything else served from this domain that is not in this repo, such as a Google Form redirect or a link you have shared? Everything the repo contains is listed above. The JLEC survey is `/jlec-form/`.
 2. **`/Page-2.html`.** It is a Nicepage copy of the old homepage and appears in the old sitemap. I recommend replacing it with a one-line page that points to `/`, so any old link still lands somewhere, and then removing the Nicepage CSS, JS and vendor files. Alternatively, keep it byte-identical with all its assets.
 3. **`/hackathon/`.** You said it is outdated. I recommend replacing it with a short page that links to gvhackathon.com (or a redirect to it). The alternatives are to keep it as it is, or to delete it and let it 404.
 4. **`/IEEEv39.pdf`.** It stays live and unlinked, as the brief says. Tell me if the LoRa paper should appear on the site after all.
 5. **`/jlec-form/dash.html`.** Is it meant to be public? I won't touch it either way.
-6. **Content in one place (question 11 in the list I'll send).** I recommend `_data/*.yml` files plus the Jekyll build that Pages already runs. The homepage and the CV page would then be generated from the same entries, and updating the JLEC result would be a one-line edit in a text file. The alternative is plain HTML with all content in `index.html`, clearly marked, and the CV kept in sync by hand.
+6. **Content in one place (question 11 in `QUESTIONS.md`).** I recommend `_data/*.yml` files plus the Jekyll build that Pages already runs. The homepage and the CV page would then be generated from the same entries, and updating the JLEC result would be a one-line edit in a text file. The alternative is plain HTML with all content in `index.html`, clearly marked, and the CV kept in sync by hand.
