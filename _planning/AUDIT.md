@@ -236,3 +236,12 @@ Radek found "Sound on scroll" clunky: each section restarted the music with an 8
 - Pause turns sound on scroll off. Turning it off stops only music it started.
 
 Tested in Chromium over a range-capable server. Safari and iOS still need a manual listen.
+
+## After launch: a sound prompt on open
+
+At Radek's request, so more readers find the music. One second after the page opens, a small box fades in at the bottom left: "This page is set to 4part, a piece I wrote. With the sound on, it plays along as you scroll." Its two buttons are "Sound on" (filled) and "No sound". A thin bar drains over 5 seconds, and if nothing is chosen the box fades away and the page stays silent. Browsers don't allow sound before a click anyway.
+
+- The timer pauses while the pointer is over the box or focus is inside it. Escape closes it. It comes first in the tab order, and can't be focused while invisible.
+- "Sound on" starts the piece where the reader is and turns on sound on scroll.
+- Once answered or timed out, it isn't shown again in that browser session (`sessionStorage`, wrapped in try/catch). Without JS it doesn't exist.
+- Checks: axe 0 violations at 360 and 1440 with the box on screen; no horizontal scroll at 360.
