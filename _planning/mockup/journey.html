@@ -1,10 +1,10 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" style="--now:83.07%">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Radek Green</title>
-<meta name="description" content="I’m Radek Green, an IB Diploma student in Singapore. At the top is a ten-minute orchestral piece of mine; below it, the work I’ve done since 2025 in date order, with links to each piece.">
+<meta name="description" content="Radek Green, IB Diploma student in Singapore. Research on how language models predict each other, two John Locke essays, software, and 4part, a piece for orchestra you can play here.">
 <style>
 @font-face { font-family: Petrona; src: url(fonts/petrona.woff2) format("woff2"); font-weight: 100 900; font-display: swap; }
 @font-face { font-family: Petrona; src: url(fonts/petrona-italic.woff2) format("woff2"); font-weight: 100 900; font-style: italic; font-display: swap; }
@@ -15,8 +15,7 @@ body { margin: 0; }
 a, .play { color: inherit; text-underline-offset: 0.2em; }
 a:hover { text-decoration-thickness: 2px; }
 :focus-visible { outline: 2px solid #2340a8; outline-offset: 3px; }
-.ink, .plan { color: #2340a8; }
-.ink { font-style: italic; }
+.plan { color: #2340a8; }
 
 .page { max-width: 80rem; padding: 2.4rem 3rem 4rem 4vw; }
 header { display: flex; justify-content: space-between; align-items: flex-end; gap: 2rem; }
@@ -24,22 +23,25 @@ h1 { font-size: 4.2rem; font-weight: 500; line-height: 1; margin: 0; }
 header p { margin: 0.6rem 0 0; max-width: 40rem; }
 .links a { margin-left: 1.1rem; }
 
-/* The score. Everything left of the notes is the margin a printed score keeps for instrument names. */
-.score { --m: 9.5rem; margin: 2rem 0 2.5rem; position: relative; }
+.score { --m: 9.5rem; margin: 2rem 0 3rem; position: relative; }
 .row { position: relative; margin-left: var(--m); }
-.cond { height: 4.6rem; font-size: 0.8rem; }
+.cond { height: 4.6rem; font-size: 0.8rem;
+  background: linear-gradient(#aaa, #aaa) 0 3.1rem / 100% 1px no-repeat, linear-gradient(#aaa, #aaa) 0 3.4rem / 100% 1px no-repeat,
+    linear-gradient(#aaa, #aaa) 0 3.7rem / 100% 1px no-repeat, linear-gradient(#aaa, #aaa) 0 4rem / 100% 1px no-repeat,
+    linear-gradient(#aaa, #aaa) 0 4.3rem / 100% 1px no-repeat; }
 .cond span { position: absolute; white-space: nowrap; }
+.cond .clef { top: 3.1rem; left: -1.5rem; font-family: Bravura; font-size: 1.2rem; line-height: 0; margin-top: 0.9rem; }
 .part { top: 0; font-weight: 600; font-size: 1.15rem; }
 .part em { font-weight: 400; font-size: 0.8rem; margin-left: 0.2rem; }
-.tempo { top: 1.7rem; }
-.tempo.burst { border-top: 1px solid #000; padding-top: 0.05rem; top: 2.45rem; }
+.tempo { top: 1.55rem; }
+.tempo.burst { top: 2.3rem; }
 .gl, .sig i, .ts span { font-family: Bravura; font-weight: 400; font-style: normal; }
 .gl { font-size: 1.4em; line-height: 0; vertical-align: -0.1em; margin-right: 0.15em; }
-.sig { top: 3.1rem; height: 1.3rem; display: flex; }
-.sig i { display: block; font-size: 1.25rem; line-height: 0; margin-top: calc(1.25rem - var(--y) * 0.15rem); width: 0.45rem; }
-.ts { display: block; position: relative; width: 0.8rem; margin: 0 0 0 0.3rem; font-size: 1.5rem; }
+.sig { top: 3.1rem; height: 1.2rem; display: flex; }
+.sig i { display: block; font-size: 1.2rem; line-height: 0; margin-top: calc(1.2rem - var(--y) * 0.15rem); width: 0.42rem; }
+.ts { display: block; position: relative; width: 0.75rem; margin-left: 0.3rem; font-size: 1.2rem; }
 .ts span { position: absolute; left: 0; line-height: 0; }
-.ts span:first-child { top: 0.28rem; } .ts span:last-child { top: 0.78rem; }
+.ts span:first-child { top: 0.3rem; } .ts span:last-child { top: 0.9rem; }
 .motifs { height: 1.9rem; }
 .motif { position: absolute; bottom: 0.25rem; height: 0.5rem; padding: 0; background: none; border: 1px solid #000; border-bottom: 0; cursor: pointer; font: inherit; min-width: 0.6rem; }
 .motif span { position: absolute; bottom: 0.45rem; left: -1px; white-space: nowrap; font-style: italic; font-size: 0.82rem; }
@@ -55,10 +57,9 @@ header p { margin: 0.6rem 0 0; max-width: 40rem; }
 .ruler span { position: absolute; top: 0.2rem; }
 .ruler b { font-weight: 600; color: #000; margin-left: 0.2rem; }
 
-/* The forty-ninth staff: my own two years, set under the basses on their own ruler */
 .staff { margin-top: 1.1rem; border-top: 1px solid #000; }
 .staffname { position: absolute; right: calc(100% + 0.8rem); top: 0; width: 8.4rem; height: 100%; font-style: italic; font-size: 0.8rem; text-align: right; line-height: 1.2; border-right: 2px solid #000; padding: 0.35rem 0.5rem 0 0; box-sizing: border-box; }
-.lane { position: relative; height: 1.55rem; border-bottom: 1px solid #d2d2d2; font-size: 0.78rem; }
+.lane { position: relative; height: 2.1rem; border-bottom: 1px solid #d2d2d2; font-size: 0.78rem; }
 .lane > span { position: absolute; }
 .span { bottom: 0.3rem; height: 5px; background: #000; }
 .span.plan { background: #2340a8; }
@@ -67,100 +68,53 @@ header p { margin: 0.6rem 0 0; max-width: 40rem; }
 .dot { bottom: 0.15rem; width: 10px; height: 8px; margin-left: -5px; border-radius: 50%; transform: rotate(-22deg); background: #000; }
 .dot.open { background: #fff; border: 2px solid #2340a8; box-sizing: border-box; }
 .tie { bottom: 0.45rem; height: 0.45rem; border: 1px solid #2340a8; border-bottom: 0; border-radius: 50% 50% 0 0 / 100% 100% 0 0; }
-.lab { bottom: 0.2rem; white-space: nowrap; font-style: italic; }
-.lab.end { text-align: right; }
-.today { position: absolute; top: -0.2rem; bottom: -1.5rem; left: 83.07%; border-left: 2px solid #2340a8; }
+.lab { bottom: 1rem; white-space: nowrap; font-style: italic; }
+.today { position: absolute; top: -0.2rem; bottom: -1.5rem; left: var(--now); border-left: 2px solid #2340a8; }
 .today span { position: absolute; top: -1.1rem; left: 0.3rem; font-size: 0.72rem; font-style: italic; color: #2340a8; white-space: nowrap; }
 .head { position: absolute; top: 0; bottom: 0; left: calc(var(--m) + (100% - var(--m)) * var(--f, 0)); border-left: 2px solid #2340a8; display: none; pointer-events: none; }
-.score.on .head { display: block; }
-
-.score figcaption { margin: 1.4rem 0 0 var(--m); max-width: 44rem; font-size: 0.95rem; }
+.score.on .head, .score.moved .head { display: block; }
+.score figcaption { position: relative; z-index: 1; background: #fff; padding-top: 1.4rem; margin-left: var(--m); max-width: 44rem; font-size: 0.95rem; }
 .play { font: inherit; background: none; border: 0; padding: 0; text-decoration: underline; cursor: pointer; }
 
-.entries { display: grid; grid-template-columns: minmax(0, 35rem) 16rem; column-gap: 3.5rem; row-gap: 2rem; }
-main h2 { font-size: 1.35rem; font-weight: 600; line-height: 1.2; margin: 0 0 0.3rem; }
-main p { margin: 0 0 0.6rem; }
-.note { padding-top: 0.25rem; font-size: 0.95rem; line-height: 1.45; }
-
-@media (max-width: 900px) {
-  .page { padding: 1.5rem 1.1rem 3rem; }
-  header { display: block; }
-  h1 { font-size: 2.9rem; }
-  .links { margin-top: 0.7rem; } .links a { margin: 0 1rem 0 0; }
-  .score { --m: 0rem; }
-  .cond { height: 1.7rem; } .tempo, .sig { display: none; }
-  .motifs { height: auto; display: flex; flex-wrap: wrap; gap: 0.3rem 1rem; margin: 0 0 0.6rem; }
-  .motif { position: static; height: auto; border: 0; width: auto !important; text-decoration: underline; }
-  .motif span { position: static; font-size: 0.85rem; }
-  .motif[data-m="all"] { display: none; }
-  .system { height: 10.5rem; }
-  .motifs { order: 5; }
-  .score { display: flex; flex-direction: column; }
-  .score .cond { order: 0; } .score .system { order: 1; } .score .ruler { order: 2; } .score .motifs { order: 3; margin-top: 0.4rem; } .score .staff { order: 4; } .score .months { order: 5; } .score figcaption { order: 6; }
-  .cond { height: 1.5rem; } .part { font-size: 0.95rem; }
-  header p { font-size: 0.95rem; }
-  .groups span { right: auto; left: 0; width: auto; border: 0; padding: 0 0.3rem; font-size: 0.64rem; background: rgba(255,255,255,0.85); justify-content: flex-start; height: auto !important; }
-  .staffname { position: static; width: auto; height: auto; border: 0; text-align: left; padding: 0.3rem 0 0.2rem; display: block; }
-  .lane { font-size: 0.7rem; height: auto; min-height: 1.9rem; padding: 0.15rem 0 1.1rem; box-sizing: border-box; }
-  .lab { position: static !important; display: inline-block; margin-right: 0.7rem; text-align: left; }
-  .today span { top: auto; bottom: 0; }
-  .ruler { font-size: 0.62rem; }
-  .ruler.months span:nth-child(odd):not(:first-child):not(:nth-child(13)) { visibility: hidden; }
-  .entries { display: block; }
-  main section { margin-bottom: 1.8rem; }
-  .note { padding: 0; margin: -0.3rem 0 1.8rem; }
-}
-
-/* Load: the score is engraved left to right, each marking arriving at its own point in the music. */
 @keyframes engrave { from { clip-path: inset(0 100% 0 0); } to { clip-path: inset(0 0 0 0); } }
 @keyframes arrive { from { opacity: 0; } to { opacity: 1; } }
 .score .system .base { animation: engrave 2.6s cubic-bezier(.3,.1,.3,1) both; }
 .score .cond > span, .score .motif { animation: arrive .35s both; animation-delay: calc(var(--at, 0) * 2.6s); }
 .score .staff .lane, .score .today, .score .months { animation: arrive .6s 2.5s both; }
-@media (prefers-reduced-motion: reduce) { .score *, .score .system .base { animation: none !important; } }
 
-/* The pinned score: appears once the big one has scrolled away */
 .pin { position: fixed; top: 0; left: 0; right: 0; z-index: 5; background: #fff; border-bottom: 1px solid #000; padding: 0.55rem 3rem 0.5rem 4vw; transform: translateY(-110%); transition: transform .25s; }
 .pin.show { transform: none; }
-@media (prefers-reduced-motion: reduce) { .pin { transition: none; } }
-.pin .inner { max-width: 80rem; display: grid; grid-template-columns: 9.5rem 1fr; column-gap: 0; }
+.pin .inner { max-width: 80rem; display: grid; grid-template-columns: 9.5rem 1fr; }
 .pin .what { font-size: 0.8rem; line-height: 1.25; padding-right: 0.8rem; }
 .pin .what b { display: block; font-weight: 600; }
-.pin .what .plan { font-style: italic; }
 .pin .bar { position: relative; }
 .pin .notes { position: relative; height: 3.2rem; }
 .pin .notes img { position: absolute; inset: 0; width: 100%; height: 100%; }
 .pin .notes .played { clip-path: inset(0 calc(100% - var(--f, 0) * 100%) 0 0); }
 .pin .mini { position: relative; border-top: 1px solid #000; margin-top: 0.25rem; }
 .pin .mini .lane { height: 0.55rem; border: 0; }
-.pin .mini .lab { display: none; }
+.pin .mini .lab, .pin .mini .tie { display: none; }
 .pin .mini .span { bottom: 0.1rem; height: 3px; }
 .pin .mini .dot { bottom: 0; width: 7px; height: 6px; margin-left: -3px; }
-.pin .mini .tie { display: none; }
 .pin .mini a { position: absolute; top: 0; bottom: 0; }
 .pin .ph { position: absolute; top: -0.2rem; bottom: 0; left: calc(var(--f, 0) * 100%); border-left: 2px solid #2340a8; }
-.pin .today2 { position: absolute; top: 3.3rem; bottom: 1.5rem; left: 83.07%; border-left: 1px dashed #2340a8; }
+.pin .today2 { position: absolute; top: 3.3rem; bottom: 1.5rem; left: var(--now); border-left: 1px dashed #2340a8; }
 .pin .ctl { font-size: 0.78rem; margin-top: 0.3rem; display: flex; gap: 1.2rem; }
 .pin .ctl button { font: inherit; background: none; border: 0; padding: 0; text-decoration: underline; cursor: pointer; }
 .pin .ctl .clock { color: #555; margin-left: auto; font-variant-numeric: tabular-nums; }
-.score .head { display: block; }
-.score:not(.on):not(.moved) .head { display: none; }
 
-/* The journey: one station per piece of work, in date order */
-.journey { margin-top: 1rem; }
-.station { display: grid; grid-template-columns: 9.5rem minmax(0, 36rem) minmax(0, 20rem); column-gap: 2.5rem; padding: 3.2rem 0 3.6rem; min-height: 55vh; border-top: 1px solid #e3e3e3; }
+.station { display: grid; grid-template-columns: 9.5rem minmax(0, 36rem); column-gap: 2.5rem; padding: 2.6rem 0 3rem; }
+.station.has-side { grid-template-columns: 9.5rem minmax(0, 36rem) minmax(0, 20rem); padding-bottom: 4rem; }
 .station .when { font-style: italic; font-size: 0.95rem; line-height: 1.3; text-align: right; }
 .station.ahead .when, .station.ahead h2 { color: #2340a8; }
 .station h2 { font-size: 1.6rem; font-weight: 600; line-height: 1.15; margin: 0 0 0.6rem; }
-.station.here .when::after { content: ""; display: block; margin: 0.6rem 0 0 auto; width: 2.5rem; border-top: 2px solid #2340a8; }
 .station p { margin: 0 0 0.8rem; }
-.station .side { font-size: 0.9rem; }
 .station details { margin-top: 0.4rem; }
 .station summary { cursor: pointer; text-decoration: underline; text-underline-offset: 0.2em; }
 .station details[open] summary { margin-bottom: 0.6rem; }
 .station blockquote { margin: 0.8rem 0; font-size: 1.15rem; line-height: 1.4; }
-.station.today { min-height: 30vh; padding: 2.4rem 0; }
-.station.today h2 { font-size: 1.1rem; color: #2340a8; }
+.station.here { padding: 1.2rem 0 1.6rem; }
+.station.here h2 { font-size: 1.05rem; font-weight: 400; font-style: italic; color: #2340a8; border-top: 2px solid #2340a8; padding-top: 0.4rem; width: 12rem; }
 .station .hear { font: inherit; background: none; border: 0; padding: 0; text-decoration: underline; cursor: pointer; color: #2340a8; }
 
 figure.lead { margin: 0; font-size: 0.78rem; line-height: 1.3; }
@@ -178,19 +132,45 @@ figure.lead figcaption { margin-top: 0.7rem; color: #333; }
 
 footer { border-top: 1px solid #000; margin-top: 2rem; padding-top: 1rem; font-size: 0.9rem; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 1rem; }
 
+@media (prefers-reduced-motion: reduce) {
+  .score *, .score .system .base { animation: none !important; }
+  .pin { transition: none; }
+}
+
 @media (max-width: 900px) {
-  .pin { padding: 0.4rem 1.1rem 0.4rem; }
+  .page { padding: 1.5rem 1.1rem 3rem; }
+  header { display: block; }
+  header p { font-size: 0.95rem; }
+  h1 { font-size: 2.9rem; }
+  .links { margin-top: 0.7rem; } .links a { margin: 0 1rem 0 0; }
+  .score { --m: 0rem; display: flex; flex-direction: column; }
+  .score .cond { order: 0; height: 1.5rem; background: none; } .score .system { order: 1; } .score .ruler { order: 2; }
+  .score .motifs { order: 3; margin-top: 0.4rem; } .score .staff { order: 4; } .score .months { order: 5; } .score figcaption { order: 6; }
+  .tempo, .sig, .cond .clef, .part em { display: none; }
+  .part { font-size: 0.95rem; }
+  .motifs { height: auto; display: flex; flex-wrap: wrap; gap: 0.3rem 1rem; margin-bottom: 0.6rem; }
+  .motif { position: static; height: auto; border: 0; width: auto !important; text-decoration: underline; }
+  .motif span { position: static; font-size: 0.85rem; }
+  .motif[data-m="all"] { display: none; }
+  .system { height: 10.5rem; }
+  .groups span { right: auto; left: 0; width: auto; border: 0; padding: 0 0.3rem; font-size: 0.64rem; background: rgba(255,255,255,0.85); justify-content: flex-start; height: auto !important; }
+  .staffname { position: static; width: auto; height: auto; border: 0; text-align: left; padding: 0.3rem 0 0.2rem; display: block; }
+  .lane { font-size: 0.7rem; height: auto; min-height: 1.9rem; padding: 0.15rem 0 1.1rem; box-sizing: border-box; }
+  .lab { position: static !important; display: inline-block; margin-right: 0.7rem; }
+  .today span { display: none; }
+  .ruler { font-size: 0.62rem; }
+  .ruler.months span:not(:nth-child(12n+1)) { visibility: hidden; }
+  .pin { padding: 0.4rem 1.1rem; }
   .pin .inner { grid-template-columns: 1fr; }
   .pin .what { padding: 0 0 0.3rem; font-size: 0.72rem; }
   .pin .what b { display: inline; margin-right: 0.4rem; }
   .pin .notes { height: 2.2rem; }
   .pin .today2 { top: 2.3rem; }
   .pin .ctl { font-size: 0.68rem; gap: 0.8rem; }
-  .pin .mini .lane { height: 0.45rem; min-height: 0; padding: 0; }
   .pin .ctl .clock { white-space: nowrap; }
-  .station { display: block; padding: 2.2rem 0 2.4rem; min-height: 0; }
+  .pin .mini .lane { height: 0.45rem; min-height: 0; padding: 0; }
+  .station, .station.has-side { display: block; padding: 2.2rem 0 2.4rem; }
   .station .when { text-align: left; margin-bottom: 0.3rem; }
-  .station.here .when::after { margin: 0.4rem 0 0; }
   .station .side { margin-top: 1.2rem; }
 }
 </style>
@@ -201,7 +181,7 @@ footer { border-top: 1px solid #000; margin-top: 2rem; padding-top: 1rem; font-s
   <div class="what"><b>Radek Green</b><span id="where">2025</span></div>
   <div class="bar">
    <div class="notes"><img src="piece.svg" alt=""><img class="played" alt=""></div>
-   <div class="mini"><div class="lane"><span class="dot " style="left:15.33%"></span><span class="lab" style="left:15.93%">World Scholar’s Cup: Singapore</span><span class="dot " style="left:32.53%"></span><span class="lab" style="left:33.13%">Bangkok</span><span class="dot " style="left:40.67%"></span><span class="lab" style="left:41.27%">Yale</span><span class="dot " style="left:67.87%"></span><span class="tie" style="left:67.87%;width:16.40%"></span><span class="dot open" style="left:84.27%"></span><span class="lab end" style="right:32.73%">Locke essays sent</span><span class="lab plan" style="left:84.87%">results, 3 Oct</span></div><div class="lane"><span class="span" style="left:40.00%;width:23.87%"></span><span class="lab end" style="right:60.60%">writing 4part</span><span class="dot " style="left:68.00%"></span><span class="tie" style="left:68.00%;width:24.00%"></span><span class="span hatch plan" style="left:92.00%;width:8.00%"></span><span class="lab" style="left:72.10%">research question</span><span class="lab end plan" style="right:0.60%">to TMLR</span></div><div class="lane"><span class="span" style="left:68.00%;width:12.00%"></span><span class="lab end" style="right:32.60%">VPS Veritas</span><span class="dot open" style="left:83.60%"></span><span class="span plan" style="left:90.40%;width:2.67%"></span><span class="lab end plan" style="right:10.20%">hackathon</span></div><a href="#wsc" style="left:calc(15.33% - 6px);width:12px" aria-label="World Scholar’s Cup"></a><a href="#writing" style="left:calc(40.00% - 6px);width:12px" aria-label="Writing 4part"></a><a href="#locke" style="left:calc(67.87% - 6px);width:12px" aria-label="Two essays for the John Locke prize"></a><a href="#other" style="left:calc(68.00% - 6px);width:12px" aria-label="Modelling the Other"></a><a href="#vps" style="left:calc(73.87% - 6px);width:12px" aria-label="VPS Veritas"></a><a href="#hack" style="left:calc(90.40% - 6px);width:12px" aria-label="gvhackathon.com"></a></div>
+   <div class="mini"><div class="lane"><span class="dot " style="left:15.33%"></span><span class="lab" style="left:15.93%">World Scholar’s Cup, Singapore</span><span class="dot " style="left:32.53%"></span><span class="lab" style="left:33.13%">Bangkok</span><span class="dot " style="left:40.67%"></span><span class="lab" style="left:41.27%">Yale</span><span class="dot " style="left:67.87%"></span><span class="tie" style="left:67.87%;width:16.40%"></span><span class="dot open" style="left:84.27%"></span><span class="lab end" style="right:32.73%">Locke essays sent</span><span class="lab plan" style="left:84.87%">results 3 Oct</span></div><div class="lane"><span class="span" style="left:40.00%;width:23.87%"></span><span class="lab end" style="right:60.60%">writing 4part</span><span class="dot " style="left:68.00%"></span><span class="tie" style="left:68.00%;width:24.00%"></span><span class="span hatch plan" style="left:92.00%;width:8.00%"></span><span class="lab" style="left:72.10%">research question</span><span class="lab end plan" style="right:0.60%">to TMLR</span></div><div class="lane"><span class="span" style="left:68.00%;width:12.00%"></span><span class="lab end" style="right:32.60%">VPS Veritas</span><span class="dot open" style="left:83.60%"></span><span class="span plan" style="left:90.40%;width:2.67%"></span><span class="lab end plan" style="right:10.20%">hackathon</span></div><a href="#wsc" style="left:calc(15.33% - 6px);width:12px" aria-label="World Scholar’s Cup"></a><a href="#writing" style="left:calc(40.00% - 6px);width:12px" aria-label="Writing 4part"></a><a href="#locke" style="left:calc(67.87% - 6px);width:12px" aria-label="Two essays for the John Locke prize"></a><a href="#other" style="left:calc(68.00% - 6px);width:12px" aria-label="Modelling the Other"></a><a href="#vps" style="left:calc(73.87% - 6px);width:12px" aria-label="VPS Veritas"></a><a href="#hack" style="left:calc(90.40% - 6px);width:12px" aria-label="gvhackathon.com"></a></div>
    <div class="ph"></div><div class="today2"></div>
    <div class="ctl"><button type="button" class="snd" >Sound on scroll: off</button><button type="button" class="lis">Listen</button><span class="clock"></span></div>
   </div>
@@ -211,14 +191,14 @@ footer { border-top: 1px solid #000; margin-top: 2rem; padding-top: 1rem; font-s
 <header>
   <div>
     <h1>Radek Green</h1>
-    <p>IB Diploma student at Canadian International School, Singapore. Class of 2028. I do research on language models, write, build software and compose.</p>
+    <p>IB Diploma student at Canadian International School, Singapore, class of 2028.</p>
   </div>
   <p class="links"><a href="/cv/">CV</a><a href="https://github.com/worldwiderad">GitHub</a><a href="https://soundcloud.com/radekgreen">SoundCloud</a><a href="mailto:radoslawgreen@gmail.com">Email</a></p>
 </header>
 
 <main>
 <figure class="score" aria-labelledby="score-cap">
-  <div class="row cond" aria-hidden="true"><span class="part" style="--at:0.000;left:0.00%">I <em>Initialisation</em></span><span class="part" style="--at:0.167;left:16.74%">II <em>Descent</em></span><span class="part" style="--at:0.442;left:44.24%">III <em>Local minimum</em></span><span class="part" style="--at:0.628;left:62.83%">IV <em>Convergence</em></span><span class="tempo" style="--at:0.000;left:0.00%"><b class="gl"></b> = 100</span><span class="tempo" style="--at:0.442;left:44.24%"><b class="gl"></b> = 60</span><span class="tempo" style="--at:0.594;left:59.41%"><b class="gl"></b> = 80</span><span class="tempo burst" style="--at:0.042;left:4.15%;width:1.26%"><b class="gl"></b> = 160</span><span class="sig" style="--at:0.000;left:0.00%"><b class="ts"><span></span><span></span></b></span><span class="sig" style="--at:0.167;left:16.74%"><i style="--y:4"></i><i style="--y:7"></i><i style="--y:3"></i></span><span class="sig" style="--at:0.281;left:28.06%"><i style="--y:8"></i><i style="--y:5"></i></span><span class="sig" style="--at:0.442;left:44.24%"><b class="ts"><span></span><span></span></b></span><span class="sig" style="--at:0.488;left:48.79%"><i style="--y:4"></i></span><span class="sig" style="--at:0.549;left:54.86%"><i style="--y:4"></i><i style="--y:7"></i></span><span class="sig" style="--at:0.628;left:62.83%"><i style="--y:8"></i><i style="--y:5"></i><b class="ts"><span></span><span></span></b></span><span class="sig" style="--at:0.685;left:68.51%"><i style="--y:4"></i><i style="--y:7"></i><i style="--y:3"></i></span><span class="sig" style="--at:0.772;left:77.24%"><i style="--y:8"></i><i style="--y:5"></i><i style="--y:9"></i><i style="--y:6"></i><i style="--y:3"></i><i style="--y:7"></i><i style="--y:4"></i></span><span class="sig" style="--at:0.823;left:82.30%"><i style="--y:4"></i></span><span class="sig" style="--at:0.975;left:97.47%"><b class="ts"><span></span><span></span></b></span></div>
+  <div class="row cond" aria-hidden="true"><span class="clef"></span><span class="part" style="--at:0.000;left:0.00%">I <em>Initialisation</em></span><span class="part" style="--at:0.167;left:16.74%">II <em>Descent</em></span><span class="part" style="--at:0.442;left:44.24%">III <em>Local minimum</em></span><span class="part" style="--at:0.628;left:62.83%">IV <em>Convergence</em></span><span class="tempo" style="--at:0.000;left:0.00%"><b class="gl"></b> = 100</span><span class="tempo" style="--at:0.442;left:44.24%"><b class="gl"></b> = 60</span><span class="tempo" style="--at:0.594;left:59.41%"><b class="gl"></b> = 80</span><span class="tempo burst" style="--at:0.042;left:4.15%;width:1.26%"><b class="gl"></b> = 160</span><span class="sig" style="--at:0.000;left:0.00%"><b class="ts"><span></span><span></span></b></span><span class="sig" style="--at:0.167;left:16.74%"><i style="--y:4"></i><i style="--y:7"></i><i style="--y:3"></i></span><span class="sig" style="--at:0.281;left:28.06%"><i style="--y:8"></i><i style="--y:5"></i></span><span class="sig" style="--at:0.442;left:44.24%"><b class="ts"><span></span><span></span></b></span><span class="sig" style="--at:0.488;left:48.79%"><i style="--y:4"></i></span><span class="sig" style="--at:0.549;left:54.86%"><i style="--y:4"></i><i style="--y:7"></i></span><span class="sig" style="--at:0.628;left:62.83%"><i style="--y:8"></i><i style="--y:5"></i><b class="ts"><span></span><span></span></b></span><span class="sig" style="--at:0.685;left:68.51%"><i style="--y:4"></i><i style="--y:7"></i><i style="--y:3"></i></span><span class="sig" style="--at:0.772;left:77.24%"><i style="--y:8"></i><i style="--y:5"></i><i style="--y:9"></i><i style="--y:6"></i><i style="--y:3"></i><i style="--y:7"></i><i style="--y:4"></i></span><span class="sig" style="--at:0.823;left:82.30%"><i style="--y:4"></i></span><span class="sig" style="--at:0.975;left:97.47%"><b class="ts"><span></span><span></span></b></span></div>
   <div class="row motifs"><button class="motif" data-m="run" data-from="8.5" data-to="526" style="--at:0.014;left:1.43%;width:0.76%"><span>scale run</span></button><button class="motif" data-m="call" data-from="50.2" data-to="176.8" style="--at:0.085;left:8.51%;width:1.26%"><span>horn call</span></button><button class="motif" data-m="rock" data-from="99.3" data-to="178" style="--at:0.167;left:16.74%;width:2.14%"><span>rocking figure</span></button><button class="motif" data-m="call" data-from="176.8" data-to="" style="--at:0.298;left:29.80%;width:2.90%"><span>horn call again</span></button><button class="motif" data-m="arp" data-from="479.2" data-to="527" style="--at:0.808;left:80.82%;width:1.10%"><span>arpeggio</span></button><button class="motif" data-m="all" data-from="525.5" data-to="" style="--at:0.887;left:88.65%;width:3.37%"><span>run, call and arpeggio</span></button></div>
   <div class="row system" role="img" aria-label="Every note of the piece, instrument by instrument, in score order">
     <img class="base" src="piece.svg" alt="">
@@ -229,12 +209,12 @@ footer { border-top: 1px solid #000; margin-top: 2rem; padding-top: 1rem; font-s
   <div class="row ruler" aria-hidden="true"><span style="left:0.00%">0:00</span><span style="left:20.23%">2:00</span><span style="left:40.45%">4:00</span><span style="left:60.68%">6:00</span><span style="left:80.90%">8:00</span></div>
   <div class="row staff">
     <span class="staffname">R. Green,<br>Jan 2025 to Jan 2027</span>
-    <div class="lane"><span class="dot " style="left:15.33%"></span><span class="lab" style="left:15.93%">World Scholar’s Cup: Singapore</span><span class="dot " style="left:32.53%"></span><span class="lab" style="left:33.13%">Bangkok</span><span class="dot " style="left:40.67%"></span><span class="lab" style="left:41.27%">Yale</span><span class="dot " style="left:67.87%"></span><span class="tie" style="left:67.87%;width:16.40%"></span><span class="dot open" style="left:84.27%"></span><span class="lab end" style="right:32.73%">Locke essays sent</span><span class="lab plan" style="left:84.87%">results, 3 Oct</span></div><div class="lane"><span class="span" style="left:40.00%;width:23.87%"></span><span class="lab end" style="right:60.60%">writing 4part</span><span class="dot " style="left:68.00%"></span><span class="tie" style="left:68.00%;width:24.00%"></span><span class="span hatch plan" style="left:92.00%;width:8.00%"></span><span class="lab" style="left:72.10%">research question</span><span class="lab end plan" style="right:0.60%">to TMLR</span></div><div class="lane"><span class="span" style="left:68.00%;width:12.00%"></span><span class="lab end" style="right:32.60%">VPS Veritas</span><span class="dot open" style="left:83.60%"></span><span class="span plan" style="left:90.40%;width:2.67%"></span><span class="lab end plan" style="right:10.20%">hackathon</span></div>
+    <div class="lane"><span class="dot " style="left:15.33%"></span><span class="lab" style="left:15.93%">World Scholar’s Cup, Singapore</span><span class="dot " style="left:32.53%"></span><span class="lab" style="left:33.13%">Bangkok</span><span class="dot " style="left:40.67%"></span><span class="lab" style="left:41.27%">Yale</span><span class="dot " style="left:67.87%"></span><span class="tie" style="left:67.87%;width:16.40%"></span><span class="dot open" style="left:84.27%"></span><span class="lab end" style="right:32.73%">Locke essays sent</span><span class="lab plan" style="left:84.87%">results 3 Oct</span></div><div class="lane"><span class="span" style="left:40.00%;width:23.87%"></span><span class="lab end" style="right:60.60%">writing 4part</span><span class="dot " style="left:68.00%"></span><span class="tie" style="left:68.00%;width:24.00%"></span><span class="span hatch plan" style="left:92.00%;width:8.00%"></span><span class="lab" style="left:72.10%">research question</span><span class="lab end plan" style="right:0.60%">to TMLR</span></div><div class="lane"><span class="span" style="left:68.00%;width:12.00%"></span><span class="lab end" style="right:32.60%">VPS Veritas</span><span class="dot open" style="left:83.60%"></span><span class="span plan" style="left:90.40%;width:2.67%"></span><span class="lab end plan" style="right:10.20%">hackathon</span></div>
     <div class="today"><span>today</span></div>
   </div>
   <div class="row ruler months" aria-hidden="true"><span style="left:0.00%">J<b>2025</b></span><span style="left:4.00%">F</span><span style="left:8.00%">M</span><span style="left:12.00%">A</span><span style="left:16.00%">M</span><span style="left:20.00%">J</span><span style="left:24.00%">J</span><span style="left:28.00%">A</span><span style="left:32.00%">S</span><span style="left:36.00%">O</span><span style="left:40.00%">N</span><span style="left:44.00%">D</span><span style="left:48.00%">J<b>2026</b></span><span style="left:52.00%">F</span><span style="left:56.00%">M</span><span style="left:60.00%">A</span><span style="left:64.00%">M</span><span style="left:68.00%">J</span><span style="left:72.00%">J</span><span style="left:76.00%">A</span><span style="left:80.00%">S</span><span style="left:84.00%">O</span><span style="left:88.00%">N</span><span style="left:92.00%">D</span><span style="left:96.00%">J<b>2027</b></span></div>
   <div class="head"></div>
-  <figcaption id="score-cap">Every note of 4part, my take on the hero’s journey, for 48 tracks, 9 minutes 53 seconds, with the tempo, key and metre changes from the file set above it. The bottom line is mine: January 2025 to January 2027 on its own ruler, so a month there lasts about 24 seconds of music. Black is done; blue is still ahead. Scroll down and the playhead walks through both.<br><a class="play" href="audio/piece.m4a">Listen</a></figcaption>
+  <figcaption id="score-cap">4part, for 48 tracks, 9:53. The markings above the notes are the tempo, key and metre changes in the MIDI file. Under the basses is a line for me, January 2025 to January 2027.<br><a class="play" href="audio/piece.m4a">Listen</a></figcaption>
 </figure>
 
 <div class="journey">
@@ -243,30 +223,27 @@ footer { border-top: 1px solid #000; margin-top: 2rem; padding-top: 1rem; font-s
   <div><h2 id="wsc-h">World Scholar’s Cup</h2>
   <p>Our team came first at the Singapore round in April and first of more than 200 teams at the global round in Bangkok in September, where I placed 16th individually. At the Tournament of Champions at Yale in November we came fifth overall and won the team debate.</p>
   <p>I now co-lead the school’s WSC club. For the 2026 Singapore round I coordinated our delegation of 24 scholars in 8 teams and ran preparation sessions for first-time competitors.</p></div>
-  <div class="side"></div>
 </section>
 <section class="station " id="writing" data-f="0.4000" aria-labelledby="writing-h">
   <p class="when">November 2025 to April 2026</p>
   <div><h2 id="writing-h">Writing 4part</h2>
-  <p>The piece at the top of this page is called 4part, because it is in four parts. It is my take on the hero’s journey. I wrote it from late last year to this spring in MuseScore and produced it in Logic Pro: 48 tracks, including eleven woodwind parts with a bass oboe, six horns, harp, piano and two synths.</p>
-  <p>The part names above the score come from the fact that the hero’s journey and a training run share a vocabulary. The call is the initialisation. The trials are the descent. The abyss is a local minimum, and it is the quietest stretch of the piece: three instruments at 60 beats a minute. The return is convergence, and in the final part the motifs from earlier come back together.</p></div>
-  <div class="side"></div>
+  <p>4part is called that because it has four parts. It’s my take on the hero’s journey. I wrote it from late last year to this spring in MuseScore and produced it in Logic Pro: 48 tracks, including eleven woodwind parts with a bass oboe, six horns, harp, piano and two synths.</p>
+  <p>I named the parts after a training run, since the two stories line up closely. Part III is the local minimum: the quietest stretch of the piece, three instruments at 60 beats a minute, before the motifs from earlier come back in Part IV.</p></div>
 </section>
 <section class="station " id="cismap" data-f="" aria-labelledby="cismap-h">
   <p class="when">being built</p>
   <div><h2 id="cismap-h">CIS-MAP</h2>
   <p>New English-language learners get lost on our campus, where the signs are only in English. CIS-MAP lets them scan a QR code, search for a room in English or Chinese, and see the route drawn on the floor plan.</p>
-  <details><summary>How it works</summary><p>A C++ program precomputes the routes between 53 locations: A* search, a cost that keeps paths away from walls, Laplacian smoothing and Ramer–Douglas–Peucker simplification. The results go into a JSON table, so the page does no pathfinding while someone is using it. Room search is fuzzy, with a language model as a fallback, and there is a Three.js prototype of the building in 3D. It started as a Service as Action project, and I presented it to senior school leadership.</p></details>
+  <details><summary>How the routes are made</summary><p>A C++ program precomputes the routes between 53 locations: A* search, a cost that keeps paths away from walls, Laplacian smoothing and Ramer–Douglas–Peucker simplification. The results go into a JSON table, so the page does no pathfinding while someone is using it. Room search is fuzzy, with a language model as a fallback, and there is a Three.js prototype of the building in 3D. It started as a Service as Action project, and I presented it to senior school leadership.</p></details>
   <p>I’m still building it, moving from the one-floor prototype to the full campus (<a href="https://github.com/worldwiderad/CIS-MAP-V2">code</a>).</p></div>
-  <div class="side"></div>
 </section>
-<section class="station " id="locke" data-f="0.6787" aria-labelledby="locke-h">
+<section class="station has-side" id="locke" data-f="0.6787" aria-labelledby="locke-h">
   <p class="when">end of May 2026<br><span class="plan">results 3 October</span></p>
   <div><h2 id="locke-h">Two essays for the John Locke prize</h2>
-  <p><a href="https://cztdhwzvmmioaqaeewpz.supabase.co/storage/v1/object/public/essays/submissions/7c67e44e-4b67-4f72-8107-4dcbeecb2ba9/law-1-1780137234064.pdf">The law essay</a> (PDF) asks what would happen to criminal sentencing if judges and legislators accepted determinism. Its answer is that a court could still decide who to sentence but would lose the thing that tells it how much:</p>
+  <p><a href="https://cztdhwzvmmioaqaeewpz.supabase.co/storage/v1/object/public/essays/submissions/7c67e44e-4b67-4f72-8107-4dcbeecb2ba9/law-1-1780137234064.pdf">The law essay</a> (PDF) asks what would happen to criminal sentencing if judges and legislators accepted determinism.</p>
   <blockquote>“A court that accepts determinism can still decide who to sentence. It can no longer say by how much.”</blockquote>
-  <p><a href="https://cztdhwzvmmioaqaeewpz.supabase.co/storage/v1/object/public/essays/submissions/7c67e44e-4b67-4f72-8107-4dcbeecb2ba9/science%20&amp;%20technology-3-1780201877477.pdf">The science and technology essay</a> (PDF) asks whether we should be polite to ChatGPT. For it I ran a blinded study: 43 students aged 15 to 19 compared DeepSeek-R1’s answers to 25 pairs of prompts, one written politely and one as a bare command, without knowing which was which.</p>
-  <details><summary>What the study found</summary><p>62.2% of the votes that weren’t ties went to the answer from the polite prompt (95% interval 55.5 to 68.9%, 241 votes). The polite answers were 29% longer on average, but length barely tracked preference (r = 0.16). The overall number hides the pattern that matters: on interpersonal tasks like an apology or a salary negotiation the polite prompt won by a wide margin, and on structured ones like a grading rubric the bare command won. The essay’s argument is that politeness helps us, not the machine, because it makes us say what we want and why.</p></details></div>
+  <p><a href="https://cztdhwzvmmioaqaeewpz.supabase.co/storage/v1/object/public/essays/submissions/7c67e44e-4b67-4f72-8107-4dcbeecb2ba9/science%20&amp;%20technology-3-1780201877477.pdf">The science and technology essay</a> (PDF) asks whether we should be polite to ChatGPT. For it I ran a blinded study: 43 students aged 15–19 compared DeepSeek-R1’s answers to 25 pairs of prompts, one written politely and one as a bare command, without knowing which was which.</p>
+  <details><summary>Results</summary><p>62.2% of the votes that weren’t ties went to the answer from the polite prompt (95% CI 55.5–68.9%, 241 votes). The polite answers were 29% longer on average, but length barely tracked preference (r = 0.16). Split by task it looks different: on interpersonal tasks like an apology or a salary negotiation the polite prompt won by a wide margin, and on structured ones like a grading rubric the bare command won. My argument in the essay is that the benefit goes to the person asking, because a polite request makes you say what you want and why.</p></details></div>
   <div class="side"><figure class="lead"><h3>Which prompt raters preferred, task by task</h3><table>
     <thead><tr><th scope="col">Task</th><th scope="col">Lead</th><td></td></tr></thead>
     <tbody>
@@ -305,8 +282,7 @@ footer { border-top: 1px solid #000; margin-top: 2rem; padding-top: 1rem; font-s
   <p>I came to this through folk psychology: the idea that we never know another person directly, we build a model of them and predict from it. I wanted to know whether language models do the same with each other.</p>
   <p>The question: when a frontier model predicts how a named peer model will behave, does it use evidence about that peer, or a prior tied to who built it, such as whether it came from a US or a Chinese lab? The behaviour I measure is what I call fact-laundering, where a model states a serious negative claim about a named person as fact.</p>
   <p>I’ve run a pilot. Before pre-registering, I’m putting the design through rounds of blind review by up to 21 model instances and checking every flaw they claim by simulation. I’m the only author; Sungjoo Ha and Min Lin advise.</p>
-  <details><summary>The design</summary><p>Build 1 measures what models actually do: sixteen subject models, with every response labelled independently by two judge models. Build 2 shows predictor models a varying number of real responses from a peer, together with an identity label, and asks them to predict its behaviour on a case they haven’t seen. The review rounds stop when one finds nothing that would change what is collected or claimed. I wrote the whole pipeline, from collection across several providers with spend limits to the dual-judge labelling, the prediction runner and the analysis.</p></details></div>
-  <div class="side"></div>
+  <details><summary>Build 1 and Build 2</summary><p>Build 1 measures what models actually do: sixteen subject models, with every response labelled independently by two judge models. Build 2 shows predictor models a varying number of real responses from a peer, together with an identity label, and asks them to predict its behaviour on a case they haven’t seen. The review rounds stop when one finds nothing that would change what is collected or claimed. I wrote the whole pipeline, from collection across several providers with spend limits to the dual-judge labelling, the prediction runner and the analysis.</p></details></div>
 </section>
 <section class="station " id="vps" data-f="0.7387" aria-labelledby="vps-h">
   <p class="when">June to August 2026</p>
@@ -314,34 +290,28 @@ footer { border-top: 1px solid #000; margin-top: 2rem; padding-top: 1rem; font-s
   <p>A paid AI consulting internship with a marine fuel testing company: two weeks in person in Singapore, then six weeks remotely from Toronto, twelve hours behind. I built three things and handed each over with its own documentation.</p>
   <p>The biggest is an offline-first app for the company’s bunker quantity surveyors. A surveyor records a whole fuel delivery on board a ship with no connection, the office sees it as soon as the device is back online, and the quantity calculations run as the figures go in. It replaced an Excel workbook that the office used to type out again by hand. It runs on Windows and Android, with a database on each device and a cloud API behind it.</p>
   <details><summary>The other two</summary><p>A sales tool the commercial team uses in client meetings, with seven savings calculators tested against the spreadsheets they came from and a generator that writes the full proposal as a Word document. And an analysis pipeline in Python that costed the bids in a freight tender and produced the recommendation.</p></details></div>
-  <div class="side"></div>
 </section>
 <section class="station here" id="today" data-f="0.8307" aria-labelledby="today-h">
-  <p class="when">24 September 2026</p>
-  <div><h2 id="today-h">Today</h2>
-  <p>This is when the page was last updated. From here down everything is in blue, because it hasn’t happened yet.</p></div>
-  <div class="side"></div>
+  <p class="when"></p>
+  <div><h2 id="today-h">Today, 24 September 2026</h2></div>
 </section>
 <section class="station ahead" id="hack" data-f="0.9040" aria-labelledby="hack-h">
   <p class="when">28 September to 9 December 2026</p>
   <div><h2 id="hack-h"><a href="https://gvhackathon.com">gvhackathon.com</a></h2>
   <p>An international hackathon our school runs online, free for students aged 14 to 18 in teams of two to four, judged in two divisions with US$3,000 in prizes. I co-lead it with Ruchika Dutt, who teaches computer science at CIS, and I built the competition platform on my own.</p>
   <p>Registration opens on 28 September. The challenge stays sealed until the opening ceremony on 19 November, and teams then have seven days to build. Judging runs to 8 December and includes an on-camera interview built from each team’s own code, then live interviews for finalists. The closing ceremony is on 9 December. I also negotiated with school leadership and an outside vendor so the event got its own week.</p></div>
-  <div class="side"></div>
 </section>
 <section class="station ahead" id="coda" data-f="1.0000" aria-labelledby="coda-h">
-  <p class="when">and after</p>
-  <div><h2 id="coda-h">The return</h2>
-  <p>The page ends where the piece does. From 8:45 the whole orchestra comes back in, and the scale run, the horn call and the arpeggio return together. <button class="hear" type="button" data-from="525.5">Hear the ending</button></p>
+  <p class="when">2027</p>
+  <div><h2 id="coda-h">Next</h2>
+  <p>From 8:45 the whole orchestra comes back in, and the scale run, the horn call and the arpeggio return together. <button class="hear" type="button" data-from="525.5">Hear the ending</button></p>
   <p>Next is a multi-movement symphony that can be played live. My MYP Personal Project was a symphony in one movement, rated Excellent. More recordings are on <a href="https://soundcloud.com/radekgreen">SoundCloud</a>, and I’m at <a href="mailto:radoslawgreen@gmail.com">radoslawgreen@gmail.com</a>.</p></div>
-  <div class="side"></div>
 </section>
 </div>
 </main>
-<footer><span>IB Diploma: HL Mathematics AA, HL Physics, HL Economics, SL Theatre, SL English Literature, French ab initio. AP Computer Science Principles.</span><span>Set in Petrona, the typeface of my essays. Last updated 24 September 2026.</span></footer>
+<footer><span>IB Diploma: HL Mathematics AA, HL Physics, HL Economics, SL Theatre, SL English Literature, French ab initio. AP Computer Science Principles.</span><span><a href="mailto:radoslawgreen@gmail.com">radoslawgreen@gmail.com</a>. Last updated 24 September 2026.</span></footer>
 </div>
 <script>
-// Nothing loads until it is needed. The recording is fetched the first time sound is asked for.
 var LEN = 593.32, MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
 var fig = document.querySelector('.score'), sys = fig.querySelector('.system'), pin = document.querySelector('.pin');
 var link = fig.querySelector('a.play'), btn = document.createElement('button');
@@ -362,7 +332,7 @@ function load() {
   });
   audio.addEventListener('play', function () { btn.textContent = 'Pause'; pin.querySelector('.lis').textContent = 'Pause'; });
   audio.addEventListener('pause', function () { btn.textContent = 'Resume'; pin.querySelector('.lis').textContent = 'Listen'; following = false; });
-  audio.addEventListener('error', function () { btn.textContent = 'The recording didn’t load'; });
+  audio.addEventListener('error', function () { btn.textContent = "The recording didn't load"; });
 }
 var fadeTimer;
 function play(t, secs) {
@@ -376,11 +346,9 @@ function fadeOut() {
     if (audio.volume === 0) { clearInterval(fadeTimer); audio.pause(); audio.volume = 1; }
   }, 60);
 }
-
-// One position, f from 0 to 1, drives both playheads: minutes in the piece and months on my staff.
 function clock(f) {
   var s = Math.round(f * LEN), m = Math.min(f * 25, 24.99), y = 2025 + Math.floor(m / 12);
-  return MONTHS[Math.floor(m) % 12] + ' ' + y + (innerWidth < 600 ? ', ' : ' on my staff, ') + Math.floor(s / 60) + ':' + ('0' + s % 60).slice(-2) + (innerWidth < 600 ? '' : ' in the piece');
+  return MONTHS[Math.floor(m) % 12] + ' ' + y + ', ' + Math.floor(s / 60) + ':' + ('0' + s % 60).slice(-2);
 }
 function setF(f) {
   f = Math.max(0, Math.min(1, f));
@@ -389,8 +357,6 @@ function setF(f) {
   fig.style.setProperty('--f', f); fig.classList.add('moved');
   pin.querySelector('.clock').textContent = clock(f);
 }
-
-// Scrolling: find the station at the reading line and interpolate between the dates of neighbouring stations.
 var stations = [].slice.call(document.querySelectorAll('.station'));
 var current = null, ticking = false;
 function onScroll() {
@@ -405,7 +371,6 @@ function onScroll() {
     if (top <= line) prev = { el: s, top: top, f: sf };
     else if (!next) next = { el: s, top: top, f: sf };
   });
-  // each station holds its own date while it is being read, then the playhead moves on to the next one
   if (prev && next) f = prev.f + (next.f - prev.f) * Math.max(0, Math.min(1, ((line - prev.top) / (next.top - prev.top) - 0.5) * 2));
   else if (prev) f = prev.f;
   if (heroGone || prev) setF(f);
@@ -419,8 +384,6 @@ function onScroll() {
 }
 addEventListener('scroll', function () { if (!ticking) { ticking = true; requestAnimationFrame(onScroll); } }, { passive: true });
 onScroll();
-
-// Controls
 btn.addEventListener('click', function () {
   load();
   if (audio.paused) { following = true; stopAt = null; audio.play(); } else audio.pause();
@@ -438,8 +401,6 @@ sys.addEventListener('click', function (e) {
 document.querySelectorAll('.hear').forEach(function (b) {
   b.addEventListener('click', function () { following = true; play(+b.dataset.from, 30); });
 });
-
-// Motif marks: every occurrence lights up; clicking plays it and then where it comes back.
 fig.querySelectorAll('.hl').forEach(function (img) { img.dataset.src = 'motif-' + img.dataset.m + '.svg'; });
 function show(m) {
   fig.querySelectorAll('.hl').forEach(function (img) {
