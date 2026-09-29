@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" style="--now:69.02%">
+<html lang="en" style="--now:69.90%">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -318,17 +318,18 @@ footer { border-top: 1px solid #000; margin-top: 2rem; padding-top: 1rem; font-s
   <div><h2 id="vps-h">VPS Veritas</h2>
   <p>A paid AI consulting internship with a marine fuel testing company. I spent two weeks in person in Singapore and six working remotely from Toronto, twelve hours behind. I built three things and handed each one over with documentation.</p>
   <p>The biggest is an offline-first app for the company’s bunker quantity surveyors. A surveyor records a whole fuel delivery on board a ship with no connection, the office sees it as soon as the device is back online, and the quantity calculations run as the figures go in. It replaced an Excel workbook that the office used to type out again by hand. It runs on Windows and Android, with a database on each device and a cloud API behind it.</p>
-  <details><summary>The other two</summary><p>A sales tool the commercial team uses in client meetings, with seven savings calculators tested against the spreadsheets they came from and a generator that writes the full proposal as a Word document. And an analysis pipeline in Python that costed the bids in a freight tender and produced the recommendation.</p></details></div>
+  <details><summary>How the syncing works</summary><p>Each device keeps the whole survey database in SQLite, and the server holds the only shared copy. When a device reconnects, it sends each changed job together with the version it last shared with the server, and the server does a three-way merge. Edits to different fields merge silently. If two people changed the same field, the later edit wins and the other value goes into a conflict log, so nothing is lost without a record. Once the final report has gone to the customer, the job is frozen, and the data can never drift from the PDF they hold.</p><p>The quantity calculations are a port of the ASTM D1250 volume correction tables, checked against real past jobs to the printed precision. About 380 tests cover the system, including ones that push conflicting edits from several devices at once. The app is .NET MAUI with Blazor, and the API is ASP.NET Core.</p></details>
+  <details><summary>The other two</summary><p>A sales tool the commercial team uses in client meetings. It works offline, because reps demo it on tablets on board ships, and its seven savings calculators are each tested against the spreadsheet they replaced. It also writes the full proposal as a Word document and previews the real file.</p><p>And a Python pipeline that costed the bids in a freight tender. It prices every lane the same way for every carrier, from country to zone to weight bracket to rate, and every figure in the recommendation can be traced back to a line in a rate card.</p></details></div>
 </section>
 <section class="station here" id="today" data-f="0.6902" aria-labelledby="today-h">
   <p class="when"></p>
-  <div><h2 id="today-h">Today, 24 September 2026</h2></div>
+  <div><h2 id="today-h">Today, 29 September 2026</h2></div>
 </section>
 <section class="station ahead" id="hack" data-f="0.7875" aria-labelledby="hack-h">
   <p class="when">28 September to 9 December 2026</p>
   <div><h2 id="hack-h"><a href="https://gvhackathon.com">gvhackathon.com</a></h2>
   <p>An international hackathon our school runs online, free for students aged 14 to 18 in teams of two to four, judged in two divisions with US$3,000 in prizes. I co-lead it with Ruchika Dutt, who teaches computer science at CIS, and I built the competition platform on my own.</p>
-  <p>Registration opens on 28 September. The challenge stays sealed until the opening ceremony on 19 November, and teams then have seven days to build. Judging runs to 8 December and includes an on-camera interview about each team’s code, then live interviews for finalists. The closing ceremony is on 9 December. I also negotiated with school leadership and an outside vendor so the event got its own week.</p></div>
+  <p>Registration opened on 28 September, with 172 people already on the waitlist. The challenge stays sealed until the opening ceremony on 19 November, and teams then have seven days to build. Judging runs to 8 December and includes an on-camera interview about each team’s code, then live interviews for finalists. The closing ceremony is on 9 December. I also negotiated with school leadership and an outside vendor so the event got its own week.</p></div>
 </section>
 <section class="station ahead" id="coda" data-f="0.8836" aria-labelledby="coda-h">
   <p class="when">2027</p>
@@ -338,7 +339,7 @@ footer { border-top: 1px solid #000; margin-top: 2rem; padding-top: 1rem; font-s
 </section>
 </div>
 </main>
-<footer><span>IB Diploma: HL Mathematics AA, HL Physics, HL Economics, SL Theatre, SL English Literature, French ab initio. AP Computer Science Principles.</span><span><a href="mailto:radoslawgreen@gmail.com">radoslawgreen@gmail.com</a>. Last updated 24 September 2026.</span></footer>
+<footer><span>IB Diploma: HL Mathematics AA, HL Physics, HL Economics, SL Theatre, SL English Literature, French ab initio. AP Computer Science Principles.</span><span><a href="mailto:radoslawgreen@gmail.com">radoslawgreen@gmail.com</a>. Last updated 29 September 2026.</span></footer>
 </div>
 <script>
 var LEN = 593.32;
