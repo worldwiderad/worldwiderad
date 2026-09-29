@@ -296,3 +296,7 @@ Checks: the copy check leaves only flags accepted earlier; axe finds 0 violation
 The tender work moved out of the collapsed "other two" section into the main VPS text, with its scale: four carriers' bids, five lots, four labs, and a year of shipping volumes. The engine and its traceability are described too. There is still no savings figure: the handover marks it confidential, so that is Radek's call with the company.
 
 A savings statement was added at Radek's choice, kept low-risk: "estimated to save the company a six-figure sum a year, partly through lower rates and partly by keeping current rates in place for longer". It names no figure, carrier, account or duration.
+
+## "Today" updates itself
+
+At Radek's request, a script sets the "Today" heading and the today line from the reader's clock, placed with the same warp as the rest of the timeline. Items with a passed `data-due` date gain ", to be added" (the hackathon's dates gain "results to be added" on a new line). This was tested with the browser clock set to 29 Sep, 10 Oct and 15 Dec 2026 and 1 Mar 2027: the right items are marked each time, labels don't collide, and nothing scrolls sideways. Without JS, the page shows the date it was last edited.

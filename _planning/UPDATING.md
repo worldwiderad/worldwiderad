@@ -17,23 +17,20 @@ Everything is plain HTML. There is no build step apart from the Jekyll run that 
 
 Do not add anything under `/assets/`: the Pages theme writes `/assets/css/style.css` there. Everything else in the repo root (`IEEEv39.pdf`, `jlec-form/`, `images/`, `Page-2.html`, `hackathon/`, the Nicepage `css/`, `js/`, `vendor/`) is kept byte-identical; `_planning/verify-preserved.sh` checks that against the live site.
 
-## Moving "today"
+## "Today" and dates that pass
 
-The timeline under the score is stretched, not to scale: each section of the page is pinned to its own stretch of the music (its `data-f`, the fraction of the way through the piece), and the dates in between are spaced evenly. `_planning/tools/timeline.py` gives the position of any date, for example `python3 _planning/tools/timeline.py 2026-10-03`.
+"Today" updates itself. A small script at the end of `index.html` puts the reader's current date in the `#today` heading and moves the blue today line (`--now`) along the stretched timeline. Its anchor list must match `_planning/tools/timeline.py`. Without JavaScript the page shows the date written in the HTML, so when you edit the page, update that date and the "Last updated" lines in the footer and in `cv/index.html`.
 
-To move "today" to a new date:
+Future items carry `data-due="YYYY-MM-DD"`. Once that date has passed, the script adds ", to be added" (or the text in `data-note`, for example "results to be added" under the hackathon's dates). When you add the real outcome, remove `data-due` from that item, as described below.
 
-1. Set `--now` on the `<html>` tag to that date's position from the tool.
-2. Update the `#today` heading ("Today, …"). Leave the anchors in the tool and the station's `data-f` alone: the today line moves a little along the staff, and the section keeps its place in the music.
-3. Update "Last updated …" in the footer and in `cv/index.html`.
-
-If the new date passes a future item (the Locke result on 3 October, the hackathon), move the `#today` section below that item's section and swap the two `data-f` values, so the sections stay in order through the music.
+The timeline under the score is stretched, not to scale: each section of the page is pinned to its own stretch of the music (its `data-f`), and the dates in between are spaced evenly. `_planning/tools/timeline.py` gives the position of any date, for example `python3 _planning/tools/timeline.py 2026-10-03`.
 
 ## Turning a future item into a past one
 
 Future items are blue (`#2340a8`). When something happens:
 
 - On the timeline, remove `plan` from the item's class (`span plan` becomes `span`, `lab plan` becomes `lab`; `dot open` becomes `dot`). Do it in both copies: the big staff under the score and the small one in the pinned bar (`.pin .mini`). On the phone list (`<ol class="evlist">`), remove `class="plan"` from the `<li>`.
+- Remove its `data-due` (and `data-note`) attributes, everywhere it appears.
 - For a station, remove `ahead` from its class (`station ahead` becomes `station`) and `<span class="plan">` from its date.
 - In the CV, remove the `<span class="plan">` wrapper and rewrite the sentence in the past tense.
 
