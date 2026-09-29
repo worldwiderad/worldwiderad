@@ -278,3 +278,17 @@ Radek found that sound on scroll skipped large parts of the piece and could jump
 - **Positions come from a tool.** `_planning/tools/timeline.py` gives any date's position, and `UPDATING.md` is revised to use it.
 
 Checks: axe 0 violations; no horizontal scroll at 360, 1201, 1440 and 1920; no overlapping labels on the staff; the lingering test behaves as above.
+
+## 29 September 2026: VPS detail, hackathon registration, today
+
+- **VPS:** more technical detail, taken from the handover documents with nothing confidential in it.
+  - How the syncing works: a per-device SQLite database, a three-way merge on the server, and a conflict log for same-field edits.
+  - Jobs are frozen once their final report has been sent.
+  - The ASTM D1250 calculations are checked against real past jobs, with about 380 tests.
+  - The stack is named, and the sales tool and the tender pipeline are described in more depth.
+  - Still not named: the client, product names, cloud resources, bidders, or any tender figures.
+- **Hackathon:** registration opened on 28 September, with 172 people already on the waitlist.
+- **Today:** moved to 29 September 2026 (`--now` 69.90%), in the page and in the CV's "Last updated".
+- **Commits:** from now on authored as worldwiderad with no attribution lines, at Radek's request.
+
+Checks: the copy check leaves only flags accepted earlier; axe finds 0 violations on both pages; no horizontal scroll; the CV still prints on one page.
