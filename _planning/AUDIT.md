@@ -292,3 +292,5 @@ Checks: axe 0 violations; no horizontal scroll at 360, 1201, 1440 and 1920; no o
 - **Commits:** from now on authored as worldwiderad with no attribution lines, at Radek's request.
 
 Checks: the copy check leaves only flags accepted earlier; axe finds 0 violations on both pages; no horizontal scroll; the CV still prints on one page.
+
+The tender work moved out of the collapsed "other two" section into the main VPS text, with its scale: four carriers' bids, five lots, four labs, and a year of shipping volumes. The engine and its traceability are described too. There is still no savings figure: the handover marks it confidential, so that is Radek's call with the company.
