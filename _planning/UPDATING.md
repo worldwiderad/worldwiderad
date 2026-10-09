@@ -34,9 +34,9 @@ Future items are blue (`#2340a8`). When something happens:
 - For a station, remove `ahead` from its class (`station ahead` becomes `station`) and `<span class="plan">` from its date.
 - In the CV, remove the `<span class="plan">` wrapper and rewrite the sentence in the past tense.
 
-## The Locke result (3 October 2026)
+## The Locke result (done, 9 October 2026)
 
-In `index.html`, the `#locke` station has `<span class="plan">results 3 October</span>` under the date. Replace it with the result in black (for example `<br>` then the result text), change the timeline label `results 3 Oct` (two copies plus the phone list entry) to the result, and remove `plan`/`open` as above. In `cv/index.html`, replace "Results on 3 October 2026." with the result.
+Added: Very High Commendation for the science and technology essay, Commendation for the law essay. On the page, the essays section says so in each essay's paragraph, and the timeline label reads "commended, 3 Oct". The tie from "essays sent" to the result is now black (`tie done`), and the result dot is filled. The phone list and the CV give both awards. This is the pattern to follow for the next future item that comes true.
 
 ## Adding a timeline item
 

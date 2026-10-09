@@ -300,3 +300,7 @@ A savings statement was added at Radek's choice, kept low-risk: "estimated to sa
 ## "Today" updates itself
 
 At Radek's request, a script sets the "Today" heading and the today line from the reader's clock, placed with the same warp as the rest of the timeline. Items with a passed `data-due` date gain ", to be added" (the hackathon's dates gain "results to be added" on a new line). This was tested with the browser clock set to 29 Sep, 10 Oct and 15 Dec 2026 and 1 Mar 2027: the right items are marked each time, labels don't collide, and nothing scrolls sideways. Without JS, the page shows the date it was last edited.
+
+## 9 October 2026: Locke results
+
+Very High Commendation (science and technology) and Commendation (law), using the Institute's own terms. They are added to the essays section, the timeline (a black tie, a filled dot, "commended, 3 Oct"), the phone list and the CV, and the `data-due` markers are removed. The no-JS "today" date is moved to 9 October. Checks: no label overlaps at 1201, 1440 and 1920; axe 0 violations; CV on one page.
