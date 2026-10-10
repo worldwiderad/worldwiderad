@@ -305,12 +305,14 @@ At Radek's request, a script sets the "Today" heading and the today line from th
 
 Very High Commendation (science and technology) and Commendation (law), using the Institute's own terms. They are added to the essays section, the timeline (a black tie, a filled dot, "commended, 3 Oct"), the phone list and the CV, and the `data-due` markers are removed. The no-JS "today" date is moved to 9 October. Checks: no label overlaps at 1201, 1440 and 1920; axe 0 violations; CV on one page.
 
-## 10 October 2026: AUTOMATH
+## 10 October 2026: Learning what to prove (mathematical research)
 
 A new section, "from 3 October 2026", with no end date, written from Radek's project overview. It covers the question and the guess, and says plainly that only infrastructure and small calibration runs exist so far, with no evidence yet that a learned policy helps. A collapsed part, "How it's meant to work", covers the design, the test against baselines and what is built. It claims no novelty, no superiority over other systems and no publication plans.
 
-- **The page:** with a tenth section, the sections are re-spaced evenly through the music, about 52 s each and snapped to bars (0:53.7 … 8:44). The timeline is re-warped to match: positions were mapped back to dates, then onto the new anchors. AUTOMATH is anchored at 3 Oct and "today" at 10 Oct. `timeline.py` and the script's anchor list are updated.
-- **The timeline:** AUTOMATH is a dot at 3 Oct in the lane with VPS and the hackathon. The old hollow "registration opens" dot (28 Sep) is removed: it had happened, and it would have sat on top of AUTOMATH. AUTOMATH also gets a link in the pinned bar and a line in the phone list.
-- **The CV:** a two-line AUTOMATH entry. To keep the CV on one page, the three 2025 WSC lines are merged into one entry, the pipeline list under Modelling the Other is shorter, and the print type is 9.2 pt.
+- **The page:** with a tenth section, the sections are re-spaced evenly through the music, about 52 s each and snapped to bars (0:53.7 … 8:44). The timeline is re-warped to match: positions were mapped back to dates, then onto the new anchors. The new section is anchored at 3 Oct and "today" at 10 Oct. `timeline.py` and the script's anchor list are updated.
+- **The timeline:** The new section is a dot at 3 Oct, labelled "what to prove", in the lane with VPS and the hackathon. The old hollow "registration opens" dot (28 Sep) is removed: it had happened, and it would have sat on top of the new dot. The section also gets a link in the pinned bar and a line in the phone list.
+- **The CV:** a two-line entry. To keep the CV on one page, the three 2025 WSC lines are merged into one entry, the pipeline list under Modelling the Other is shorter, and the print type is 9.2 pt.
 
 Checks: the copy check finds no new flags; no label overlaps at 1201, 1440 and 1920; axe finds 0 violations; the date markers behave correctly at the test dates; the CV prints on one page.
+
+The working name Radek uses internally is not used on the site; the section is titled "Learning what to prove".
