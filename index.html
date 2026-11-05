@@ -264,9 +264,9 @@ footer { border-top: 1px solid #000; margin-top: 2rem; padding-top: 1rem; font-s
 <section class="station " id="cismap" data-f="0.2644" aria-labelledby="cismap-h">
   <p class="when">being built</p>
   <div><h2 id="cismap-h">CIS-MAP</h2>
-  <p>New English-language learners get lost on our campus, where the signs are only in English. CIS-MAP lets them scan a QR code, type in a room in English or Chinese, and see the route on the floor plan. It started as a Service as Action project, and I’ve since presented it to senior school leadership.</p>
-  <details><summary>How the routes are made</summary><p>A C++ program works out the routes in advance with A* search, using a cost that keeps paths away from walls, and then smooths and simplifies them. The finished routes go into a JSON table, so the page does no pathfinding while someone is using it. Room search is fuzzy, with a language model to fall back on, and there is also a Three.js prototype of the building in 3D.</p></details>
-  <p>The app and a slideshow about it are now on GitHub Pages, and the map covers several floors, although I’m still checking routes and building details floor by floor (<a href="https://github.com/worldwiderad/CIS-MAP-V2">code</a>).</p></div>
+  <p>I’m building CIS-MAP to help people find their way around Canadian International School. The app supports sixteen languages and has maps for ten floors across Lakeside and Toh Tuck. A door’s QR link sets the starting point, and the app gives directions to a destination on any mapped floor. It can plan trips with several stops, offer a step-free route and keep working offline once loaded.</p>
+  <details><summary>How the routes are made</summary><p>Routes are calculated on the phone as someone uses the app. The JavaScript routing engine connects rooms, corridors and floor changes, then turns the route into directions. Search also runs locally, matching room codes, names, synonyms and misspellings.</p></details>
+  <p>The map starts from evacuation-plan geometry, which I’ve been correcting against the school’s CAD drawings. I’m still checking routes and building details on campus, and the translations still need native-speaker review. <a href="https://github.com/worldwiderad/CIS-MAP-V2/tree/main/app">View the app’s source</a>.</p></div>
 </section>
 <section class="station has-side" id="locke" data-f="0.3534" aria-labelledby="locke-h">
   <p class="when">end of May 2026<br>results 3 October</p>
