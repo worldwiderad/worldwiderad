@@ -2,7 +2,7 @@
 
 The timeline is stretched so that each section of the page gets about a minute of 4part.
 Each section's date is pinned to that section's place in the music (its data-f), and dates
-in between are spaced evenly. Usage:  python3 _planning/tools/timeline.py 2026-10-03
+in between are spaced evenly. Usage:  python3 _tools/timeline.py 2026-10-03
 """
 import sys, bisect
 LEN = 593.32
