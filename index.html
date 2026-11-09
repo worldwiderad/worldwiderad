@@ -33,9 +33,7 @@ a:hover { text-decoration-thickness: 2px; }
 header { display: flex; justify-content: space-between; align-items: flex-end; gap: 2rem; }
 h1 { font-size: 4.2rem; font-weight: 500; line-height: 1; margin: 0; }
 header p { margin: 0.6rem 0 0; max-width: 40rem; }
-.links { margin: 0.6rem 0 0; }
-.doom { display: inline-block; margin-top: 0.8rem; padding: 0.05rem 0.5rem 0.1rem; border: 1.5px solid #000; font-weight: 600; text-decoration: none; }
-.doom:hover { text-decoration: underline; }
+.links { margin: 0.6rem 0 0; flex-shrink: 0; }
 .links a { display: inline-block; margin-left: 1.1rem; }
 
 .score { --m: 9.5rem; margin: 2rem 0 3rem; position: relative; }
@@ -216,9 +214,8 @@ footer { border-top: 1px solid #000; margin-top: 2rem; padding-top: 1rem; font-s
   <div>
     <h1>Radek Green</h1>
     <p>I’m an IB Diploma student at Canadian International School, Singapore, graduating in 2028.</p>
-    <a class="doom" href="/p-doom/" title="Where I’m at on AI risk">P(doom) = 80%</a>
   </div>
-  <nav class="links" aria-label="Main navigation"><a href="/cv/">CV</a><a href="https://github.com/worldwiderad">GitHub</a><a href="https://soundcloud.com/radekgreen">SoundCloud</a><a href="mailto:radoslawgreen@gmail.com">Email</a></nav>
+  <nav class="links" aria-label="Main navigation"><a href="/p-doom/" title="Where I’m at on AI risk">P(doom) = 80%</a><a href="/cv/">CV</a><a href="https://github.com/worldwiderad">GitHub</a><a href="https://soundcloud.com/radekgreen">SoundCloud</a><a href="mailto:radoslawgreen@gmail.com">Email</a></nav>
 </header>
 
 <main>
