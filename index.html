@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" style="--now:77.08%">
+<html lang="en" style="--now:77.53%">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -34,6 +34,8 @@ header { display: flex; justify-content: space-between; align-items: flex-end; g
 h1 { font-size: 4.2rem; font-weight: 500; line-height: 1; margin: 0; }
 header p { margin: 0.6rem 0 0; max-width: 40rem; }
 .links { margin: 0.6rem 0 0; }
+.doom { display: inline-block; margin-top: 0.8rem; padding: 0.05rem 0.5rem 0.1rem; border: 1.5px solid #000; font-weight: 600; text-decoration: none; }
+.doom:hover { text-decoration: underline; }
 .links a { display: inline-block; margin-left: 1.1rem; }
 
 .score { --m: 9.5rem; margin: 2rem 0 3rem; position: relative; }
@@ -214,8 +216,9 @@ footer { border-top: 1px solid #000; margin-top: 2rem; padding-top: 1rem; font-s
   <div>
     <h1>Radek Green</h1>
     <p>I’m an IB Diploma student at Canadian International School, Singapore, graduating in 2028.</p>
+    <a class="doom" href="/p-doom/" title="Where I’m at on AI risk">P(doom) = 80%</a>
   </div>
-  <nav class="links" aria-label="Main navigation"><a href="/train-pointillism/">Train Pointillism</a><a href="/cv/">CV</a><a href="https://github.com/worldwiderad">GitHub</a><a href="https://soundcloud.com/radekgreen">SoundCloud</a><a href="mailto:radoslawgreen@gmail.com">Email</a></nav>
+  <nav class="links" aria-label="Main navigation"><a href="/cv/">CV</a><a href="https://github.com/worldwiderad">GitHub</a><a href="https://soundcloud.com/radekgreen">SoundCloud</a><a href="mailto:radoslawgreen@gmail.com">Email</a></nav>
 </header>
 
 <main>
@@ -333,10 +336,14 @@ footer { border-top: 1px solid #000; margin-top: 2rem; padding-top: 1rem; font-s
   <details><summary>How it’s meant to work</summary><p>The system keeps a growing library of formal mathematics, and no proof enters it until Lean has checked it. A learned policy would choose among the valid next steps, such as deriving a lemma or testing a conjecture, and the library would grow wherever those choices lead. Later I want the system to invent its own definitions too. To test the policy, the system branches from the same state, follows different steps under the same compute budget, and compares how well each branch’s library does on separate tasks. The policy has to beat random exploration and hand-written heuristics, including ones that simply favour hard problems or likely successes.</p>
   <p>The first test worlds are small formal theories, such as natural numbers and lists, which are there to calibrate the evaluation so that it can tell one way of exploring from another before any policy is trained.</p></details></div>
 </section>
+<section class="station " id="train" data-f="" aria-labelledby="train-h">
+  <p class="when">November 2026</p>
+  <div><h2 id="train-h">Train Pointillism</h2>
+  <p>I composed <i>Train</i> for orchestra, and I made its music video with Claude in WebGL2. The train and the scenery are built from seeded dabs of paint in a fixed pigment palette, and the dabs stay attached to their objects as the camera moves. The score’s MIDI times the journey, the cuts and the lighting to the original recording. <a href="/train-pointillism/watch/">Watch Train Pointillism</a> (6:23).</p></div>
+</section>
 <section class="station here" id="today" data-f="0.7104" aria-labelledby="today-h">
   <p class="when"></p>
-  <div><h2 id="today-h">Today, 7 November 2026</h2>
-  <p><a href="/train-pointillism/">Train Pointillism</a>, a music video for my piece <i>Train</i>, made with Claude.</p></div>
+  <div><h2 id="today-h">Today, 9 November 2026</h2></div>
 </section>
 <section class="station ahead" id="hack" data-f="0.7976" aria-labelledby="hack-h">
   <p class="when" data-due="2026-12-09" data-note="results to be added">28 September to 9 December 2026</p>
@@ -352,7 +359,7 @@ footer { border-top: 1px solid #000; margin-top: 2rem; padding-top: 1rem; font-s
 </section>
 </div>
 </main>
-<footer><span>IB Diploma: HL Mathematics AA, HL Physics, HL Economics, SL Theatre, SL English Literature and French ab initio, plus AP Computer Science Principles.</span><span><a href="mailto:radoslawgreen@gmail.com">radoslawgreen@gmail.com</a>. Last updated 7 November 2026.</span></footer>
+<footer><span>IB Diploma: HL Mathematics AA, HL Physics, HL Economics, SL Theatre, SL English Literature and French ab initio, plus AP Computer Science Principles.</span><span><a href="mailto:radoslawgreen@gmail.com">radoslawgreen@gmail.com</a>. Last updated 9 November 2026.</span></footer>
 </div>
 <script>
 var LEN = 593.32;
