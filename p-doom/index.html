@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Where I’m at on AI risk, Radek Green</title>
+<meta name="description" content="Radek Green on why his p(doom) is about 80%, why he doesn’t expect AI to be stopped, and why he would still rather hope for alignment than for a halt.">
+<link rel="canonical" href="https://worldwiderad.com/p-doom/">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://worldwiderad.com/p-doom/">
+<meta property="og:title" content="Where I’m at on AI risk">
+<meta property="og:description" content="My p(doom) is about 80%. Why I don’t expect AI to be stopped, and why I would still rather hope for alignment than for a halt.">
+<meta property="og:image" content="https://worldwiderad.com/static/og.png">
+<link rel="icon" href="/static/favicon.svg" type="image/svg+xml">
+<style>
+@font-face { font-family: Petrona; src: url(/static/fonts/petrona.woff2) format("woff2"); font-weight: 100 900; font-display: swap; }
+@font-face { font-family: Petrona; src: url(/static/fonts/petrona-italic.woff2) format("woff2"); font-weight: 100 900; font-style: italic; font-display: swap; }
+html { background: #fff; color: #000; font: 18px/1.55 Petrona, Georgia, serif; }
+body { margin: 0; }
+a { color: inherit; text-underline-offset: 0.2em; }
+a:hover { text-decoration-thickness: 2px; }
+:focus-visible { outline: 2px solid #2340a8; outline-offset: 3px; }
+.page { max-width: 40rem; padding: 2.4rem 1.5rem 4rem 4vw; }
+.back { font-size: 0.9rem; margin: 0 0 2.4rem; }
+h1 { font-size: clamp(2.4rem, 6vw, 3.6rem); font-weight: 500; line-height: 1.05; margin: 0 0 0.6rem; }
+.date { font-style: italic; margin: 0 0 2rem; }
+h2 { font-size: 1.3rem; font-weight: 600; line-height: 1.2; margin: 2.4rem 0 0.7rem; }
+p { margin: 0 0 1rem; }
+ul { margin: 0 0 1rem; padding-left: 1.2rem; }
+li { margin-bottom: 0.5rem; }
+footer { margin-top: 3rem; border-top: 1px solid #000; padding-top: 1rem; font-size: 0.9rem; }
+@media (max-width: 600px) { .page { padding: 1.5rem 1.1rem 3rem; } }
+</style>
+</head>
+<body>
+<div class="page">
+<nav class="back" aria-label="Back to homepage"><a href="/">worldwiderad.com</a></nav>
+<main>
+<article>
+<h1>Where I’m at on AI risk</h1>
+<p class="date">9 November 2026</p>
+
+<p>My p(doom) is about 80%. It’s on my Hugging Face profile, and I still think it’s roughly right. I know putting a number on this is a bit silly, and 80% isn’t a measurement of anything, but when I break it down the pieces hold together, so it’s at least consistent with what I actually believe.</p>
+<p>Matthew Tromp posted about an Anthropic employee whose p(doom) was close to 100%, and who thought the only chance was that we’re wrong and alignment turns out to be solvable. That’s pretty close to my own view, just with a lower number.</p>
+
+<h2>We aren’t going to stop</h2>
+<p>There’s basically a 0% chance we stop AI permanently. If something bad enough happens we might get a pause of a couple of years, but that’s the most I’d expect. It’s Pandora’s box. There’s too much to gain and too much incentive, economically and militarily, and every company and country knows that whoever stops first just hands the lead to someone else.</p>
+<p>I’m confident about this even though I have no idea what event might trigger a pause, because I’m confident about how the world responds to almost any event. Something terrible happens, there’s a pause, and five years later people have mostly moved on, because the potential gains outweigh the memory of the bad thing. For a pause to become permanent, the shock would have to be so big and last so long that I can’t picture it short of the catastrophe itself.</p>
+<p>Nuclear weapons are the obvious comparison, and I find it hilarious when people point to them as a problem we’ve dealt with. They’re as much of a problem as they ever were. Arsenals are smaller than at the peak of the Cold War, but you don’t need 70,000 warheads to end modern civilisation. A couple of thousand would do it, probably fewer. In January the Doomsday Clock was set to 85 seconds to midnight, the closest it has ever been. Then New START, the last US–Russia nuclear arms treaty, expired in February, so for the first time since the early 1970s there are no legally binding limits on their strategic arsenals. In a lot of ways it’s gotten worse, and we’ve just gotten used to it, the way people stop seeing the fentanyl crisis on their own streets after a while.</p>
+<p>And nukes are the easy case. More countries don’t have them because they’re incredibly hard to make, and making them doesn’t really get easier over time. AI is the opposite. It isn’t that hard to build, and it gets easier every year.</p>
+<p>I run an abliterated Qwen 3.8 on my laptop. Alibaba released the 27-billion-parameter version as open weights in August, and it reports 61.7% for that model on SWE-bench Pro, a hard coding benchmark, against 53.4% for Claude Opus 4.6. Alibaba measured its own model in its own setup and took the Opus score from Anthropic’s published results, so take the comparison with some salt. Still, a model anywhere near that level running on a laptop would have sounded ridiculous a couple of years ago. Alibaba also released the weights of its 2.4-trillion-parameter flagship, the first Max-class Qwen model anyone can download. That one needs serious hardware, but anyone with the hardware can have it.</p>
+<p>The cost of reaching any given level of capability keeps falling as hardware and algorithms improve. Regulating that looks a lot more like regulating illegal drugs than like nuclear non-proliferation, and it gets harder every year.</p>
+<p>The abliterated part matters too. Abliteration finds the direction inside a model’s weights that makes it refuse requests and edits it out, without retraining and without a data centre, and people post abliterated versions of popular open models on Hugging Face all the time. So whatever safety training a lab puts into a model, anyone can take it out once the weights are public. Refusals are only the surface layer of alignment, so this doesn’t prove that deeper alignment could be stripped out the same way, but it shows how thin the protection is right now.</p>
+
+<h2>Alignment probably won’t be solved in time</h2>
+<p>I don’t think we’re likely to solve alignment soon. Maybe we will, but it’s unlikely.</p>
+<p>I think about the strategy like one of those games where you slide something down a flat table and try to get it as close to the end as you can without it going off. If we stop too early, we don’t have AI smart enough to help us figure out alignment, and if we stop too late, it’s too late. There’s a brief window where AI is capable enough to help solve alignment but not yet dangerous, and in that window we’d have to actually solve it and then implement the solution in time.</p>
+<p>The window might not exist at all, because the capabilities that make an AI useful for alignment research might arrive at the same time as the ones that make it dangerous. Even if the window is there, stopping inside it is mostly luck. Then everyone has to implement the solution, including the people who’d rather not bother, and because anything a lab builds into open weights can be stripped back out, “everyone” includes everyone who downloads the weights and decides not to.</p>
+<p>That’s why I think pausing right now does basically nothing. A pause now freezes us at a level where AI isn’t smart enough to help. What would matter is stopping at the right moment, and I don’t think we can count on that.</p>
+
+<h2>The numbers</h2>
+<p>If I break down the 80%, I’d say there’s a 95% chance superintelligence gets built, a 90% chance it isn’t adequately aligned, and a 95% chance that the misalignment leads to catastrophe. That multiplies out to about 81%.</p>
+<p>The catastrophe number is high because a misaligned AI doesn’t burn itself out the way a nuclear war does. After a nuclear war the weapons are used up, but a misaligned AI that has killed most of us is still there afterwards.</p>
+<p>I also don’t buy that a catastrophe killing 99% of people is a different kind of thing from one that kills 100%. Over all of time, sure, extinction is worse. But if only 1% survive, nothing guarantees they’ll still be around in ten or a hundred years, so even if not everyone dies in the event itself, there’s a good chance humanity dies out in the aftermath. That’s even more true for AI, since whatever caused the catastrophe hasn’t gone anywhere.</p>
+<p>Working through my numbers, the roughly 19% where things go okay splits into about 5% where superintelligence never gets built, about 9.5% where it gets built and is aligned well enough, and about 4% where it’s misaligned but somehow doesn’t end in catastrophe.</p>
+
+<h2>Where my hope comes from</h2>
+<p>The part of me that thinks we might make it rests mostly on something that sounds like fiction, which is that AI itself finds the solutions, including to alignment. That’s the dreamland version of AI, and I know it is. The doomer version is kind of a fantasy too, since both need the same thing to happen, which is superhuman capability. I think the dreamland capabilities are about as likely as the world-ending ones, because it’s the same capability either way.</p>
+<p>But dreamland doesn’t count unless it includes solving alignment. Whoopdedoo, we cured cancer but never solved alignment, and now we’re all dead.</p>
+
+<h2>Why I’d rather hope for alignment than a halt</h2>
+<p>A full, permanent halt might honestly be the only real hope. If we managed it, it would definitely solve the problem, but I think it’s extraordinarily unlikely. Solving alignment would also solve the problem, as long as the solution actually got used, and that’s unlikely too.</p>
+<p>What separates the two is why each one is unlikely. A permanent halt is unlikely because of things we already know about, like the incentives, how fast people forget and how much easier AI keeps getting to build. Alignment is unlikely because we don’t know whether it’s possible at all, and if it is possible, I don’t see why a capable enough AI couldn’t find it. So the halt is unlikely for reasons that aren’t going away, while alignment is unlikely because of a question nobody has answered yet. Only the second kind can turn out better than expected, so that’s where I’d rather put my hope.</p>
+<p>I also choose to have some faith in AI’s ability to help with alignment, and I keep that separate from my forecast. I think we probably won’t make it, and I still think the alignment route is the one worth hoping for.</p>
+
+<h2>Where I sit compared with other people</h2>
+<p>My number puts me in the same range as Dan Hendrycks, who has put his p(doom) above 80%, and Daniel Kokotajlo, who has put his at around 70%.</p>
+<p>Most people that pessimistic think the answer is an enforced international halt. Eliezer Yudkowsky and Nate Soares, who wrote <i>If Anyone Builds It, Everyone Dies</i>, are the clearest example. I agree with them about how bad things look and disagree that a halt is achievable.</p>
+<p>On strategy I’m closer to the people betting on AI-assisted alignment, like Jan Leike, who works on alignment at Anthropic and has given a range of 10–90%. I’m just a lot more pessimistic than that crowd about the bet paying off.</p>
+
+<h2>Things I haven’t settled</h2>
+<ul>
+<li>Whether the window exists, meaning whether AI that’s useful for alignment research shows up far enough ahead of dangerous AI to make a difference.</li>
+<li>Whether alignment is a tiny target we’d have to hit exactly, or something that roughly aligned AI tends to drift towards as it gets more capable.</li>
+<li>How anyone would check that an alignment solution an AI hands us actually works.</li>
+<li>Whether my 95% for superintelligence means ever or by some particular date. I haven’t pinned that down, and it changes how the whole thing reads.</li>
+</ul>
+</article>
+</main>
+<footer><a href="/">worldwiderad.com</a></footer>
+</div>
+</body>
+</html>
