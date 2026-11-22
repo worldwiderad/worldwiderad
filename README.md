@@ -18,7 +18,8 @@ Everything is plain HTML, CSS and JavaScript. GitHub Pages runs Jekyll on every 
 | `static/audio/` | `4part.m4a` (AAC) and `4part.webm` (Opus, used when AAC can't play) |
 | `static/og.png`, `static/favicon.svg` | Link preview image and favicon |
 | `_tools/timeline.py` | Gives the timeline position of a date (Jekyll doesn't publish `_` folders) |
-| `_tools/ink/` | The pen-and-ink drawings beside each project: `build.mjs` draws them, `lib.mjs` has the pen helpers |
+| `static/ink/` | `stage.js` draws the ink world behind the projects; `world.js` holds its drawings and is generated |
+| `_tools/ink/` | `world.mjs` generates `static/ink/world.js`, and `lib.mjs` has its pen helpers |
 | `jlec-form/`, `hackathon/`, `Page-2.html`, `css/`, `js/`, `vendor/`, `images/` | Older pages, kept as they are |
 
 Don't put anything under `/assets/`: the Pages theme writes `/assets/css/style.css` there.
@@ -50,28 +51,30 @@ Future items are blue (`#2340a8`) and carry `data-due="YYYY-MM-DD"`; once that d
 - For a station, drop `ahead` from its class and the `<span class="plan">` from its date.
 - In the CV, remove the `<span class="plan">` wrapper and put the sentence in the past tense.
 
-## Ink drawings
+## The ink world
 
-Each project section has a pen-and-ink drawing in its right-hand column (`<div class="art">`, on a section with the class `has-art`). In the HTML a drawing is an SVG of pen centrelines, grouped into layers (`.lay`) that each have a `data-depth` (how far the layer drifts as you scroll) and a `data-seq` (the order the layers are drawn). Inside a layer:
+Behind the projects there's a pen-and-ink drawing you fly through as you scroll. `static/ink/stage.js` puts a canvas the size of the screen behind `.journey` and moves a camera down a corridor whose walls are two staves. The notes on them come from 4part itself, the horns on the right wall and the strings on the left, read out of `static/score/piece.svg`. Each section has its own scene at its point in the piece (its `data-f`, the same position the timeline uses; a section with an empty `data-f` sits 24 seconds after the one before), and the camera reaches the scene when the section's first line is a quarter of the way down the screen. The camera eases towards the scroll position instead of following it exactly, which is why a flick of the scroll wheel glides to a stop. Below 1200 px the text covers the page, so there each scene arrives in the gap above its section and flies past behind the text as you read.
 
-| Class | Drawn as |
+Scenes draw themselves stroke by stroke as the camera approaches. Everything past the blue gate marked "today" is drawn in blue. Before the last section a black accent mark (a marcato) is outlined in the distance, then floods with ink, and the camera flies into it, so the page is dark from there on. While the recording plays, a blue playhead runs along the corridor and the loudness presses the pen harder, so the lines thicken in loud passages.
+
+The script adds `ink-on` to `<html>`, and the CSS for the ink world only applies under it. With reduced motion, or without JavaScript, the page is the plain version.
+
+The drawings are generated. To change one, edit `_tools/ink/world.mjs` and run:
+
+```sh
+node _tools/ink/world.mjs
+```
+
+That rewrites `static/ink/world.js`. A scene is a list of layers, each at a depth (`dz`, in corridor units behind the scene, so negative is nearer the camera) with its own offset and scale. Its pen centrelines are drawn in a 240 × 180 box, and each item is one of these:
+
+| Kind | Drawn as |
 |---|---|
 | `k`, `k1`, `k2` | A pen stroke: normal, fine (hatching) and bold |
 | `kd` | A dotted pen line |
 | `f`, `w` | A solid ink fill, and a paper fill that hides what's behind it |
-| `p p1`/`p2`/`p3` | Stippled dots in three sizes, uncovered by a sweep (`data-dir="l"` or `"r"`) |
+| `p` | Stippled dots |
 
-The second script at the end of `index.html` turns each centreline into a tapered brush stroke and draws the strokes in order when the drawing scrolls into view. The layers then drift a little as you scroll, easing out over about a second. While the recording plays, its loudness presses the pen harder, so the lines thicken in loud passages. Future projects (`station ahead`) draw in blue. When the last section scrolls up the screen, it is brushed over in ink and turns white on ink, timed to land on the full orchestra at 8:46 if the recording is playing. Its drawing then draws on top.
-
-With reduced motion the drawings appear finished and nothing moves. Without JavaScript they show as plain pen lines.
-
-To change a drawing, edit it in `_tools/ink/build.mjs` and run:
-
-```sh
-node _tools/ink/build.mjs --apply
-```
-
-That rewrites each `svg#ink-<id>` in `index.html`. For a new section, add `has-art` to its class and an empty `<div class="art"><svg class="ink" id="ink-<id>"></svg></div>` after its text, then add the drawing to `build.mjs` (coordinates are in a 240 × 180 box).
+A section with no scene in `world.mjs` still gets the corridor. The earlier version, with a drawing beside each section instead, is kept on the branch `backup/ink-vignettes`.
 
 ## Before pushing
 
