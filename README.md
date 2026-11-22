@@ -19,7 +19,7 @@ Everything is plain HTML, CSS and JavaScript. GitHub Pages runs Jekyll on every 
 | `static/og.png`, `static/favicon.svg` | Link preview image and favicon |
 | `_tools/timeline.py` | Gives the timeline position of a date (Jekyll doesn't publish `_` folders) |
 | `static/ink/` | `stage.js` draws the ink world behind the projects; `world.js` holds its drawings and is generated |
-| `_tools/ink/` | `world.mjs` generates `static/ink/world.js`, and `lib.mjs` has its pen helpers |
+| `_tools/ink/` | `world.mjs` generates `static/ink/world.js` (the drawings and garland motifs), and `lib.mjs` has its pen helpers |
 | `jlec-form/`, `hackathon/`, `Page-2.html`, `css/`, `js/`, `vendor/`, `images/` | Older pages, kept as they are |
 
 Don't put anything under `/assets/`: the Pages theme writes `/assets/css/style.css` there.
@@ -53,9 +53,11 @@ Future items are blue (`#2340a8`) and carry `data-due="YYYY-MM-DD"`; once that d
 
 ## The ink world
 
-Behind the projects there's a pen-and-ink drawing you fly through as you scroll. `static/ink/stage.js` puts a canvas the size of the screen behind `.journey` and moves a camera down a corridor whose walls are two staves. The notes on them come from 4part itself, the horns on the right wall and the strings on the left, read out of `static/score/piece.svg`. Each section has its own scene at its point in the piece (its `data-f`, the same position the timeline uses; a section with an empty `data-f` sits 24 seconds after the one before), and the camera reaches the scene when the section's first line is a quarter of the way down the screen. The camera eases towards the scroll position instead of following it exactly, which is why a flick of the scroll wheel glides to a stop. Below 1200 px the text covers the page, so there each scene arrives in the gap above its section and flies past behind the text as you read.
+Behind the projects there's a pen-and-ink world you fly through as you scroll. `static/ink/stage.js` puts a canvas the size of the screen behind `.journey`, with one drawing per section placed at its point in 4part (its `data-f`, the same position the timeline uses; a section with an empty `data-f` sits 24 seconds after the one before). A single pen line, the thread, runs from each drawing to the next, and in several drawings it becomes part of the drawing: the training-loss curve under 4part, the walking route on the CIS-MAP floor plan, the line of sight between the two heads, the sea under the tanker, a root that climbs the maths tree, the railway, and at the end the conductor's baton.
 
-Scenes draw themselves stroke by stroke as the camera approaches. Everything past the blue gate marked "today" is drawn in blue. Before the last section a black accent mark (a marcato) is outlined in the distance, then floods with ink, and the camera flies into it, so the page is dark from there on. While the recording plays, a blue playhead runs along the corridor and the loudness presses the pen harder, so the lines thicken in loud passages.
+Every drawing has an opening, and the camera follows the thread through it, so the drawing flies past at the edges of the screen: through the laurel wreath, between the stave and the loss curve, through a room of the floor plan, between the two essays, between the two faces, over the ship, up over the tree, through the viaduct's middle arch, through the laptop screen. The camera reaches each drawing when the section's first line is a quarter of the way down the screen, and it eases towards the scroll position rather than following it exactly, so a flick of the scroll wheel glides to a stop. It also banks a little as it swings sideways. Below 1200 px the text covers the page, so there each drawing arrives in the gap above its section and you fly through it behind the text.
+
+The pen draws in order. While you read a section the thread ends in its drawing; as you fly through it, the pen carries the thread on to the next one, mirrored garlands of small motifs appear along it (the last project's motif handing over to the next one's), and then the next drawing draws itself. The blue diamond marked "today" is a gate the camera flies through, and everything past it is drawn in blue. Before the last section a black accent mark (a marcato) is outlined, floods with ink and the camera flies into it, so the page is dark from there on. While the recording plays, the music draws the thread on at its own pace, a blue ring rides the thread at the playhead, and the loudness presses the pen harder, so the lines thicken in loud passages.
 
 The script adds `ink-on` to `<html>`, and the CSS for the ink world only applies under it. With reduced motion, or without JavaScript, the page is the plain version.
 
@@ -65,7 +67,7 @@ The drawings are generated. To change one, edit `_tools/ink/world.mjs` and run:
 node _tools/ink/world.mjs
 ```
 
-That rewrites `static/ink/world.js`. A scene is a list of layers, each at a depth (`dz`, in corridor units behind the scene, so negative is nearer the camera) with its own offset and scale. Its pen centrelines are drawn in a 240 × 180 box, and each item is one of these:
+That rewrites `static/ink/world.js`. Each scene has a size (`S`), the point the camera faces while you read (`look`), the point it flies through (`gap`, which needs a clear space around it), and where the thread arrives and leaves (`tin`, `tout`). Its layers each sit at a depth (`dz`, in units behind the drawing, so negative is nearer the camera) with their own offset and scale, and the pen centrelines are drawn in a 240 × 180 box. Each item is one of these:
 
 | Kind | Drawn as |
 |---|---|
@@ -74,7 +76,7 @@ That rewrites `static/ink/world.js`. A scene is a list of layers, each at a dept
 | `f`, `w` | A solid ink fill, and a paper fill that hides what's behind it |
 | `p` | Stippled dots |
 
-A section with no scene in `world.mjs` still gets the corridor. The earlier version, with a drawing beside each section instead, is kept on the branch `backup/ink-vignettes`.
+The garland motifs are at the end of `world.mjs`, one per section. A section with no scene still gets the thread. Earlier versions are still in the history: the branch `backup/ink-vignettes` has a drawing beside each section, and commit `4127312` has the first fly-through, down a corridor of staves.
 
 ## Before pushing
 
