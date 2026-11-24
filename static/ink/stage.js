@@ -70,7 +70,8 @@
     if (el.id === 'today') todayZ = st.z;
     if (raw) {
       var Zw = st.z * Z, sc = st.scene = { id: el.id, z: st.z, Z: Zw, total: 0, thread: raw.thread, read: (Zw - raw.read) / Z,
-        layers: raw.layers.map(function (l) { return { o: [l.o[0], l.o[1], l.o[2] + Zw], U: l.U, V: l.V, s: l.s, ground: l.ground, top: l.top, raw: l.i, items: null }; }) };
+        layers: raw.layers.map(function (l) { var o = [l.o[0], l.o[1], l.o[2] + Zw]; return { o: o, o0: o.slice(), U: l.U, V: l.V, U0: l.U, V0: l.V, s: l.s, s0: l.s, ground: l.ground, top: l.top, raw: l.i, items: null }; }) };
+      sc.Zd = Zw; // where the drawing actually sits along the journey (moved only for a section with a side panel)
       st.read = sc.read; // while you read the section, the camera is raw.read units in front of the drawing
       scenes.push(sc);
     }
@@ -93,10 +94,28 @@
         o.start = acc; acc += o.w; n++;
         return o;
       });
-      Ly.box = [[u0, v0], [u1, v0], [u1, v1], [u0, v1]].map(function (p) { return onLayer(Ly, p); });
-      Ly.mid = onLayer(Ly, [(u0 + u1) / 2, (v0 + v1) / 2]);
+      Ly.lb = [u0, v0, u1, v1];
     });
     sc.total = acc;
+    boxes(sc);
+  }
+  function boxes(sc) { // each sheet's corners and middle in the world, for culling and depth order
+    sc.layers.forEach(function (Ly) {
+      if (!Ly.lb) return;
+      var b = Ly.lb;
+      Ly.box = [[b[0], b[1]], [b[2], b[1]], [b[2], b[3]], [b[0], b[3]]].map(function (p) { return onLayer(Ly, p); });
+      Ly.mid = onLayer(Ly, [(b[0] + b[2]) / 2, (b[1] + b[3]) / 2]);
+    });
+  }
+  function place(sc, X, Zc, k, yaw) { // move a whole drawing on the ground: its centre to (X, Zc), scaled by k, turned by yaw
+    var c = Math.cos(yaw), n = Math.sin(yaw);
+    function turn(v) { return [v[0] * c + v[2] * n, v[1], -v[0] * n + v[2] * c]; }
+    sc.layers.forEach(function (Ly) {
+      var r = turn([Ly.o0[0], Ly.o0[1], Ly.o0[2] - sc.Z]);
+      Ly.o = [X + k * r[0], k * r[1], Zc + k * r[2]]; Ly.s = k * Ly.s0; Ly.U = turn(Ly.U0); Ly.V = turn(Ly.V0);
+    });
+    sc.Zd = Zc; sc.X = X; sc.k = k; sc.yaw = yaw;
+    boxes(sc);
   }
 
   // ---- the camera runs on one straight rail down the middle of the world (x = 0), at a fixed height, looking
@@ -106,7 +125,6 @@
 
   // ---- the thread: the pieces inside the drawings are part of the drawings; between them it runs along the ground
   var pieces = [], hops = [];
-  scenes.forEach(function (sc) { sc.thread.forEach(function (p, k) { pieces.push({ sc: sc, k: k, a: onLayer(sc.layers[p.L], p.a), b: onLayer(sc.layers[p.L], p.b), L: p.L }); }); });
   function addHop(a, b, sc) { // a and b are [x, y, z]; the line settles onto the ground between them
     var L = Math.max(0, b[2] - a[2]) * 0.42, P1 = [a[0], 0, a[2] + L], P2 = [b[0], 0, b[2] - L], len = Math.hypot(b[0] - a[0], b[2] - a[2]) + Math.abs(a[1]) + Math.abs(b[1]);
     var n = Math.max(6, Math.ceil(len / 10)), pts = [], beads = [], acc = 0, lastB = 0;
@@ -119,10 +137,13 @@
     }
     hops.push({ p: pts, n: n, z0: Math.min(a[2], b[2]) - 1, z1: Math.max(a[2], b[2]) + 1, beads: beads, sc: sc || null });
   }
-  (function () {
+  function threadUp() {
+    pieces = []; hops = [];
+    scenes.forEach(function (sc) { sc.thread.forEach(function (p, k) { pieces.push({ sc: sc, k: k, a: onLayer(sc.layers[p.L], p.a), b: onLayer(sc.layers[p.L], p.b), L: p.L }); }); });
     var a = pieces[0].a; addHop([a[0] - 160, 0, Math.max(40, a[2] - 900)], a);
     for (var i = 0; i + 1 < pieces.length; i++) addHop(pieces[i].b, pieces[i + 1].a, pieces[i].sc === pieces[i + 1].sc ? pieces[i].sc : null);
-  })();
+  }
+  threadUp();
   function threadAt(zw) { // the thread's point at a world depth, on the ground stretches
     for (var i = 0; i < hops.length; i++) {
       var h = hops[i]; if (h.sc || zw < h.z0 || zw > h.z1) continue;
@@ -161,20 +182,42 @@
     var text = document.querySelector('.journey .station > div'), right = Wd > 1200 && text ? text.getBoundingClientRect().right + 24 : 0;
     cx = right ? (right + Wd) / 2 : Wd / 2; cy = Ht * 0.5;
     F = right ? Math.min((Wd - right) * 1.05, Wd * 0.5, Ht * 0.58) : Math.min(Wd * 1.02, Ht * 0.7); // focal length: a drawing ~290 units wide fills this many pixels while you read it
-    CX = cx; CY = cy; FF = F;
     var top = journey.getBoundingClientRect().top + scrollY;
     // beside the text, a drawing is in view while you read its section; where the text spans the page,
     // it is there in the gap above the section, and you fly through it behind the text as you read on
     var lead = right ? 0.24 : 0.8; // 0.25 is where the page header switches to the next section
+    var moved = false;
     stations.forEach(function (st) {
-      var head = (st.el.firstElementChild || st.el).getBoundingClientRect();
-      st.anchor = head.top + scrollY - Ht * lead; st.view = null;
-      if (right && st.el.classList.contains('has-side')) { // the right column is taken: use the space under the text instead
+      var head = (st.el.firstElementChild || st.el).getBoundingClientRect(), sc = st.scene;
+      st.anchor = head.top + scrollY - Ht * lead;
+      if (!sc) return;
+      var X = 0, Zc = sc.Z, k = 1, yaw = 0;
+      if (right && st.el.classList.contains('has-side')) {
+        // the right-hand column is taken, so the drawing goes on the ground where, seen from the camera's reading
+        // position on the rail, it lies in the space under the text. The camera itself never moves off the rail.
         var t = st.text.getBoundingClientRect(), kids = st.text.children, last = kids.length ? kids[kids.length - 1].getBoundingClientRect().bottom : t.bottom; // the grid stretches the block itself to the panel's height
-        var bottom = Ht * lead + (last - head.top), room = Ht - bottom - 20;
-        if (room > 160) st.view = { x: (t.left + t.right) / 2, y: bottom + room / 2, k: clamp(room / (Ht * 0.48), 0.4, 1) };
+        var bottom = Ht * lead + (last - head.top) + 24, room = Ht - bottom - 16;
+        if (room > 150) {
+          var c = Math.cos(PITCH), n = Math.sin(PITCH), r = (bottom + room * 0.42 - cy) / F, Cz = sc.read * Z;
+          var dz = HEIGHT * (c - r * n) / (n + r * c), depth = HEIGHT * n + dz * c, w = Math.min((t.right - t.left) * 0.62, room * 1.9);
+          X = ((t.left + t.right) / 2 - cx) / F * depth; Zc = Cz + dz;
+          yaw = Math.atan2(X, dz); // turned so its spine points back at the camera, as if it lay open in front of you
+          // being near the camera, its near edge looks much bigger than its far edge, so size it by its outline on screen
+          prep(sc);
+          var fits = function (kk) {
+            place(sc, X, Zc, kk, yaw);
+            var x0 = Infinity, x1 = -Infinity, y0 = Infinity, y1 = -Infinity;
+            sc.layers.forEach(function (Ly) { Ly.box.forEach(function (q) { var dy = q[1] + HEIGHT, d = q[2] - Cz, qz = dy * n + d * c, qx = cx + F * q[0] / qz, qy = cy + F * (dy * c - d * n) / qz; if (qx < x0) x0 = qx; if (qx > x1) x1 = qx; if (qy < y0) y0 = qy; if (qy > y1) y1 = qy; }); });
+            return x1 - x0 <= w && y1 <= Ht - 12 && y0 >= bottom - 8;
+          };
+          var lo = 0.12, hi = 1;
+          for (var it = 0; it < 14; it++) { var mid = (lo + hi) / 2; if (fits(mid)) lo = mid; else hi = mid; }
+          k = lo;
+        }
       }
+      if (X !== (sc.X || 0) || Zc !== sc.Zd || k !== (sc.k || 1) || yaw !== (sc.yaw || 0) || sc.fit !== k) { place(sc, X, Zc, k, yaw); sc.fit = k; moved = true; }
     });
+    if (moved) threadUp();
     stations.start = top - Ht * 0.65;
   }
   function aim() { // scroll position to journey depth: each section's anchor puts the camera at that drawing's reading pose
@@ -185,12 +228,6 @@
       prevY = st.anchor; prevZ = z;
     }
     return prevZ;
-  }
-  var CX = 0, CY = 0, FF = 1;
-  function frameView() { // near a section that shows its drawing elsewhere on the screen, move the view centre there
-    var x = CX, y = CY, f = FF;
-    stations.forEach(function (st) { if (!st.view) return; var w = ease(1 - Math.abs(camZ - st.read) / 2.5); if (w > 0) { x += (st.view.x - CX) * w; y += (st.view.y - CY) * w; f *= 1 + (st.view.k - 1) * w; } });
-    cx = x; cy = y; F = f;
   }
   function pose() { // on the rail: straight ahead, tilted down by PITCH
     var c = Math.cos(PITCH), n = Math.sin(PITCH);
@@ -266,7 +303,7 @@
   function scene(sc) {
     var i = scenes.indexOf(sc), R = revealOf(i); if (R <= 0) return;
     prep(sc);
-    var reveal = R * sc.total, col = inkFor(sc.z), base = fade(cam([0, -100, sc.Z])[2]);
+    var reveal = R * sc.total, col = inkFor(sc.z), base = fade(cam([sc.X || 0, -100, sc.Zd])[2]);
     var order = sc.layers.slice().sort(function (a, b) { return (!!a.top - !!b.top) || (!!b.ground - !!a.ground) || (cam(b.mid)[2] - cam(a.mid)[2]); });
     var grounds = order.filter(function (Ly) { return Ly.ground && !Ly.top; });
     grounds.forEach(function (Ly) { drawLayer(Ly, reveal, col, base); });
@@ -369,12 +406,12 @@
   function render() {
     playZ = window.state === 'playing' && window.active ? window.active.a.currentTime * K : -Infinity;
     tipZ = Math.max(reach(camZ), Math.min(playZ, camZ + AHEAD)); // while it plays, the music draws the thread on
-    frameView(); pose();
+    pose();
     g.setTransform(dpr, 0, 0, dpr, 0, 0); g.globalAlpha = 1;
     g.fillStyle = PAPER; g.fillRect(0, 0, Wd, Ht);
     // far to near: each drawing and the gate, with the thread and garlands in the stretches between them
     var ev = [];
-    scenes.forEach(function (sc) { if (sc.Z > C[2] - 700 && sc.Z < C[2] + FARW + 400) ev.push({ z: sc.Z, f: function () { scene(sc); } }); });
+    scenes.forEach(function (sc) { if (sc.Zd > C[2] - 700 && sc.Zd < C[2] + FARW + 400) ev.push({ z: sc.Zd, f: function () { scene(sc); } }); });
     ev.push({ z: todayZ * Z, f: today });
     ev.sort(function (a, b) { return b.z - a.z; });
     var hi = Infinity;
