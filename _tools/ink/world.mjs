@@ -11,8 +11,9 @@
 // For each scene:
 //   thread  the pieces of the thread inside the drawing, in the order the pen draws them; static/ink/stage.js
 //           joins one piece to the next (and one drawing to the next) with a line along the ground
-//   keys    where the camera is and what it looks at: while you read the section (read: true), then on
-//           the way through. Positions are relative to the scene; dz is along the journey.
+//   read    how far in front of the drawing the camera is while you read the section. The camera runs on one
+//           straight rail down the middle (x = 0), 125 units above the ground, so every drawing is placed
+//           for the rail to pass through or beside it.
 // static/ink/stage.js turns centrelines into brush strokes and draws everything in perspective.
 import fs from 'fs';
 import { seed, rnd, line, poly, curve, ellipse, ellipsePts, fill, fillPoly, hatch, stipple, mirror, smooth } from './lib.mjs';
@@ -38,9 +39,9 @@ const lay = (items, b, at, pivot, s, o = {}) => ({
 });
 const S = {};
 // a scene; a thread piece is {L: layer index, pts, t: pen}, drawn first in its layer
-const scene = (id, layers, thread, keys) => {
+const scene = (id, layers, thread, read) => {
   thread.forEach(p => layers[p.L].items.unshift({ t: p.t || 'k', d: smooth(p.pts) }));
-  S[id] = { layers, thread: thread.map(p => ({ L: p.L, a: p.pts[0], b: p.pts[p.pts.length - 1] })), keys };
+  S[id] = { layers, thread: thread.map(p => ({ L: p.L, a: p.pts[0], b: p.pts[p.pts.length - 1] })), read };
 };
 
 // World Scholar's Cup: a laurel wreath standing on the ground, turned a little, with the cup on top.
@@ -73,10 +74,7 @@ seed(11);
   scene('wsc', [
     lay([...leaves, ...mirror(leaves), ...bow, ...mirror(bow), ...cup], UP(18), [0, 0, 0], [120, 192], 1.2),
     lay(sparks, UP(18), [0, 0, -40], [120, 192], 1.2),
-  ], [{ L: 0, pts: path }], [
-    { dz: -300, at: [-30, -106], aim: [0, -106, 0], read: true },
-    { dz: 0, at: [0, -106], aim: [0, -100, 400] },
-  ]);
+  ], [{ L: 0, pts: path }], 390);
 }
 
 // Writing 4part: the thread splits into the five lines of a stave lying on the ground like a road, with
@@ -105,11 +103,7 @@ seed(4);
     lay(hills, UP(90), [150, 0, -300], [0, 0], 1.15),
     lay(hills, UP(90), [-150, 0, -300], [0, 0], 1.15),
     ...['I', 'II', 'III', 'IV'].map((n, i) => lay(sign(n), UP(), [-58, 0, along3[i] + 10], [0, 0], 1.2)),
-  ], [{ L: 0, pts: [[120, 340], [120, 300], [120, 150], [120, 0], [120, -150], [120, -290], [120, -340]] }], [
-    { dz: -470, at: [0, -270], aim: [0, 0, -70], read: true },
-    { dz: -220, at: [0, -52], aim: [0, -42, 250] },
-    { dz: 220, at: [0, -56], aim: [0, -60, 700] },
-  ]);
+  ], [{ L: 0, pts: [[120, 340], [120, 300], [120, 150], [120, 0], [120, -150], [120, -290], [120, -340]] }], 400);
 }
 
 // CIS-MAP: the floor plan lying on the ground, with a pin standing at the destination. The thread comes in
@@ -131,15 +125,11 @@ seed(21);
   [[66, 142], [68.5, 144.5], [66.5, 146], [69, 141]].forEach(([x, y]) => plan.push(fillPoly([[x, y], [x + 1.4, y], [x + 1.4, y + 1.4], [x, y + 1.4]])));
   [[100, 50, 128, 62], [100, 68, 128, 80], [40, 50, 70, 60], [176, 92, 200, 100]].forEach(([a, b, c, d]) => plan.push(poly([[a, b], [c, b], [c, d], [a, d], [a, b]], 'k1')));
   const pin = [curve([[0, 0], [-6, -10], [-7.5, -18], [-4, -25], [0, -26.5], [4, -25], [7.5, -18], [6, -10], [0, 0]], 'k', 0.05), fill(ellipsePts(0, -18, 3, 3, 0, 360, 0, 0.02, 40))];
-  const s = 1.55, at = ([u, v]) => [(u - 120) * s, 0, -(v - 92) * s];
+  const s = 1.4, at = ([u, v]) => [(u - 120) * s, 0, -(v - 92) * s];
   scene('cismap', [
     lay(plan, FLAT(), [0, 0, 0], [120, 92], s),
     lay(pin, UP(), at(route[route.length - 1]), [0, 0], 1.7),
-  ], [{ L: 0, pts: route, t: 'kd' }], [
-    { dz: -300, at: [0, -250], aim: [0, 0, 20], read: true },
-    { dz: -120, at: [-80, -80], aim: [36, -20, 200] },
-    { dz: 90, at: [84, -100], aim: [84, -64, 540] },
-  ]);
+  ], [{ L: 0, pts: route, t: 'kd' }], 400);
 }
 
 // The Locke essays: an open book lying on the ground, law (the scales) on the left page and politeness
@@ -164,11 +154,7 @@ seed(26);
     lay(leftPage, { U: [Math.cos(a), Math.sin(a), 0], V: [0, 0, -1] }, [0, 0, 0], [110, 75], s),
     lay(rightPage, { U: [Math.cos(a), -Math.sin(a), 0], V: [0, 0, -1] }, [0, 0, 0], [0, 75], s),
     lay(spine, FLAT(), [0, -0.5, 0], [0, 75], s, { top: true }),
-  ], [{ L: 2, pts: [[0, 176], [0, 150], [0, 75], [0, 0], [0, -22]] }], [
-    { dz: -290, at: [0, -245], aim: [0, -10, 10], read: true },
-    { dz: -150, at: [0, -36], aim: [0, -30, 250] },
-    { dz: 130, at: [0, -38], aim: [0, -50, 600] },
-  ]);
+  ], [{ L: 2, pts: [[0, 176], [0, 150], [0, 75], [0, 0], [0, -22]] }], 320);
 }
 
 // Modelling the Other: two people facing each other, each picturing the other. The thread draws both of
@@ -188,10 +174,7 @@ seed(31);
     lay([...parts, ...mirror(parts)], UP(), [0, 0, 0], [120, 178], 1.25),
     lay(thought, UP(16), [-14, 0, -40], [120, 178], 1.25),
     lay(mirror(thought), UP(-16), [14, 0, -40], [120, 178], 1.25),
-  ], [{ L: 0, pts: one }], [
-    { dz: -300, at: [0, -96], aim: [0, -96, 0], read: true },
-    { dz: 0, at: [0, -86], aim: [0, -84, 400] },
-  ]);
+  ], [{ L: 0, pts: one }], 390);
 }
 
 // VPS Veritas: a tanker on the sea. The thread is its wake, running along the water to the stern and on
@@ -226,11 +209,7 @@ seed(41);
   scene('vps', [
     lay(sea, FLAT(), [0, 0, 0], [0, 0], 1),
     lay(ship, UP(), [0, 0, 0], [120, 122], 1.2),
-  ], [{ L: 0, pts: wake }, { L: 1, pts: [[44, 122], [115, 122.4], [186, 122]] }], [
-    { dz: -265, at: [-6, -96], aim: [-6, -70, 0], read: true },
-    { dz: -40, at: [10, -190], aim: [10, -120, 260] },
-    { dz: 230, at: [20, -112], aim: [20, -80, 640] },
-  ]);
+  ], [{ L: 0, pts: wake }, { L: 1, pts: [[44, 122], [115, 122.4], [186, 122]] }], 320);
 }
 
 // Learning what to prove: mathematics as a tree. Roots are the axioms, the trunk is the library, and every
@@ -259,11 +238,7 @@ seed(53);
     for (let i = 0; i < n; i++) grow(e[0], e[1], a + (n === 3 ? (i - 1) * spread : (i ? 1 : -1) * spread * 0.62) + rnd(-0.1, 0.1), len * rnd(0.68, 0.78), d + 1);
   };
   [-0.62, -0.06, 0.55].forEach((a, i) => grow(120 + (i - 1) * 3, 97, a, [27, 31, 26][i], 0));
-  scene('prove', [lay([...roots, ...trunk, ...levels.flat(), ...cut, ...tips], UP(), [0, 0, 0], [120, 134], 1.4)], [{ L: 0, pts: climb }], [
-    { dz: -330, at: [0, -128], aim: [0, -112, 0], read: true },
-    { dz: -140, at: [0, -160], aim: [0, -160, 120] },
-    { dz: 10, at: [0, -268], aim: [0, -120, 260] },
-  ]);
+  scene('prove', [lay([...roots, ...trunk, ...levels.flat(), ...cut, ...tips], UP(), [0, 0, 0], [120, 134], 1.4)], [{ L: 0, pts: climb }], 380);
 }
 
 // Train Pointillism: a steam locomotive and tender, side on, on a track that runs along the journey.
@@ -288,16 +263,13 @@ seed(63);
   const smoke = [];
   [[192, 44, 7, 18], [178, 34, 9, 20], [158, 27, 11, 20], [134, 23, 12, 16], [108, 23, 12, 11], [84, 26, 11, 7]].forEach(([x, y, r, n]) => smoke.push(...stipple(ellipsePts(x, y, r * 1.25, r * 0.8, 0, 360, 0, 0.08, 24), n, { space: 2.6, rmin: 0.6, rmax: 1.2 })));
   smoke.sort((a, b) => b.cx - a.cx);
-  const s = 1.45, side = { U: [0, 0, 1], V: [0, 1, 0] };
+  // the track runs at 20 degrees across the path, so the train is seen from the side and the rail crosses under the camera
+  const s = 1.45, a = 20 * R2, O = [-120, 0, 0], side = { U: [Math.sin(a), 0, Math.cos(a)], V: [0, 1, 0] };
   scene('train', [
-    lay(track, FLAT(), [-70, 0, 0], [120, 0], s),
-    lay([...tender, ...cab, ...boiler, ...gear], side, [-70, 0, 0], [121, 151], s),
-    lay([{ t: 'p', dots: smoke }], side, [-70, -4, 0], [121, 151], s),
-  ], [{ L: 0, pts: [[128, 134], [128, 0], [128, -150], [128, -306]] }], [
-    { dz: -330, at: [230, -110], aim: [-70, -74, 10], read: true },
-    { dz: -120, at: [30, -82], aim: [24, -72, 200] },
-    { dz: 150, at: [28, -86], aim: [20, -84, 600] },
-  ]);
+    lay(track, FLAT(-20), O, [120, 0], s),
+    lay([...tender, ...cab, ...boiler, ...gear], side, O, [121, 151], s),
+    lay([{ t: 'p', dots: smoke }], side, [O[0], -4, O[2]], [121, 151], s),
+  ], [{ L: 0, pts: [[128, 134], [128, 0], [128, -150], [128, -306]] }], 360);
 }
 
 // gvhackathon.com: the laptop on the ground, keyboard flat and screen up, and the stopwatch of a seven-day
@@ -312,16 +284,12 @@ seed(71);
     fillPoly([[151, 87], [156, 87], [156, 92.5], [151, 92.5]])];
   const watch = [ellipse(214, 30, 15, 15, 'k'), line(214, 11, 214, 15, 'k1'), poly([[209.5, 9], [218.5, 9]], 'k2'), line(225, 17, 228, 14, 'k1'), line(214, 30, 214, 20, 'k2', { over: 0 }), line(214, 30, 221, 33, 'k1', { over: 0 })];
   [[0, -1], [1, 0], [0, 1], [-1, 0]].forEach(([u, v]) => watch.push(line(214 + u * 11, 30 + v * 11, 214 + u * 13.2, 30 + v * 13.2, 'k1', { over: 0 })));
-  const s = 2, hinge = [0, 0, -(106 - 119) * s];
+  const s = 2.3, hinge = [0, 0, -(106 - 119) * s];
   scene('hack', [
     lay(deck, FLAT(), [0, 0, 0], [120, 119], s),
     lay(screen, LEAN(12), hinge, [120, 106], s),
-    lay(watch, UP(-24), [128, 0, -96], [214, 46], 1.3),
-  ], [{ L: 0, pts: [[14, 176], [22, 150], [34, 126], [46, 110], [62, 106]] }, { L: 1, pts: [[66, 104], [76, 96], [100, 92.5], [149, 92.5]] }], [
-    { dz: -360, at: [0, -200], aim: [0, -62, 30], read: true },
-    { dz: -70, at: [36, -78], aim: [36, -78, 300] },
-    { dz: 60, at: [36, -76], aim: [36, -72, 500] },
-  ]);
+    lay(watch, UP(-24), [196, 0, -60], [214, 46], 1.5),
+  ], [{ L: 0, pts: [[14, 176], [22, 150], [34, 126], [46, 110], [62, 106]] }, { L: 1, pts: [[66, 104], [76, 96], [100, 92.5], [149, 92.5]] }], 470);
 }
 
 // Next: a symphony in movements I to IV, fanned out, and the conductor's baton, which is where the thread ends.
@@ -340,9 +308,7 @@ seed(81);
   scene('coda', [
     lay([...page(-36, 1, false), ...page(-12, 2, false), ...page(12, 3, false), ...page(36, 4, true)], UP(), [0, 0, 0], [120, 178], 1.3),
     lay(baton, UP(-10), [-150, 0, -60], [40, 178], 1.1),
-  ], [{ L: 1, pts: [[34, 124], [46, 120], [100, 108], [156, 95]] }], [
-    { dz: -320, at: [0, -112], aim: [-24, -100, 0], read: true },
-  ]);
+  ], [{ L: 1, pts: [[34, 124], [46, 120], [100, 108], [156, 95]] }], 360);
 }
 
 // Garland motifs: small pieces of each drawing, strung on arches over the path between one drawing and the
@@ -367,7 +333,7 @@ const r2 = a => a.map(n => +n.toFixed(2));
 const world = {
   scenes: Object.fromEntries(Object.entries(S).map(([k, v]) => [k, {
     layers: v.layers.map(l => ({ o: r2(l.o), U: r2(l.U), V: r2(l.V), s: l.s, ground: l.ground || undefined, top: l.top || undefined, i: items(l.items) })),
-    thread: v.thread, keys: v.keys,
+    thread: v.thread, read: v.read,
   }])),
   motifs: Object.fromEntries(Object.entries(M).map(([k, v]) => [k, items(v)])),
 };

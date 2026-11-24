@@ -224,16 +224,8 @@ footer { border-top: 1px solid #000; margin-top: 2rem; padding-top: 1rem; font-s
   .ink-on .station.has-side > *::before { content: ""; position: absolute; z-index: -1; inset: -1.1rem -1.6rem -1.3rem; background: rgba(255, 255, 255, 0.9);
     -webkit-mask-image: linear-gradient(to right, transparent, #000 1.6rem, #000 calc(100% - 1.6rem), transparent), linear-gradient(to bottom, transparent, #000 1.1rem, #000 calc(100% - 1.3rem), transparent); -webkit-mask-composite: source-in;
     mask-image: linear-gradient(to right, transparent, #000 1.6rem, #000 calc(100% - 1.6rem), transparent), linear-gradient(to bottom, transparent, #000 1.1rem, #000 calc(100% - 1.3rem), transparent); mask-composite: intersect; }
-  .ink-on .station.has-side.night > *::before { background: rgba(28, 27, 25, 0.88); }
 }
 .ink-on .station.here::before { bottom: calc(48vh - 1rem); }
-/* Inside the ink before the finale the page is dark: a section turns over once the ink behind it has flooded. */
-.ink-on .station.night { color: #efece4; }
-.ink-on .station.night::before { background: rgba(28, 27, 25, 0.88); }
-.ink-on .station.night .when, .ink-on .station.night.ahead h2, .ink-on .station.night.here h2, .ink-on .station.night .hear { color: #b4c2ff; }
-.ink-on .station.night.here h2 { border-top-color: #b4c2ff; }
-.ink-on .station.night :focus-visible { outline-color: #b4c2ff; }
-.ink-on .station, .ink-on .station .when, .ink-on .station h2, .ink-on .station .hear { transition: color .6s, border-color .6s; }
 @media (max-width: 1200px) {
   .ink-on .journey > .station:first-of-type { margin-top: 85vh; }
   .ink-on .station { padding-bottom: 62vh; }

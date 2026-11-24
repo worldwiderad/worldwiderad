@@ -1,7 +1,7 @@
 // The ink world behind the homepage's projects: a pen-and-ink landscape, one drawing per project standing on
 // (or lying on) open ground, placed along 4part's timeline. One pen line, the thread, runs along the ground
-// from each drawing to the next and climbs into each one. Scrolling moves a camera through it in perspective:
-// it turns, tilts and banks, and flies through an opening in every drawing.
+// from each drawing to the next and climbs into each one. Scrolling moves a camera straight down the middle of
+// it, at one height and one angle, through or past every drawing.
 (function () {
   'use strict';
   var W = window.INK_WORLD, journey = document.querySelector('.journey');
@@ -17,7 +17,7 @@
   // The journey is measured in J units: K per second of music. The world is measured in drawing units,
   // Z of them per J unit. AHEAD: how far ahead of the camera the pen can have drawn (J units).
   var LEN = window.LEN || 593.32, K = 0.35, Z = 64, D = 4.5, AHEAD = 24, FARW = 30 * Z, NEAR = 6;
-  var INK = '#1a1a1a', BLUE = '#2340a8', PAPER = '#ffffff', NIGHT = '#1c1b19', LIGHT = '#efece4', PALE = '#b4c2ff';
+  var INK = '#1a1a1a', BLUE = '#2340a8', PAPER = '#ffffff';
   var WIDTH = { k: 1.9, k1: 0.95, k2: 2.9 };
 
   function rng(s) { return function () { s |= 0; s = s + 0x6D2B79F5 | 0; var t = Math.imul(s ^ s >>> 15, 1 | s); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
@@ -63,16 +63,15 @@
   function flat(pts) { var out = []; for (var i = 0; i < pts.length; i++) out.push(pts[i][0], pts[i][1]); return out; }
 
   // ---- the drawings, one per section, placed along the piece
-  var stations = [].slice.call(document.querySelectorAll('.journey .station')), scenes = [], todayZ = 421.5 * K, washZ = Infinity, lastT = 0;
+  var stations = [].slice.call(document.querySelectorAll('.journey .station')), scenes = [], todayZ = 421.5 * K, lastT = 0;
   stations.forEach(function (el, i) {
     var t = el.dataset.f === '' ? lastT + 24 : +el.dataset.f * LEN; lastT = t;
     var st = { el: el, id: el.id, z: t * K, read: t * K - D, anchor: 0, text: el.querySelector('div') || el }, raw = W.scenes[el.id];
     if (el.id === 'today') todayZ = st.z;
-    if (el.id === 'coda') washZ = st.z - 7;
     if (raw) {
-      var Zw = st.z * Z, sc = st.scene = { id: el.id, z: st.z, Z: Zw, total: 0, thread: raw.thread, keys: raw.keys.map(function (k) { return { z: Zw + k.dz, x: k.at[0], y: k.at[1], ax: k.aim[0], ay: k.aim[1], az: Zw + k.aim[2], read: k.read }; }),
+      var Zw = st.z * Z, sc = st.scene = { id: el.id, z: st.z, Z: Zw, total: 0, thread: raw.thread, read: (Zw - raw.read) / Z,
         layers: raw.layers.map(function (l) { return { o: [l.o[0], l.o[1], l.o[2] + Zw], U: l.U, V: l.V, s: l.s, ground: l.ground, top: l.top, raw: l.i, items: null }; }) };
-      sc.keys.forEach(function (k) { if (k.read) st.read = sc.read = k.z / Z; });
+      st.read = sc.read; // while you read the section, the camera is raw.read units in front of the drawing
       scenes.push(sc);
     }
     stations[i] = st;
@@ -100,34 +99,10 @@
     sc.total = acc;
   }
 
-  // ---- the camera: where it is and what it looks at, through each drawing's keys. Monotone cubics in depth,
-  // so it never overshoots an opening.
-  function spline(zs, vs) {
-    var n = zs.length, d = [], m = [], i;
-    for (i = 0; i < n - 1; i++) d.push((vs[i + 1] - vs[i]) / (zs[i + 1] - zs[i]));
-    m[0] = 0; m[n - 1] = 0;
-    for (i = 1; i < n - 1; i++) {
-      if (d[i - 1] * d[i] <= 0) { m[i] = 0; continue; }
-      var h0 = zs[i] - zs[i - 1], h1 = zs[i + 1] - zs[i], w1 = 2 * h1 + h0, w2 = h1 + 2 * h0;
-      m[i] = (w1 + w2) / (w1 / d[i - 1] + w2 / d[i]);
-    }
-    return function (z, slope) {
-      if (z <= zs[0]) return slope ? 0 : vs[0];
-      if (z >= zs[n - 1]) return slope ? 0 : vs[n - 1];
-      var k = 0; while (z > zs[k + 1]) k++;
-      var h = zs[k + 1] - zs[k], t = (z - zs[k]) / h, t2 = t * t, t3 = t2 * t;
-      if (slope) return ((6 * t2 - 6 * t) * vs[k] + (3 * t2 - 4 * t + 1) * h * m[k] + (-6 * t2 + 6 * t) * vs[k + 1] + (3 * t2 - 2 * t) * h * m[k + 1]) / h;
-      return (2 * t3 - 3 * t2 + 1) * vs[k] + (t3 - 2 * t2 + t) * h * m[k] + (-2 * t3 + 3 * t2) * vs[k + 1] + (t3 - t2) * h * m[k + 1];
-    };
-  }
-  var keys = [], first = scenes[0].keys[0];
-  keys.push({ z: 0, x: first.x, y: first.y, ax: first.ax, ay: first.ay, az: first.az });
-  var TW = todayZ * Z, all = [{ z: TW - 7 * Z, x: 0, y: -150, ax: 0, ay: -150, az: TW }, { z: TW, x: 0, y: -150, ax: 0, ay: -140, az: TW + 400 }]; // today: face the gate, then fly through its middle
-  scenes.forEach(function (sc) { all = all.concat(sc.keys); });
-  all.sort(function (a, b) { return a.z - b.z; }).forEach(function (k) { if (k.z > keys[keys.length - 1].z + 10) keys.push(k); });
-  function chan(name) { return spline(keys.map(function (k) { return k.z; }), keys.map(function (k) { return k[name]; })); }
-  var camPX = chan('x'), camPY = chan('y'), camAX = chan('ax'), camAY = chan('ay'), camAZ = chan('az');
-  stations.forEach(function (st) { if (!st.scene) st.read = st.z - 7; }); // today: far enough back to see the whole gate
+  // ---- the camera runs on one straight rail down the middle of the world (x = 0), at a fixed height, looking
+  // straight ahead and a little down. It never turns: only its distance along the rail changes.
+  var HEIGHT = 125, PITCH = 6 * Math.PI / 180;
+  stations.forEach(function (st) { if (!st.scene) st.read = st.z - 8; }); // today: far enough back to see the whole gate
 
   // ---- the thread: the pieces inside the drawings are part of the drawings; between them it runs along the ground
   var pieces = [], hops = [];
@@ -169,17 +144,6 @@
     }) : null);
   }
 
-  // before the finale, a marcato accent: a wedge of ink the camera flies into. Its outline is inked first,
-  // then it floods from the tip down, and once the camera is inside, the page is dark.
-  var accent = (function () {
-    var C = [[0, -330], [430, 250], [292, 250], [0, 140], [-292, 250], [-430, 250]], r = rng(5), edge = [], i, j;
-    function ring(k, dy) { var out = []; for (i = 0; i < C.length; i++) { var a = C[i], b = C[(i + 1) % C.length]; for (j = 0; j < 14; j++) { var u = j / 14; out.push([(a[0] + (b[0] - a[0]) * u) * k, (a[1] + (b[1] - a[1]) * u) * k + dy]); } } out.push(out[0].slice()); return out; }
-    var body = ring(1, 0).map(function (q) { return [q[0] + (r() - 0.5) * 3, q[1] + (r() - 0.5) * 3]; }), fillP = new Path2D();
-    body.forEach(function (q, n) { if (n) fillP.lineTo(q[0], q[1]); else fillP.moveTo(q[0], q[1]); });
-    fillP.closePath();
-    [[1.045, -6, 9], [1.1, -14, 5]].forEach(function (o, n) { edge.push(brush(ring(o[0], o[1]), o[2], 77 + n)); });
-    return { body: flat(body), test: fillP, edge: edge, L: null };
-  })();
   // today: a blue diamond, ruled twice, standing on the ground across the path
   var gate = (function () {
     function diamond(h) { var C = [[0, -h], [h, 0], [0, h], [-h, 0]], out = [], i, j; for (i = 0; i <= 4; i++) for (j = 0; j < 12; j++) { if (i === 4 && j > 2) break; var a = C[i % 4], b = C[(i + 1) % 4], u = j / 12; out.push([a[0] + (b[0] - a[0]) * u, a[1] + (b[1] - a[1]) * u]); } return out; }
@@ -187,7 +151,7 @@
   })();
 
   // ---- layout, and the camera's pose
-  var dpr = 1, Wd = 0, Ht = 0, cx = 0, cy = 0, F = 1, camZ = 0, target = 0, press = 0, raf = 0, last = 0, buf = null, dark = false;
+  var dpr = 1, Wd = 0, Ht = 0, cx = 0, cy = 0, F = 1, camZ = 0, target = 0, press = 0, raf = 0, last = 0, buf = null;
   var C = [0, 0, 0], RX = [1, 0, 0], RY = [0, 1, 0], RZ = [0, 0, 1];
   function layout() {
     dpr = Math.min(window.devicePixelRatio || 1, 2); Wd = root.clientWidth; Ht = window.innerHeight;
@@ -197,7 +161,7 @@
     var text = document.querySelector('.journey .station > div'), right = Wd > 1200 && text ? text.getBoundingClientRect().right + 24 : 0;
     cx = right ? (right + Wd) / 2 : Wd / 2; cy = Ht * 0.5;
     F = right ? Math.min((Wd - right) * 1.05, Wd * 0.5, Ht * 0.58) : Math.min(Wd * 1.02, Ht * 0.7); // focal length: a drawing ~290 units wide fills this many pixels while you read it
-    CX = cx; CY = cy; FF = F; wide = !!right;
+    CX = cx; CY = cy; FF = F;
     var top = journey.getBoundingClientRect().top + scrollY;
     // beside the text, a drawing is in view while you read its section; where the text spans the page,
     // it is there in the gap above the section, and you fly through it behind the text as you read on
@@ -222,27 +186,20 @@
     }
     return prevZ;
   }
-  var CX = 0, CY = 0, FF = 1, wide = false;
+  var CX = 0, CY = 0, FF = 1;
   function frameView() { // near a section that shows its drawing elsewhere on the screen, move the view centre there
     var x = CX, y = CY, f = FF;
     stations.forEach(function (st) { if (!st.view) return; var w = ease(1 - Math.abs(camZ - st.read) / 2.5); if (w > 0) { x += (st.view.x - CX) * w; y += (st.view.y - CY) * w; f *= 1 + (st.view.k - 1) * w; } });
     cx = x; cy = y; F = f;
   }
-  function pose() { // the camera at the current depth: position, then a look-at frame, banked into its turns
-    var zw = camZ * Z, px = camPX(zw), py = camPY(zw);
-    C = [px, py, zw];
-    var f = [camAX(zw) - px, camAY(zw) - py, camAZ(zw) - zw], m = Math.hypot(f[0], f[1], f[2]) || 1; f = [f[0] / m, f[1] / m, f[2] / m];
-    var r = [f[2], 0, -f[0]], rm = Math.hypot(r[0], r[2]) || 1; r = [r[0] / rm, 0, r[2] / rm];
-    var w = [f[1] * r[2] - f[2] * r[1], f[2] * r[0] - f[0] * r[2], f[0] * r[1] - f[1] * r[0]];
-    var roll = clamp(camPX(zw, true) * 0.3, -0.13, 0.13), c = Math.cos(roll), s = Math.sin(roll);
-    RX = [r[0] * c + w[0] * s, r[1] * c + w[1] * s, r[2] * c + w[2] * s];
-    RY = [w[0] * c - r[0] * s, w[1] * c - r[1] * s, w[2] * c - r[2] * s];
-    RZ = f;
+  function pose() { // on the rail: straight ahead, tilted down by PITCH
+    var c = Math.cos(PITCH), n = Math.sin(PITCH);
+    C = [0, -HEIGHT, camZ * Z]; RX = [1, 0, 0]; RY = [0, c, -n]; RZ = [0, n, c];
   }
   function cam(p) { var dx = p[0] - C[0], dy = p[1] - C[1], dz = p[2] - C[2]; return [dx * RX[0] + dy * RX[1] + dz * RX[2], dx * RY[0] + dy * RY[1] + dz * RY[2], dx * RZ[0] + dy * RZ[1] + dz * RZ[2]]; }
   function dir(v) { return [v[0] * RX[0] + v[1] * RX[1] + v[2] * RX[2], v[0] * RY[0] + v[1] * RY[1] + v[2] * RY[2], v[0] * RZ[0] + v[1] * RZ[1] + v[2] * RZ[2]]; }
   function fade(zc) { return clamp((FARW - zc) / (FARW * 0.3), 0, 1); } // things come out of the distance; nothing fades up close
-  function inkFor(zj) { var future = zj > todayZ + 0.01; return dark ? (future ? PALE : LIGHT) : (future ? BLUE : INK); }
+  function inkFor(zj) { return zj > todayZ + 0.01 ? BLUE : INK; } // past today, everything is drawn in blue
 
   // ---- drawing in perspective: a sheet's points are projected one by one, and cut at the near plane
   var ox = 0, oy = 0, oz = 0, ux = 0, uy = 0, uz = 0, vx = 0, vy = 0, vz = 0, X = [], Y = [], Q = [];
@@ -277,12 +234,12 @@
     sheet(Ly);
     var path = new Path2D(), fillC = null, fillA = -1, any = false, zc = cam(Ly.mid)[2];
     function flush() {
-      if (any) { g.globalAlpha = fillA; g.fillStyle = fillC; g.fill(path); if (press > 0.02 && fillC !== PAPER && fillC !== NIGHT) { g.lineWidth = press * 0.55 * Ly.s * F / Math.max(NEAR, zc); g.strokeStyle = fillC; g.stroke(path); } }
+      if (any) { g.globalAlpha = fillA; g.fillStyle = fillC; g.fill(path); if (press > 0.02 && fillC !== PAPER) { g.lineWidth = press * 0.55 * Ly.s * F / Math.max(NEAR, zc); g.strokeStyle = fillC; g.stroke(path); } }
       path = new Path2D(); any = false;
     }
     Ly.items.forEach(function (o) {
       var p = (reveal - o.start) / o.w; if (p <= 0) return;
-      var colr = o.kind === 'w' ? (dark ? NIGHT : PAPER) : col, a = base * (p < 1 && !o.b && !o.dots ? p : 1);
+      var colr = o.kind === 'w' ? PAPER : col, a = base * (p < 1 && !o.b && !o.dots ? p : 1);
       if (colr !== fillC || a !== fillA) { flush(); fillC = colr; fillA = a; }
       if (o.b) addPoly(path, p < 1 ? strokePoly(o.b, Math.max(1, Math.floor(o.b.n * p))) : o.full);
       else if (o.dots) addDots(path, o.dots, p < 1 ? Math.ceil(o.dots.length / 3 * p) : o.dots.length / 3, Ly.s);
@@ -382,7 +339,7 @@
       var z0 = A.Z + 260, z1 = B.read * Z - 60; if (z1 - z0 < 200) continue;
       [0.3, 0.75].forEach(function (f, k) {
         var z = z0 + (z1 - z0) * f; if (Math.abs(z - todayZ * Z) < 160) return;
-        var x0 = camPX(z), id = k ? B.id : A.id, line = [], beads = [];
+        var x0 = 0, id = k ? B.id : A.id, line = [], beads = [];
         for (var j = 0; j <= 40; j++) { var t = j / 40 * Math.PI, x = x0 - Math.cos(t) * 190, y = -Math.sin(t) * 235; line.push([x, y, z]); }
         for (j = 1; j < 14; j++) { var t2 = j / 14 * Math.PI, tx = Math.sin(t2) * 190, ty = -Math.cos(t2) * 235, tm = Math.hypot(tx, ty); beads.push({ x: x0 - Math.cos(t2) * 190, y: -Math.sin(t2) * 235 + 10, c: tx / tm, s: ty / tm, k: 1.3, m: id }); }
         arches.push({ z: z, x: x0, y: -120, line: line, beads: beads });
@@ -396,58 +353,16 @@
     var Ly = gate.L; if (!visible(Ly)) return;
     sheet(Ly); var q = cam(Ly.o)[2], path = new Path2D();
     gate.edge.forEach(function (b, n) { var k = Math.floor(b.n * ease(R * 1.2 - n * 0.2)); if (k >= 1) addPoly(path, strokePoly(b, k)); });
-    g.globalAlpha = fade(q); g.fillStyle = dark ? PALE : BLUE; g.fill(path);
+    g.globalAlpha = fade(q); g.fillStyle = BLUE; g.fill(path);
     var p = project([Ly.o[0] - 166, Ly.o[1] + 5, T]);
     if (p && R > 0.6) { g.globalAlpha = fade(q) * ease((R - 0.6) / 0.3); g.font = 'italic ' + (17 * p[2]).toFixed(1) + 'px Petrona, Georgia, serif'; g.textAlign = 'right'; g.fillText('today', p[0], p[1]); g.textAlign = 'left'; }
     g.globalAlpha = 1;
-  }
-  function flood(dz) { return ease((9.4 - dz) / 3.2); } // just after the camera has flown through the laptop's screen
-  function wash(dzJ) { // the accent: outline first, then the flood from the tip down
-    var p1 = ease((tipZ - washZ) / 4), p2 = flood(dzJ); if (p1 <= 0) return;
-    var A = accent.L; if (cam(A.o)[2] < NEAR) return;
-    sheet(A);
-    var path = new Path2D();
-    accent.edge.forEach(function (b, n) { var k = Math.floor(b.n * ease(p1 * 1.15 - n * 0.15)); if (k >= 1) addPoly(path, strokePoly(b, k)); });
-    g.globalAlpha = 1; g.fillStyle = NIGHT; g.fill(path);
-    if (p2 > 0) { // the flood's front is wet ink, not a ruled edge
-      var front = -350 + 660 * p2, x, clip = [-470, -360];
-      for (x = -470; x <= 470; x += 20) clip.push(x, front + (12 * Math.sin(x * 0.031 + 1.3) + 7 * Math.sin(x * 0.083 + 0.4) + 4 * Math.sin(x * 0.19)) * Math.sin(Math.PI * p2));
-      clip.push(470, -360);
-      var cp = new Path2D(), body = new Path2D(); addPoly(cp, clip); addPoly(body, accent.body);
-      g.save(); g.clip(cp); g.fill(body); g.restore();
-    }
-  }
-  function nightText(dzJ) { // a section's text turns over once the ink has flooded the whole of the space behind it
-    var p2 = flood(dzJ), A = accent.L;
-    function inInk(x, y) {
-      var d = [(x - cx) / F, (y - cy) / F], w = [d[0] * RX[0] + d[1] * RY[0] + RZ[0], d[0] * RX[1] + d[1] * RY[1] + RZ[1], d[0] * RX[2] + d[1] * RY[2] + RZ[2]];
-      if (w[2] <= 0) return false;
-      var t = (A.o[2] - C[2]) / w[2], lx = (C[0] + w[0] * t - A.o[0]) / A.s, ly = (C[1] + w[1] * t - A.o[1]) / A.s;
-      return t > 0 && ly < -350 + 660 * p2 - 20 && g.isPointInPath(accent.test, lx, ly);
-    }
-    stations.forEach(function (st) {
-      var on = dark;
-      if (!on && p2 > 0 && st.z > todayZ && A) {
-        var r = st.text.getBoundingClientRect();
-        if (r.bottom > 0 && r.top < Ht) {
-          var x0 = Math.max(0, r.left - 40), x1 = Math.min(Wd, r.right + 40), y0 = Math.max(0, r.top - 20), y1 = Math.min(Ht, r.bottom + 20);
-          g.setTransform(1, 0, 0, 1, 0, 0);
-          if (wide) on = inInk(x0, y0) && inInk(x1, y0) && inInk(x0, y1) && inInk(x1, y1) && inInk((x0 + x1) / 2, (y0 + y1) / 2);
-          else { // on a narrow screen the text spans the page, so it turns over once most of it is on ink
-            var n = 0; for (var i = 0; i < 3; i++) for (var j = 0; j < 3; j++) if (inInk(x0 + (x1 - x0) * (i + 0.5) / 3, y0 + (y1 - y0) * (j + 0.5) / 3)) n++;
-            on = n >= 6;
-          }
-          g.setTransform(dpr, 0, 0, dpr, 0, 0);
-        }
-      }
-      if (st.night !== on) { st.night = on; st.el.classList.toggle('night', on); }
-    });
   }
   function playhead() { // while the recording plays, a blue ring rides the thread at the music's position
     if (window.state !== 'playing' || !window.active || playZ > tipZ) return;
     var p = threadAt(playZ * Z); if (!p) return;
     var q = project(p); if (!q) return;
-    g.globalAlpha = fade(q[3]); g.strokeStyle = dark ? PALE : BLUE; g.lineWidth = clamp(0.9 * q[2], 1.4, 2.6);
+    g.globalAlpha = fade(q[3]); g.strokeStyle = BLUE; g.lineWidth = clamp(0.9 * q[2], 1.4, 2.6);
     g.beginPath(); g.arc(q[0], q[1], clamp(3.2 * q[2], 4, 11), 0, 6.2832); g.stroke(); g.globalAlpha = 1;
   }
 
@@ -455,16 +370,12 @@
     playZ = window.state === 'playing' && window.active ? window.active.a.currentTime * K : -Infinity;
     tipZ = Math.max(reach(camZ), Math.min(playZ, camZ + AHEAD)); // while it plays, the music draws the thread on
     frameView(); pose();
-    var dzJ = washZ - camZ;
-    dark = C[2] > washZ * Z - NEAR - 2;
-    nightText(dzJ);
     g.setTransform(dpr, 0, 0, dpr, 0, 0); g.globalAlpha = 1;
-    g.fillStyle = dark ? NIGHT : PAPER; g.fillRect(0, 0, Wd, Ht);
-    // far to near: each drawing, the gate and the accent, with the thread and garlands in the stretches between them
+    g.fillStyle = PAPER; g.fillRect(0, 0, Wd, Ht);
+    // far to near: each drawing and the gate, with the thread and garlands in the stretches between them
     var ev = [];
     scenes.forEach(function (sc) { if (sc.Z > C[2] - 700 && sc.Z < C[2] + FARW + 400) ev.push({ z: sc.Z, f: function () { scene(sc); } }); });
     ev.push({ z: todayZ * Z, f: today });
-    if (!dark) ev.push({ z: washZ * Z, f: function () { wash(dzJ); } });
     ev.sort(function (a, b) { return b.z - a.z; });
     var hi = Infinity;
     ev.forEach(function (e) { thread(e.z, hi); e.f(); hi = e.z; });
@@ -493,8 +404,6 @@
   }
   function kick() { if (!raf) raf = requestAnimationFrame(frame); }
   window.inkKick = kick;
-  var WZ = washZ * Z;
-  accent.L = { o: [camPX(WZ) - 300, camPY(WZ) + 90, WZ], U: [1, 0, 0], V: [0, 1, 0], s: 2.2 }; // big, and set so the camera flies in right of its middle: the text, on the left, is deep in the ink
   strings();
   layout(); camZ = target = aim();
   addEventListener('scroll', kick, { passive: true });
