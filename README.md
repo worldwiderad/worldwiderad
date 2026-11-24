@@ -10,7 +10,9 @@ Everything is plain HTML, CSS and JavaScript. GitHub Pages runs Jekyll on every 
 |---|---|
 | `index.html` | The homepage: styles, content and script in one file |
 | `cv/index.html` | The printable CV |
-| `p-doom/index.html` | "Where I'm at on AI risk" |
+| `blog/index.html` | The blog: a list of posts, newest first |
+| `blog/<post>/index.html` | One post each: `p-doom/` ("Where I'm at on AI risk") and `maths-backwards/` ("We teach maths backwards") |
+| `p-doom/index.html` | Redirects to `/blog/p-doom/`, where that post now lives, so older links still work |
 | `train-pointillism/watch/index.html` | The Train Pointillism video player (HLS, from `static/train-pointillism/`) |
 | `train-pointillism/index.html` | Redirects to the homepage entry (`/#train`) so older links still work |
 | `static/fonts/` | Petrona and a Bravura subset (both OFL; licences alongside) |
@@ -79,6 +81,10 @@ That rewrites `static/ink/world.js`. In the world, x runs right, y runs down (th
 | `p` | Stippled dots |
 
 The garland motifs are at the end of `world.mjs`, one per section. A section with no scene still gets the thread. Earlier versions are still in the history: the branch `backup/ink-vignettes` has a drawing beside each section, commit `4127312` the first fly-through down a corridor of staves, and commit `e71c012` the flat version with the thread.
+
+## The blog
+
+Each post is a self-contained page in its own folder under `blog/`. To add one, copy a post's folder, then change the title, date, description, canonical link and `og:` lines and write the post. Add it at the top of the list in `blog/index.html` (newest first) and add its address to `sitemap.xml`.
 
 ## Before pushing
 
